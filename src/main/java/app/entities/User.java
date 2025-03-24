@@ -41,7 +41,7 @@ public class User
 
         // relations
     @ManyToMany(mappedBy = "users")
-    private Set<Media> watchList = new HashSet<>();
+    private Set<Media> likeList = new HashSet<>();
 
     // constructor
     public User(String username, String password)
