@@ -24,7 +24,7 @@ public class Media
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "media_api_id")
-    private Long mediaApiID;
+    private Long mediaApiID; // the ID from TMDB's API
     private String title;
     @Column(columnDefinition = "TEXT") // sets the datatype to be TEXT in the database
     private String description;
