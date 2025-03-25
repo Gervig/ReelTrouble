@@ -1,5 +1,7 @@
 package app.entities;
 
+import app.dtos.GenreDTO;
+import app.dtos.MovieDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -24,10 +26,21 @@ public class Genre {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "media_genre",
+            name = "movie_genre",
             joinColumns = @JoinColumn(name = "genre_id"),
-            inverseJoinColumns = @JoinColumn(name = "media_id")
+            inverseJoinColumns = @JoinColumn(name = "movie_id")
     )
     @ToString.Exclude
-    private Set<Media> media = new HashSet<>();
+    private Set<Movie> movie = new HashSet<>();
+
+    public Genre(GenreDTO genreDTO)
+    {
+        this.id = genreDTO.getId();
+        this.name = genreDTO.getName();
+        if(genreDTO.getMovieDTOS()!=null){
+            Set<MovieDTO> movieDTOS = genreDTO.getMovieDTOS();
+            this.movie = new HashSet<>();
+            movieDTOS.forEach(movieDTO -> this.movie.add(new Movie(movieDTO)));
+        }
+    }
 }

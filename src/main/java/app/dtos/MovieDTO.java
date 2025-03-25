@@ -1,9 +1,6 @@
 package app.dtos;
 
-import app.entities.Actor;
-import app.entities.Director;
-import app.entities.Movie;
-import app.entities.User;
+import app.entities.*;
 import app.enums.MediaType;
 import dk.bugelhartmann.UserDTO;
 import lombok.*;
@@ -35,6 +32,7 @@ public class MovieDTO
     private Set<UserDTO> users;
     private Set<ActorDTO> actors;
     private Set<DirectorDTO> directors;
+    private Set<GenreDTO> genres;
 
     // constructor
     public MovieDTO(Movie movie)
@@ -71,6 +69,12 @@ public class MovieDTO
             Set<Director> directorEntities = movie.getDirectors();
             this.directors = new HashSet<>();
             directorEntities.forEach(director -> this.directors.add(new DirectorDTO(director)));
+        }
+
+        if(movie.getGenres() != null){
+            Set<Genre> genreEntities = movie.getGenres();
+            this.genres = new HashSet<>();
+            genreEntities.forEach(genre -> this.genres.add(new GenreDTO(genre)));
         }
     }
 }
