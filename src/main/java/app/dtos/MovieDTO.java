@@ -38,7 +38,7 @@ public class MovieDTO
     public MovieDTO(Movie movie)
     {
         this.id = movie.getId();
-        this.movieApiId = movie.getMovieApiID();
+        this.movieApiId = movie.getMovieApiId();
         this.title = movie.getTitle();
         this.description = movie.getTitle();
         this.imdbUrl = movie.getImdbUrl();

@@ -101,7 +101,7 @@ public class EntityService
                 .directors(directors)
                 .actors(actors)
                 .genres(genres)
-                .movieApiID(movieDTO.getMovieApiId())
+                .movieApiId(movieDTO.getMovieApiId())
                 .description(movieDTO.getDescription())
                 .releaseDate(movieDTO.getReleaseDate())
                 .build();
