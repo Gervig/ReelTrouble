@@ -20,7 +20,7 @@ public class Main
 
         List<String> movieApiIds = Service.getMovieApiIds();
 
-        movieApiIds.forEach(System.out::println);
+        System.out.println("Total amount of movie IDs fetched: " + movieApiIds.size());
 
         List<MovieDTO> movieDTOS = DetailsServiceCallable.getMovieDTOs(movieApiIds);
 
