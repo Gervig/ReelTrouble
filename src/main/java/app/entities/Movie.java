@@ -1,6 +1,7 @@
 package app.entities;
 
 import app.dtos.ActorDTO;
+import app.dtos.DirectorDTO;
 import app.dtos.MovieDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,7 +39,7 @@ public class Movie
     private LocalDate releaseDate;
     private Time duration;
 
-        // relations
+    // relations
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "movie_users",
@@ -50,12 +51,23 @@ public class Movie
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "movie_users",
+            name = "movie_actor",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "users_id")
     )
     @ToString.Exclude
     private Set<Actor> actors = new HashSet<>();
+
+    @Setter
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "movie_director",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "director_id")
+    )
+    @ToString.Exclude
+    private Set<Director> directors = new HashSet<>();
+
 
     // constructor
     public Movie(MovieDTO movieDTO)
@@ -73,6 +85,13 @@ public class Movie
             Set<ActorDTO> actorDTOS = movieDTO.getActors();
             this.actors = new HashSet<>();
             actorDTOS.forEach(actorDTO -> this.actors.add(new Actor(actorDTO)));
+        }
+
+        if(movieDTO.getDirectors() != null)
+        {
+            Set<DirectorDTO> directorDTOS = movieDTO.getDirectors();
+            this.directors = new HashSet<>();
+            directorDTOS.forEach(directorDTO -> this.directors.add(new Director(directorDTO)));
         }
     }
 }

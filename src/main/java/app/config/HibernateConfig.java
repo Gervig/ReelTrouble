@@ -1,5 +1,6 @@
 package app.config;
 
+import app.entities.Director;
 import app.entities.Movie;
 import app.entities.User;
 import app.utils.Utils;
@@ -43,6 +44,7 @@ public class HibernateConfig {
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addAnnotatedClass(Movie.class);
         configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Director.class);
 //             configuration.addAnnotatedClass();
     }
 
