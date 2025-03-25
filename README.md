@@ -11,5 +11,5 @@
 | movies/recommend   | GET      | ✅          | Shows recommendations based on user likes |
 | movies/like/{id}   | POST     | ✅          | User likes a movie and preference is stored |
 | movies/history     | GET      | ✅          | Shows a user’s liked movies               |
-| admin/movies/add   | POST     | ✅          | Admins can add new movies to the DB       |
+| admin/movies/add   | POST     |  🔒         | Admins can add new movies to the DB       |
 | movies/random      | GET      | ✅          | Shows a random movie not liked by user    |
