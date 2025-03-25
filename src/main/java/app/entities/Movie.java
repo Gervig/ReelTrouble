@@ -1,5 +1,7 @@
 package app.entities;
 
+import app.dtos.ActorDTO;
+import app.dtos.MovieDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.*;
@@ -39,10 +41,38 @@ public class Movie
         // relations
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "media_users",
-            joinColumns = @JoinColumn(name = "media_id"),
+            name = "movie_users",
+            joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "users_id")
     )
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "movie_users",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "users_id")
+    )
+    @ToString.Exclude
+    private Set<Actor> actors = new HashSet<>();
+
+    // constructor
+    public Movie(MovieDTO movieDTO)
+    {
+        this.mediaApiID = movieDTO.getMediaApiId();
+        this.title = movieDTO.getTitle();
+        this.description = movieDTO.getDescription();
+        this.imdbUrl = movieDTO.getImdbUrl();
+        this.imdbRating = movieDTO.getImdbRating();
+        this.releaseDate = movieDTO.getReleaseDate();
+        this.duration = movieDTO.getDuration();
+
+        if(movieDTO.getActors() != null)
+        {
+            Set<ActorDTO> actorDTOS = movieDTO.getActors();
+            this.actors = new HashSet<>();
+            actorDTOS.forEach(actorDTO -> this.actors.add(new Actor(actorDTO)));
+        }
+    }
 }

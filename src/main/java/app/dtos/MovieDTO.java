@@ -1,5 +1,6 @@
 package app.dtos;
 
+import app.entities.Actor;
 import app.entities.Movie;
 import app.entities.User;
 import app.enums.MediaType;
@@ -20,6 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class MovieDTO
 {
+    // attributes
     private Long id;
     private Long mediaApiId;
     private String title;
@@ -32,23 +34,22 @@ public class MovieDTO
     private int episodes;
     private int seasons;
     private Set<UserDTO> users;
+    private Set<ActorDTO> actors;
 
-    public MovieDTO(Movie media)
+    // constructor
+    public MovieDTO(Movie movie)
     {
-        this.id = media.getId();
-        this.mediaApiId = media.getMediaApiID();
-        this.title = media.getTitle();
-        this.description = media.getTitle();
-        this.mediaType = media.getMediaType();
-        this.imdbUrl = media.getImdbUrl();
-        this.imdbRating = media.getImdbRating();
-        this.releaseDate = media.getReleaseDate();
-        this.duration = media.getDuration();
-        this.episodes = media.getEpisodes();
-        this.seasons = media.getSeasons();
-        if(media.getUsers() != null)
+        this.id = movie.getId();
+        this.mediaApiId = movie.getMediaApiID();
+        this.title = movie.getTitle();
+        this.description = movie.getTitle();
+        this.imdbUrl = movie.getImdbUrl();
+        this.imdbRating = movie.getImdbRating();
+        this.releaseDate = movie.getReleaseDate();
+        this.duration = movie.getDuration();
+        if(movie.getUsers() != null)
         {
-            Set<User> userEntities = media.getUsers();
+            Set<User> userEntities = movie.getUsers();
             this.users = new HashSet<>();
 
             userEntities.forEach(user -> this.users.add(
@@ -58,6 +59,12 @@ public class MovieDTO
                                     .roles(user.getRolesAsStrings())
                                     .build()
             ));
+        }
+        if(movie.getActors() != null)
+        {
+            Set<Actor> actorEntities = movie.getActors();
+            this.actors = new HashSet<>();
+            actorEntities.forEach(actor -> this.actors.add(new ActorDTO(actor)));
         }
     }
 }
