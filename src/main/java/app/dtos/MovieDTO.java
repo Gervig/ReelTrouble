@@ -23,7 +23,6 @@ public class MovieDTO
     private String title;
     private String description;
     private MediaType mediaType;
-    private String imdbUrl;
     private BigDecimal imdbRating;
     private LocalDate releaseDate;
     private Time duration;
@@ -41,7 +40,6 @@ public class MovieDTO
         this.movieApiId = movie.getMovieApiId();
         this.title = movie.getTitle();
         this.description = movie.getTitle();
-        this.imdbUrl = movie.getImdbUrl();
         this.imdbRating = movie.getImdbRating();
         this.releaseDate = movie.getReleaseDate();
         this.duration = movie.getDuration();

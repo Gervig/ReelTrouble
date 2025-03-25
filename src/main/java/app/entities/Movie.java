@@ -31,8 +31,6 @@ public class Movie
     private String title;
     @Column(columnDefinition = "TEXT") // sets the datatype to be TEXT in the database
     private String description;
-    @Column(name = "imdb_url")
-    private String imdbUrl;
     @Column(name = "imdb_rating")
     private BigDecimal imdbRating;
     @Temporal(TemporalType.DATE) // sets the datatype to be DATE in the database
@@ -85,7 +83,6 @@ public class Movie
         this.movieApiId = movieDTO.getMovieApiId();
         this.title = movieDTO.getTitle();
         this.description = movieDTO.getDescription();
-        this.imdbUrl = movieDTO.getImdbUrl();
         this.imdbRating = movieDTO.getImdbRating();
         this.releaseDate = movieDTO.getReleaseDate();
         this.duration = movieDTO.getDuration();
