@@ -89,7 +89,7 @@ public class MovieDAO implements IDAO<Movie, Long>
                             "SELECT m FROM Movie m " +
                                     "LEFT JOIN FETCH m.actors " +
                                     "LEFT JOIN FETCH m.genres " +
-                                    "LEFT JOIN FETCH m.director " +
+                                    "LEFT JOIN FETCH m.directors " +
                                     "WHERE LOWER(m.title) LIKE LOWER(:title)", Movie.class)
                     .setParameter("title", "%" + title + "%") // Wildcards før og efter
                     .getResultList();
