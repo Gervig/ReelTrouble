@@ -115,7 +115,7 @@ public class Service
 
     public static MovieDTO getDataFromApiId(String movieApiId)
     {
-        String url = "https://api.themoviedb.org/3/movie/%%?append_to_response=credits%2C%20overview&language=da&api_key=" + api_key;
+        String url = "https://api.themoviedb.org/3/movie/%%?append_to_response=credits%2C%20overview&language=en&api_key=" + api_key;
         String movieURL = url.replace("%%", movieApiId);
 
         try
@@ -141,7 +141,6 @@ public class Service
 
                 return getDataFromApiId(movieApiId);  // Retry after waiting
             }
-
 
             // If status code is not 429, proceed as usual
             if (response.statusCode() == 200)
