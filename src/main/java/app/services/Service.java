@@ -17,7 +17,9 @@ import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Service
 {
@@ -176,7 +178,7 @@ public class Service
             JsonNode rootNode = objectMapper.readTree(responseBody);
 
             // Extract actors from "credits" -> "cast" where "known_for_department" == "Acting"
-            List<ActorDTO> actors = new ArrayList<>();
+            Set<ActorDTO> actors = new HashSet<>();
             JsonNode castNode = rootNode.path("credits").path("cast");
             if (castNode.isArray())
             {
@@ -193,7 +195,7 @@ public class Service
             }
 
             // Extract directors from "credits" -> "crew" where "job" == "Director"
-            List<DirectorDTO> directors = new ArrayList<>();
+            Set<DirectorDTO> directors = new HashSet<>();
             JsonNode crewNode = rootNode.path("credits").path("crew");
             if (crewNode.isArray())
             {
@@ -210,11 +212,11 @@ public class Service
             }
 
             // Extract genres from "genres"
-            List<GenreDTO> genres = new ArrayList<>();
+            Set<GenreDTO> genres = new HashSet<>();
             JsonNode genresArray = rootNode.path("genres");
             for (JsonNode genreNode : genresArray)
             {
-                int id = genreNode.path("id").asInt();
+                Long id = genreNode.path("id").asLong();
                 String name = genreNode.path("name").asText();
                 genres.add(new GenreDTO(id, name));
             }
@@ -245,9 +247,9 @@ public class Service
                     .imdbRating(BigDecimal.valueOf(rootNode.path("vote_average").asDouble()))
                     .releaseDate(releaseDate) // Use the safely parsed release date
                     .movieApiId(rootNode.path("id").asLong())
-                    .genreDTOs(genres)
-                    .actorDTOS(actors)
-                    .directorDTOS(directors)
+                    .genres(genres)
+                    .actors(actors)
+                    .directors(directors)
                     .build();
         } catch (Exception e)
         {
