@@ -12,13 +12,13 @@ public class Main
     {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
-        ApplicationConfig
-                .getInstance()
-                .initiateServer()
-//                .securityCheck() //TODO add authenticate and authorize calls
-                .setRoute(Routes.getRoutes(emf))
-                .handleException()
-                .startServer(7070); //TODO change this to an available port for deployment
+//        ApplicationConfig
+//                .getInstance()
+//                .initiateServer()
+////                .securityCheck() //TODO add authenticate and authorize calls
+//                .setRoute(Routes.getRoutes(emf))
+//                .handleException()
+//                .startServer(7070); //TODO change this to an available port for deployment
 
     }
 
