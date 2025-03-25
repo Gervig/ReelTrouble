@@ -1,49 +1,49 @@
 package app.daos.impl;
 
 import app.daos.IDAO;
-import app.entities.Media;
+import app.entities.Movie;
 import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
-public class MediaDAO implements IDAO<Media, Long>
+public class MovieDAO implements IDAO<Movie, Long>
 {
     // attributes
     private static EntityManagerFactory emf;
-    private static MediaDAO instance;
+    private static MovieDAO instance;
 
     // singleton **
-    public MediaDAO(){}
+    public MovieDAO(){}
 
-    public static MediaDAO getInstance(EntityManagerFactory _emf)
+    public static MovieDAO getInstance(EntityManagerFactory _emf)
     {
         if (instance == null)
         {
-            instance = new MediaDAO();
+            instance = new MovieDAO();
             emf = _emf;
         }
         return instance;
     }
     @Override
-    public Media create(Media type)
+    public Movie create(Movie type)
     {
         return null;
     }
 
     @Override
-    public Media read(Long aLong)
+    public Movie read(Long aLong)
     {
         return null;
     }
 
     @Override
-    public List<Media> readAll()
+    public List<Movie> readAll()
     {
         return null;
     }
 
     @Override
-    public Media update(Media type)
+    public Movie update(Movie type)
     {
         return null;
     }
