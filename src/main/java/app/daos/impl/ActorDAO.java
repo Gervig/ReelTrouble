@@ -14,10 +14,6 @@ public class ActorDAO implements IDAO<Actor, Long>
     private static EntityManagerFactory emf;
     private static ActorDAO instance;
 
-    public ActorDAO()
-    {
-    }
-
     public static ActorDAO getInstance(EntityManagerFactory _emf)
     {
         if (emf == null)

@@ -14,10 +14,6 @@ public class DirectorDAO implements IDAO<Director, Long>
     private static EntityManagerFactory emf;
     private static DirectorDAO instance;
 
-    public DirectorDAO()
-    {
-    }
-
     public static DirectorDAO getInstance(EntityManagerFactory _emf)
     {
         if (emf == null)

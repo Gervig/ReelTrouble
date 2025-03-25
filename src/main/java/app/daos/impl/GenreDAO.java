@@ -14,10 +14,6 @@ public class GenreDAO implements IDAO<Genre, Long>
     private static EntityManagerFactory emf;
     private static GenreDAO instance;
 
-    public GenreDAO()
-    {
-    }
-
     public static GenreDAO getInstance(EntityManagerFactory _emf)
     {
         if (emf == null)

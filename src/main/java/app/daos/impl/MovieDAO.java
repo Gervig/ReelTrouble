@@ -17,9 +17,6 @@ public class MovieDAO implements IDAO<Movie, Long>
     private static EntityManagerFactory emf;
     private static MovieDAO instance;
 
-    // singleton **
-    public MovieDAO(){}
-
     public static MovieDAO getInstance(EntityManagerFactory _emf)
     {
         if (instance == null)
