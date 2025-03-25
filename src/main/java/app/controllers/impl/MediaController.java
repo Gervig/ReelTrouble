@@ -27,11 +27,12 @@ public class MediaController implements IController<MovieDTO, Long>
     @Override
     public List<MovieDTO> getAll()
     {
-        List<Movie> media = mediaDAO.readAll();
-
-        List<MovieDTO> mediaDTOS = media.stream()
-                .map(MovieDTO::new)
-                .toList; //TODO
+//        List<Movie> media = mediaDAO.readAll();
+//
+//        List<MovieDTO> mediaDTOS = media.stream()
+//                .map(MovieDTO::new)
+//                .toList; //
+        return null;
     }
 
     @Override
