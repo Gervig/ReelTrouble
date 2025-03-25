@@ -11,7 +11,7 @@
 | api/movies/recommend   | GET      | ✅          | Shows recommendations based on user likes |
 | api/movies/like/{id}   | POST     | ✅          | User likes a movie and preference is stored |
 | api/movies/history     | GET      | ✅          | Shows a user’s liked movies               |
-| api/admin/movies/add   | POST     |  🔒         | Admins can add new movies to the DB       |
+| api/admin/movies/add   | POST     | 🔒          | Admins can add new movies to the DB       |
 | api/movies/random      | GET      | ✅          | Shows a random movie not liked by user    |
 
 ❌ = Not secured
