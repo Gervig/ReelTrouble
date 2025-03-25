@@ -1,14 +1,13 @@
 package app.dtos;
 
 import app.entities.Actor;
+import app.entities.Director;
 import app.entities.Movie;
 import app.entities.User;
 import app.enums.MediaType;
 import dk.bugelhartmann.UserDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -35,6 +34,7 @@ public class MovieDTO
     private int seasons;
     private Set<UserDTO> users;
     private Set<ActorDTO> actors;
+    private Set<DirectorDTO> directors;
 
     // constructor
     public MovieDTO(Movie movie)
@@ -65,6 +65,12 @@ public class MovieDTO
             Set<Actor> actorEntities = movie.getActors();
             this.actors = new HashSet<>();
             actorEntities.forEach(actor -> this.actors.add(new ActorDTO(actor)));
+        }
+
+        if(movie.getDirectors() != null){
+            Set<Director> directorEntities = movie.getDirectors();
+            this.directors = new HashSet<>();
+            directorEntities.forEach(director -> this.directors.add(new DirectorDTO(director)));
         }
     }
 }

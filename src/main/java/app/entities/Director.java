@@ -31,7 +31,7 @@ public class Director
     private String name;
 
     @Setter
-    @OneToMany(mappedBy = "director", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "directors")
     private Set<Movie> movies;
 
     public Director(DirectorDTO directorDTO)

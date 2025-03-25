@@ -27,6 +27,7 @@ public class DirectorDTO
     public DirectorDTO(Director director){
         this.directorApiId = director.getDirectorApiId();
         this.name = director.getName();
+
         if(director.getMovies()!=null){
             Set<Movie> movieEntities = director.getMovies();
             this.movieDTOS = new HashSet<>();
