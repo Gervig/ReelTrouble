@@ -15,5 +15,7 @@
 | api/movies/random      | GET      | ✅          | Shows a random movie not liked by user    |
 
 ❌ = Not secured
+
 ✅ = User secured
+
 🔒 = Admin secured
