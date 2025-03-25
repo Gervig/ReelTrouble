@@ -28,8 +28,6 @@ public class Media
     private String title;
     @Column(columnDefinition = "TEXT") // sets the datatype to be TEXT in the database
     private String description;
-    @Column(name = "media_type")
-    private MediaType mediaType;
     @Column(name = "imdb_url")
     private String imdbUrl;
     @Column(name = "imdb_rating")
@@ -38,10 +36,6 @@ public class Media
     @Column(name = "release_date")
     private LocalDate releaseDate;
     private Time duration;
-    @Column(nullable = true)
-    private int episodes;
-    @Column(nullable = true)
-    private int seasons;
 
         // relations
     @ManyToMany(fetch = FetchType.EAGER)
