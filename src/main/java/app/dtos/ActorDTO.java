@@ -25,7 +25,7 @@ public class ActorDTO
     private String name;
     private Set<MovieDTO> movies;
 
-    // constructor
+    // constructors
     public ActorDTO(Actor actor)
     {
         this.actorApiId = actor.getActorApiId();
@@ -36,5 +36,11 @@ public class ActorDTO
             this.movies = new HashSet<>();
             movieEntities.forEach(movie -> this.movies.add(new MovieDTO(movie)));
         }
+    }
+
+    public ActorDTO(Long actorApiId, String name)
+    {
+        this.actorApiId = actorApiId;
+        this.name = name;
     }
 }
