@@ -1,0 +1,11 @@
+Endpoint		    Method		Secured		Description
+/auth/register		POST		No		    Create a new user
+/auth/login		    POST		No		    Auth. user, return JWT token
+/movies/recommend	GET		    Yes		    Show recom. based on users likes
+/movies/like/{id}	POST		Yes		    User likes a movie and pref. is stored
+/movies/history		GET		    Yes		    Shows a users liked movies
+/admin/movies/add	POST		Yes(admin)	Admins can add new movies to database
+
+
+Maybe one where it shows a random movie?
+/movies/random		GET		    Yes		    Shows a random movie not liked by user

@@ -2,6 +2,7 @@ package app.entities;
 
 import app.dtos.ActorDTO;
 import app.dtos.DirectorDTO;
+import app.dtos.GenreDTO;
 import app.dtos.MovieDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -68,6 +69,9 @@ public class Movie
     @ToString.Exclude
     private Set<Director> directors = new HashSet<>();
 
+    @Setter
+    @ManyToMany(mappedBy = "genres")
+    private Set<Genre> genres;
 
     // constructor
     public Movie(MovieDTO movieDTO)
@@ -93,5 +97,13 @@ public class Movie
             this.directors = new HashSet<>();
             directorDTOS.forEach(directorDTO -> this.directors.add(new Director(directorDTO)));
         }
+
+        if(movieDTO.getGenres() != null)
+        {
+            Set<GenreDTO> genreDTOS = movieDTO.getGenres();
+            this.genres = new HashSet<>();
+            genreDTOS.forEach(genreDTO -> this.genres.add(new Genre(genreDTO)));
+        }
+
     }
 }
