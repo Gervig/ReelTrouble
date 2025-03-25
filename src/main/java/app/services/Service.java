@@ -101,11 +101,15 @@ public class Service
     // Build the URI for a specific page
     public static String buildDiscoverUri(String page)
     {
-        String lowerEndDate = String.valueOf(LocalDate.now().minusYears(5));
+        String lowerEndDate = String.valueOf(LocalDate.now().minusYears(25));
         String upperEndDate = String.valueOf(LocalDate.now());
-        String uri = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=da&primary_release_date.gte=%%ld&primary_release_date.lte=%%ud&sort_by=popularity.desc&with_original_language=da&api_key=" + api_key + "&page=" + page;
+        String voteAverage = "2";
+        String minTotalVotes = "100";
+        String uri = "https://api.themoviedb.org/3/discover/movie?include_adult=false&with_original_language=en&include_video=false&sort_by=popularity.desc&vote_average.gte=%%va&vote_count.gte=%%mv&language=en-US&page=1&primary_release_date.gte=%%ld&primary_release_date.lte=%%ud&sort_by=popularity.desc&api_key=" + api_key + "&page=" + page;
         uri = uri.replace("%%ld", lowerEndDate);
         uri = uri.replace("%%ud", upperEndDate);
+        uri = uri.replace("%%va", voteAverage);
+        uri = uri.replace("%%mv", minTotalVotes);
         return uri;
     }
 
