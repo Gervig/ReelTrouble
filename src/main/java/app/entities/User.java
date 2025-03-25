@@ -35,11 +35,15 @@ public class User
     @Setter
     private LocalDateTime created;
 
-    @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "role_name", referencedColumnName = "name")})
+    @JoinTable(name = "user_roles",
+            joinColumns = {@JoinColumn(name = "id",
+                    referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_name",
+                    referencedColumnName = "name")})
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Role> roles = new HashSet<>();
 
-        // relations
+    // relations
     @ManyToMany(mappedBy = "users")
     private Set<Movie> likeList = new HashSet<>();
 
@@ -52,11 +56,13 @@ public class User
 
     public Set<String> getRolesAsStrings()
     {
-        if (roles.isEmpty()) {
+        if (roles.isEmpty())
+        {
             return null;
         }
         Set<String> rolesAsStrings = new HashSet<>();
-        roles.forEach((role) -> {
+        roles.forEach((role) ->
+        {
             rolesAsStrings.add(role.getRoleName());
         });
         return rolesAsStrings;

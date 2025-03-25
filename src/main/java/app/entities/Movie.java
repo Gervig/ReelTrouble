@@ -70,7 +70,12 @@ public class Movie
     private Set<Director> directors = new HashSet<>();
 
     @Setter
-    @ManyToMany(mappedBy = "genres")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "movie_genre",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
     private Set<Genre> genres;
 
     // constructor
