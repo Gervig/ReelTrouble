@@ -2,6 +2,7 @@ package app.dtos;
 
 import app.entities.Genre;
 import app.entities.Movie;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.HashSet;
@@ -13,14 +14,15 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 public class GenreDTO
-{
-    private Long id;
+{    // attributes
+    @JsonProperty("id")
+    private Long genreApiId;
     private String name;
     private Set<MovieDTO> movieDTOS;
 
     public GenreDTO(Genre genre)
     {
-        this.id = id;
+        this.genreApiId = genreApiId;
         this.name = name;
         if (genre.getMovie() != null)
         {
@@ -30,9 +32,9 @@ public class GenreDTO
         }
     }
 
-    public GenreDTO(Long id, String name)
+    public GenreDTO(Long genreApiId, String name)
     {
-        this.id = id;
+        this.genreApiId = genreApiId;
         this.name = name;
     }
 }

@@ -26,8 +26,8 @@ public class Movie
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "media_api_id")
-    private Long mediaApiID; // the ID from TMDB's API
+    @Column(name = "movie_api_id")
+    private Long movieApiID; // the ID from TMDB's API
     private String title;
     @Column(columnDefinition = "TEXT") // sets the datatype to be TEXT in the database
     private String description;
@@ -81,7 +81,7 @@ public class Movie
     // constructor
     public Movie(MovieDTO movieDTO)
     {
-        this.mediaApiID = movieDTO.getMovieApiId();
+        this.movieApiID = movieDTO.getMovieApiId();
         this.title = movieDTO.getTitle();
         this.description = movieDTO.getDescription();
         this.imdbUrl = movieDTO.getImdbUrl();

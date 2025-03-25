@@ -21,6 +21,10 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
+    @Column(name = "genre_api_id")
+    private Long genreApiId;
+
     @Column(name = "genre_name")
     private String name;
 
@@ -35,7 +39,7 @@ public class Genre {
 
     public Genre(GenreDTO genreDTO)
     {
-        this.id = genreDTO.getId();
+        this.id = genreDTO.getGenreApiId();
         this.name = genreDTO.getName();
         if(genreDTO.getMovieDTOS()!=null){
             Set<MovieDTO> movieDTOS = genreDTO.getMovieDTOS();

@@ -31,26 +31,29 @@ public class EntityService
         //TODO: Indtil videre tjekker den ikke om filmen allerede eksisterer
 
         // Hent eller opret director
-        Director director = null;
-        if (movieDTO.getDirectors() != null)
-        {
-            Director existingDirector = directorDAO.readByApiId(movieDTO.getDirectors().getDirectorApiId());
-            if (existingDirector != null)
-            {
-                existingDirector = directorDAO.update(existingDirector);
-                director = existingDirector;
-            } else if (movieDTO.getDirectors() != null && existingDirector == null)
-            {
-                director = Director.builder()
-                        .directorApiId(movieDTO.getDirectors().getDirectorApiId())
-                        .name(movieDTO.getDirectors().getName())
-                        .build();
-                director = directorDAO.create(director);
-            }
-        }
+        Set<Director> directors = movieDTO.getDirectors().stream()
+                .map(dto ->
+                {
+                    Director existingDirector = directorDAO.readByApiId(dto.getDirectorApiId());
+
+                    if (existingDirector != null)
+                    {
+                        existingDirector = directorDAO.update(existingDirector);
+                        return existingDirector;
+                    } else {
+                        Director director = Director.builder()
+                                .directorApiId(dto.getDirectorApiId())
+                                .name(dto.getName())
+                                .build();
+
+                        director = directorDAO.create(director);
+                        return director;
+                    }
+                })
+                .collect(Collectors.toSet());
 
         // Hent eller opret genrer
-        Set<Genre> genres = movieDTO.getGenreDTOs().stream()
+        Set<Genre> genres = movieDTO.getGenres().stream()
                 .map(dto ->
                 {
                     Genre exsistningGenre = genreDAO.readByApiId(dto.getGenreApiId());
@@ -62,7 +65,7 @@ public class EntityService
 
                     Genre genre = Genre.builder()
                             .genreApiId(dto.getGenreApiId())
-                            .name(dto.getGenre())
+                            .name(dto.getName())
                             .build();
                     genre = genreDAO.create(genre);
                     return genre;
@@ -70,7 +73,7 @@ public class EntityService
                 .collect(Collectors.toSet());
 
         // Hent eller opret skuespillere
-        Set<Actor> actors = movieDTO.getActorDTOS().stream()
+        Set<Actor> actors = movieDTO.getActors().stream()
                 .map(dto ->
                 {
                     Actor existingActor = actorDAO.readByApiId(dto.getActorApiId());
@@ -94,14 +97,13 @@ public class EntityService
         // Opret eller opdater film
         Movie movie = Movie.builder()
                 .title(movieDTO.getTitle())
-                .rating(movieDTO.getRating())
-                .director(director)
+                .imdbRating(movieDTO.getImdbRating())
+                .directors(directors)
                 .actors(actors)
                 .genres(genres)
-                .movieApiId(movieDTO.getMovieApiID())
+                .movieApiID(movieDTO.getMovieApiId())
                 .description(movieDTO.getDescription())
                 .releaseDate(movieDTO.getReleaseDate())
-
                 .build();
         return movieDAO.create(movie);
     }
