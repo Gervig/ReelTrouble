@@ -19,11 +19,13 @@ import java.util.Set;
 @JsonIgnoreProperties
 public class DirectorDTO
 {
+    // attributes
     @JsonProperty("id")
     private Long directorApiId;
     private String name;
     private Set<MovieDTO> movieDTOS;
 
+    // constructors
     public DirectorDTO(Director director){
         this.directorApiId = director.getDirectorApiId();
         this.name = director.getName();
@@ -33,5 +35,11 @@ public class DirectorDTO
             this.movieDTOS = new HashSet<>();
             movieEntities.forEach(movie -> this.movieDTOS.add(new MovieDTO(movie)));
         }
+    }
+
+    public DirectorDTO(Long directorApiId, String name)
+    {
+        this.directorApiId = directorApiId;
+        this.name = name;
     }
 }

@@ -202,7 +202,7 @@ public class Service
                     if ("Director".equals(crewMember.path("job").asText()))
                     {
                         director = new DirectorDTO(
-                                crewMember.path("id").asInt(),
+                                crewMember.path("id").asLong(),
                                 crewMember.path("name").asText()
                         );
                         break; // Assume one director per movie
