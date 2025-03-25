@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 public class Director
 {
-
+    // basic attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,6 +34,7 @@ public class Director
     @ManyToMany(mappedBy = "directors")
     private Set<Movie> movies;
 
+    // constructor
     public Director(DirectorDTO directorDTO)
     {
         this.directorApiId = directorDTO.getDirectorApiId();

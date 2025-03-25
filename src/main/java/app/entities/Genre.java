@@ -15,8 +15,9 @@ import java.util.Set;
 @Builder
 @ToString
 @Entity
-public class Genre {
-
+public class Genre
+{
+    // basic attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +29,7 @@ public class Genre {
     @Column(name = "genre_name")
     private String name;
 
+        // relations
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movie_genre",
@@ -37,6 +39,7 @@ public class Genre {
     @ToString.Exclude
     private Set<Movie> movie = new HashSet<>();
 
+    // constructor
     public Genre(GenreDTO genreDTO)
     {
         this.id = genreDTO.getGenreApiId();

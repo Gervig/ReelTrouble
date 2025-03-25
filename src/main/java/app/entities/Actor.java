@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 public class Actor
 {
-    // basic
+    // basic attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
