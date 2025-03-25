@@ -22,9 +22,9 @@ public class Main
 
         movieApiIds.forEach(System.out::println);
 
-//        List<MovieDTO> movieDTOS = DetailsServiceCallable.getMovieDTOs(movieApiIds);
-//
-//        movieDTOS.forEach(System.out::println);
+        List<MovieDTO> movieDTOS = DetailsServiceCallable.getMovieDTOs(movieApiIds);
+
+        movieDTOS.forEach(System.out::println);
 
 //        ApplicationConfig
 //                .getInstance()
