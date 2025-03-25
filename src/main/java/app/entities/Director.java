@@ -1,8 +1,12 @@
 package app.entities;
 
+import app.dtos.DirectorDTO;
+import app.dtos.MovieDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @DynamicUpdate
@@ -30,4 +34,14 @@ public class Director
     @OneToMany(mappedBy = "director", cascade = CascadeType.ALL)
     private Set<Movie> movies;
 
+    public Director(DirectorDTO directorDTO)
+    {
+        this.directorApiId = directorDTO.getDirectorApiId();
+        this.name = directorDTO.getName();
+        if(directorDTO.getMovieDTOS()!=null){
+            Set<MovieDTO> movieDTOS = directorDTO.getMovieDTOS();
+            this.movies = new HashSet<>();
+            movieDTOS.forEach(movieDTO -> this.movies.add(new Movie(movieDTO)));
+        }
+    }
 }
