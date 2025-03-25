@@ -1,14 +1,10 @@
 package app.rest;
 
 import app.controllers.impl.MediaController;
-import app.dtos.ErrorMessage;
-import app.dtos.MediaDTO;
 import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
