@@ -31,7 +31,7 @@ public class GenreDAO implements IDAO<Genre, Long>
         {
             em.getTransaction().begin();
             em.persist(genre);
-            em.getTransaction().commit();
+            em.getTransaction().commit(); //Lav if statement ofr hvis en genre eksistere (handle exeption) må gerne eksistere i forvejen, lav IKKE en ny instans a genren
             return genre;
         } catch (Exception e)
         {

@@ -14,6 +14,7 @@ import java.util.Set;
 public class MovieDAO implements IDAO<Movie, Long>
 {
     // attributes
+
     private static EntityManagerFactory emf;
     private static MovieDAO instance;
 
@@ -57,7 +58,7 @@ public class MovieDAO implements IDAO<Movie, Long>
             } catch (Exception e)
             {
                 em.getTransaction().rollback();
-                throw new ApiException(401, "Error creating movie " + movie.getMovieApiId(), e);
+                throw new ApiException(401, "Error creating movie " + movie.getMovieApiID(), e);
             }
         }
     }
@@ -89,7 +90,7 @@ public class MovieDAO implements IDAO<Movie, Long>
                             "SELECT m FROM Movie m " +
                                     "LEFT JOIN FETCH m.actors " +
                                     "LEFT JOIN FETCH m.genres " +
-                                    "LEFT JOIN FETCH m.director " +
+                                    "LEFT JOIN FETCH m.directors " +
                                     "WHERE LOWER(m.title) LIKE LOWER(:title)", Movie.class)
                     .setParameter("title", "%" + title + "%") // Wildcards før og efter
                     .getResultList();

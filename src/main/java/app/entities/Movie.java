@@ -28,6 +28,7 @@ public class Movie
     private Long id;
     @Column(name = "movie_api_id")
     private Long movieApiID; // the ID from TMDB's API
+    @Setter
     private String title;
     @Column(columnDefinition = "TEXT") // sets the datatype to be TEXT in the database
     private String description;
@@ -57,6 +58,7 @@ public class Movie
             inverseJoinColumns = @JoinColumn(name = "users_id")
     )
     @ToString.Exclude
+    @Setter
     private Set<Actor> actors = new HashSet<>();
 
     @Setter
