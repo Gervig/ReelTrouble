@@ -193,7 +193,7 @@ public class Service
             }
 
             // Extract directors from "credits" -> "crew" where "job" == "Director"
-            DirectorDTO director = null;
+            List<DirectorDTO> directors = new ArrayList<>();
             JsonNode crewNode = rootNode.path("credits").path("crew");
             if (crewNode.isArray())
             {
@@ -201,11 +201,10 @@ public class Service
                 {
                     if ("Director".equals(crewMember.path("job").asText()))
                     {
-                        director = new DirectorDTO(
+                        directors.add(new DirectorDTO(
                                 crewMember.path("id").asLong(),
                                 crewMember.path("name").asText()
-                        );
-                        break; // Assume one director per movie
+                        ));
                     }
                 }
             }
@@ -243,12 +242,12 @@ public class Service
             return MovieDTO.builder()
                     .title(rootNode.path("original_title").asText())
                     .description(rootNode.path("overview").asText())
-                    .rating(BigDecimal.valueOf(rootNode.path("vote_average").asDouble()))
+                    .imdbRating(BigDecimal.valueOf(rootNode.path("vote_average").asDouble()))
                     .releaseDate(releaseDate) // Use the safely parsed release date
-                    .movieApiID(rootNode.path("id").asInt())
+                    .movieApiId(rootNode.path("id").asLong())
                     .genreDTOs(genres)
                     .actorDTOS(actors)
-                    .directorDTO(director)
+                    .directorDTOS(directors)
                     .build();
         } catch (Exception e)
         {

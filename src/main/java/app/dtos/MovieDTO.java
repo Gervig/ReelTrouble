@@ -22,7 +22,7 @@ public class MovieDTO
 {
     // attributes
     private Long id;
-    private Long mediaApiId;
+    private Long movieApiId;
     private String title;
     private String description;
     private MediaType mediaType;
@@ -40,7 +40,7 @@ public class MovieDTO
     public MovieDTO(Movie movie)
     {
         this.id = movie.getId();
-        this.mediaApiId = movie.getMediaApiID();
+        this.movieApiId = movie.getMediaApiID();
         this.title = movie.getTitle();
         this.description = movie.getTitle();
         this.imdbUrl = movie.getImdbUrl();

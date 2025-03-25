@@ -72,7 +72,7 @@ public class Movie
     // constructor
     public Movie(MovieDTO movieDTO)
     {
-        this.mediaApiID = movieDTO.getMediaApiId();
+        this.mediaApiID = movieDTO.getMovieApiId();
         this.title = movieDTO.getTitle();
         this.description = movieDTO.getDescription();
         this.imdbUrl = movieDTO.getImdbUrl();
