@@ -22,7 +22,8 @@ public class Actor
     private Long actorApiId;
     private String name;
 
+        // relations
     @Setter
     @ManyToMany(mappedBy = "actors")
-    private Set<Media> movies;
+    private Set<Movie> movies;
 }

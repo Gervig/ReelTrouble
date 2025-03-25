@@ -1,6 +1,5 @@
 package app.entities;
 
-import app.enums.MediaType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.*;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Builder
 @ToString
 @Entity
-public class Media
+public class Movie
 {
     // basic attributes
     @Id

@@ -1,6 +1,6 @@
 package app.config;
 
-import app.entities.Media;
+import app.entities.Movie;
 import app.entities.User;
 import app.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
@@ -41,7 +41,7 @@ public class HibernateConfig {
 
     // TODO: IMPORTANT: Add Entity classes here for them to be registered with Hibernate
     private static void getAnnotationConfiguration(Configuration configuration) {
-        configuration.addAnnotatedClass(Media.class);
+        configuration.addAnnotatedClass(Movie.class);
         configuration.addAnnotatedClass(User.class);
 //             configuration.addAnnotatedClass();
     }

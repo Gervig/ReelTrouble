@@ -1,7 +1,6 @@
 package app.dtos;
 
-import app.entities.Media;
-import app.entities.Role;
+import app.entities.Movie;
 import app.entities.User;
 import app.enums.MediaType;
 import dk.bugelhartmann.UserDTO;
@@ -19,7 +18,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MediaDTO
+public class MovieDTO
 {
     private Long id;
     private Long mediaApiId;
@@ -34,7 +33,7 @@ public class MediaDTO
     private int seasons;
     private Set<UserDTO> users;
 
-    public MediaDTO(Media media)
+    public MovieDTO(Movie media)
     {
         this.id = media.getId();
         this.mediaApiId = media.getMediaApiID();
