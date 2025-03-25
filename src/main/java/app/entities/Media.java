@@ -52,4 +52,8 @@ public class Media
     )
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
+
+    @ManyToMany(mappedBy = "media", fetch = FetchType.LAZY)
+    private Set<Genre> genres = new HashSet<>();
+
 }
