@@ -102,7 +102,7 @@ public class SecurityController implements ISecurityController
                 ctx.status(200);
                 return;
             }
-            
+
             // If the endpoint is not protected with roles or is open to ANYONE role, then skip
             Set<String> allowedRoles = ctx.routeRoles().stream().map(role -> role.toString().toUpperCase()).collect(Collectors.toSet());
             if (isOpenEndpoint(allowedRoles))
