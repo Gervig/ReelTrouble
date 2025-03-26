@@ -28,7 +28,7 @@ public class DiscoverServiceCallable implements Callable<List<String>>
     public static List<String> getMovieApiIds(int totalPages)
     {
         List<Future<List<String>>> futureList = new ArrayList<>();
-        ExecutorService executorService = Executors.newFixedThreadPool(10); // increase for faster performance, beware of overload
+        ExecutorService executorService = Executors.newFixedThreadPool(20); // increase for faster performance, beware of overload
 
         for (int i = 1; i <= totalPages; i++)
         {
