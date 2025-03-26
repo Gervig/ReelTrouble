@@ -2,6 +2,7 @@ package app.daos.impl;
 
 import app.daos.IDAO;
 import app.entities.Genre;
+import app.entities.Movie;
 import app.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -45,6 +46,17 @@ public class GenreDAO implements IDAO<Genre, Long>
         try (EntityManager em = emf.createEntityManager())
         {
             return em.find(Genre.class, id);
+        }
+    }
+
+    public Genre readByName(String name)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            return em.createQuery(
+                            "SELECT g FROM Genre g WHERE LOWER(g.name) LIKE LOWER(:name)", Genre.class)
+                    .setParameter("name", "%" + name + "%")
+                    .getSingleResult();
         }
     }
 
