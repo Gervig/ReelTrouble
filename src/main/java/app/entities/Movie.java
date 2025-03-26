@@ -28,6 +28,7 @@ public class Movie
     private Long id;
     @Column(name = "movie_api_id")
     private Long movieApiId; // the ID from TMDB's API
+    @Setter
     private String title;
     @Column(columnDefinition = "TEXT") // sets the datatype to be TEXT in the database
     private String description;
