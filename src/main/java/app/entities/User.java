@@ -71,4 +71,37 @@ public class User
         return rolesAsStrings;
     }
 
+    public boolean verifyPassword(String pw)
+    {
+        return BCrypt.checkpw(pw, this.password);
+    }
+
+    public User(String userName, Set<Role> roleEntityList)
+    {
+        this.name = userName;
+        this.roles = roleEntityList;
+    }
+
+    public void addRole(Role role)
+    {
+        if (role == null)
+        {
+            return;
+        }
+        roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    public void removeRole(String userRole)
+    {
+        roles.stream()
+                .filter(role -> role.getRoleName().equals(userRole))
+                .findFirst()
+                .ifPresent(role ->
+                {
+                    roles.remove(role);
+                    role.getUsers().remove(this);
+                });
+    }
+
 }
