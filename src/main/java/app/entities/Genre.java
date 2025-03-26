@@ -29,15 +29,10 @@ public class Genre
     @Column(name = "genre_name")
     private String name;
 
-        // relations
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "movie_genre",
-            joinColumns = @JoinColumn(name = "genre_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id")
-    )
+    @ManyToMany(mappedBy = "genres")
+    @Setter
     @ToString.Exclude
-    private Set<Movie> movie = new HashSet<>();
+    private Set<Movie> movies = new HashSet<>();
 
     // constructor
     public Genre(GenreDTO genreDTO)
@@ -46,8 +41,8 @@ public class Genre
         this.name = genreDTO.getName();
         if(genreDTO.getMovieDTOS()!=null){
             Set<MovieDTO> movieDTOS = genreDTO.getMovieDTOS();
-            this.movie = new HashSet<>();
-            movieDTOS.forEach(movieDTO -> this.movie.add(new Movie(movieDTO)));
+            this.movies = new HashSet<>();
+            movieDTOS.forEach(movieDTO -> this.movies.add(new Movie(movieDTO)));
         }
     }
 }

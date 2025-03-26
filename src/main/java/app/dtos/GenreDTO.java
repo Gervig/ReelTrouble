@@ -24,9 +24,9 @@ public class GenreDTO
     {
         this.genreApiId = genreApiId;
         this.name = name;
-        if (genre.getMovie() != null)
+        if (genre.getMovies() != null)
         {
-            Set<Movie> movieEntities = genre.getMovie();
+            Set<Movie> movieEntities = genre.getMovies();
             this.movieDTOS = new HashSet<>();
             movieEntities.forEach(movie -> this.movieDTOS.add(new MovieDTO(movie)));
         }

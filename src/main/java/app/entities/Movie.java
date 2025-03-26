@@ -52,7 +52,7 @@ public class Movie
     @JoinTable(
             name = "movie_actor",
             joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "users_id")
+            inverseJoinColumns = @JoinColumn(name = "actor_id")
     )
     @ToString.Exclude
     @Setter

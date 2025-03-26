@@ -6,6 +6,7 @@ import app.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
@@ -30,6 +31,15 @@ public class GenreDAO implements IDAO<Genre, Long>
         try (EntityManager em = emf.createEntityManager())
         {
             em.getTransaction().begin();
+
+            TypedQuery<Genre> query = em.createQuery("SELECT g FROM Genre g WHERE g.name =: name", Genre.class);
+            query.setParameter("name",genre.getName());
+
+            List<Genre>existingGenres = query.getResultList();
+
+            if(!existingGenres.isEmpty())
+                return existingGenres.get(0);
+
             em.persist(genre);
             em.getTransaction().commit();
             return genre;
