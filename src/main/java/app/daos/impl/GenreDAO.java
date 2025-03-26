@@ -49,17 +49,6 @@ public class GenreDAO implements IDAO<Genre, Long>
         }
     }
 
-    public Genre readByName(String name)
-    {
-        try (EntityManager em = emf.createEntityManager())
-        {
-            return em.createQuery(
-                            "SELECT g FROM Genre g WHERE LOWER(g.name) LIKE LOWER(:name)", Genre.class)
-                    .setParameter("name", "%" + name + "%")
-                    .getSingleResult();
-        }
-    }
-
     @Override
     public List<Genre> readAll()
     {
