@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class MovieController implements IController<MovieDTO, Long>
 {
@@ -65,5 +66,15 @@ public class MovieController implements IController<MovieDTO, Long>
 
         MovieDTO movieDTO = new MovieDTO(movie);
         return movieDTO;
+    }
+
+    public List<MovieDTO> getAllMoviesOnUsersList(Long userID)
+    {
+        List<Movie> movies = movieDAO.findMovieInclUsersList(userID);
+
+        List<MovieDTO> movieDTOS = movies.stream()
+                .map(movie -> new MovieDTO(movie))
+                .collect(Collectors.toList());
+        return movieDTOS;
     }
 }
