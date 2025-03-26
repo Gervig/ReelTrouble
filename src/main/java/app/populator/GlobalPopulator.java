@@ -24,7 +24,7 @@ public class GlobalPopulator {
         // Create Movies and Assign Directors & Genres
         Movie m1 = Movie.builder()
                 .title("Movie1")
-                .movieApiID(678L)
+                .movieApiId(678L)
                 .releaseDate(LocalDate.now())
                 .directors(new HashSet<>(Set.of(d1)))
                 .genres(new HashSet<>(Set.of(g1, g2)))
@@ -32,7 +32,7 @@ public class GlobalPopulator {
 
         Movie m2 = Movie.builder()
                 .title("Movie2")
-                .movieApiID(456L)
+                .movieApiId(456L)
                 .releaseDate(LocalDate.now().minusYears(3))
                 .directors(new HashSet<>(Set.of(d1, d2)))
                 .genres(new HashSet<>(Set.of(g2, g3)))
@@ -40,7 +40,7 @@ public class GlobalPopulator {
 
         Movie m3 = Movie.builder()
                 .title("Movie3")
-                .movieApiID(789L)
+                .movieApiId(789L)
                 .releaseDate(LocalDate.now().minusYears(1))
                 .directors(new HashSet<>(Set.of(d2)))
                 .genres(new HashSet<>(Set.of(g1, g3)))

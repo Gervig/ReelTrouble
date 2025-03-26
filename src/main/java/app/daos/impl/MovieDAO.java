@@ -58,7 +58,7 @@ public class MovieDAO implements IDAO<Movie, Long>
             } catch (Exception e)
             {
                 em.getTransaction().rollback();
-                throw new ApiException(401, "Error creating movie " + movie.getMovieApiID(), e);
+                throw new ApiException(401, "Error creating movie " + movie.getMovieApiId(), e);
             }
         }
     }
