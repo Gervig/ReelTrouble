@@ -117,6 +117,22 @@ public class MovieDAO implements IDAO<Movie, Long>
         }
     }
 
+    public List<Movie> findMovieInclUsersList(Long userId) {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Movie> movies = em.createQuery(
+                            "SELECT m FROM Movie m " +
+                                    "WHERE m IN (SELECT mu FROM User u JOIN u.likeList mu WHERE u.id = :userId)",
+                            Movie.class)
+                    .setParameter("userId", userId)
+                    .getResultList();
+
+            if (movies.isEmpty()) {
+                throw new ApiException(404, "No available movies found for user with id: " + userId);
+            }
+            return movies;
+        }
+    }
+
     public List<Movie> readWithDetailsByTitle(String title) {
         try (EntityManager em = emf.createEntityManager()) {
             return em.createQuery(
