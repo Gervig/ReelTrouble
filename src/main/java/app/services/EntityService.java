@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 public class EntityService
 {
+    private final UserDAO userDAO;
     private static EntityManagerFactory emf;
 
     @Transactional
@@ -107,4 +108,7 @@ public class EntityService
                 .build();
         return movieDAO.create(movie);
     }
+
+    public UserService(UserDAO userDAO)
+
 }

@@ -26,6 +26,7 @@ public class Genre
     @Column(name = "genre_api_id")
     private Long genreApiId;
 
+    @Setter
     @Column(name = "genre_name")
     private String name;
 

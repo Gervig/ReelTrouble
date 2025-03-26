@@ -1,6 +1,6 @@
 package app.rest;
 
-import app.controllers.impl.MediaController;
+import app.controllers.impl.MovieController;
 import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
@@ -11,12 +11,12 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class Routes
 {
-    private static MediaController mediaController;
+    private static MovieController movieController;
     private static Logger logger = LoggerFactory.getLogger(Routes.class);
 
     public static EndpointGroup getRoutes(EntityManagerFactory emf)
     {
-        mediaController = new MediaController(emf);
+        movieController = new MovieController(emf);
         return () ->
         {
             path("streamfinder", () ->

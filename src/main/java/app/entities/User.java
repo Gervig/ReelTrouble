@@ -29,7 +29,9 @@ public class User
     private Long id;
     @Basic(optional = false)
     @Column(length = 25)
+    @Setter
     private String name;
+    @Setter
     @Basic(optional = false)
     private String password;
     @Setter
@@ -41,6 +43,7 @@ public class User
             inverseJoinColumns = {@JoinColumn(name = "role_name",
                     referencedColumnName = "name")})
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Setter
     private Set<Role> roles = new HashSet<>();
 
     // relations
