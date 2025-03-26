@@ -54,7 +54,6 @@ import static org.junit.jupiter.api.Assertions.*;
                 Arrays.stream(data.actors).forEach(em::persist);
                 em.flush(); // ensures that the other entities are persisted first
                 Arrays.stream(data.movies).forEach(em::persist);
-
                 em.getTransaction().commit();
             } catch (Exception e)
             {
@@ -87,16 +86,36 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     void read()
     {
-        Long expected = movies[0].getId();
-        Movie m1 = movieDAO.read(movies[0].getId());
+        Movie m1 = Movie.builder()
+                .directors(new HashSet<>(Set.of(directors[0])))
+                .actors(new HashSet<>(Set.of(actors[0])))
+                .genres(new HashSet<>(Set.of(genres[2])))
+                .build();
+        m1 = movieDAO.create(m1);
 
-        assertEquals(expected, m1.getId(), "Movies have different IDs");
+        Movie m2 = movieDAO.read(m1.getId());
+
+        assertEquals(m2.getId(), m1.getId(), "Movies have different IDs");
     }
 
     @Test
     void readAll()
     {
-        List<Movie> expectedList = List.of(movies);
+        Movie m1 = Movie.builder()
+                .directors(new HashSet<>(Set.of(directors[0])))
+                .actors(new HashSet<>(Set.of(actors[0])))
+                .genres(new HashSet<>(Set.of(genres[2])))
+                .build();
+        Movie m2 = Movie.builder()
+                .directors(new HashSet<>(Set.of(directors[1])))
+                .actors(new HashSet<>(Set.of(actors[1])))
+                .genres(new HashSet<>(Set.of(genres[1])))
+                .build();
+        
+        List<Movie> expectedList = List.of(m1, m2);
+
+        expectedList.forEach(movieDAO::create);
+
         List<Movie> actualList = movieDAO.readAll();
 
         assertEquals(expectedList.size(), actualList.size(), "Lists have different sizes");
