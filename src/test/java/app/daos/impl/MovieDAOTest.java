@@ -111,7 +111,7 @@ import static org.junit.jupiter.api.Assertions.*;
                 .actors(new HashSet<>(Set.of(actors[1])))
                 .genres(new HashSet<>(Set.of(genres[1])))
                 .build();
-        
+
         List<Movie> expectedList = List.of(m1, m2);
 
         expectedList.forEach(movieDAO::create);
@@ -138,7 +138,11 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     void readWithDetails()
     {
-        Movie m1 = movies[0];
+        Movie m1 = Movie.builder()
+                .directors(new HashSet<>(Set.of(directors[0])))
+                .actors(new HashSet<>(Set.of(actors[0])))
+                .genres(new HashSet<>(Set.of(genres[2])))
+                .build();
         Movie m1Test = movieDAO.readWithDetails(m1.getId());
 
         Actor[] m1Actors = m1.getActors().toArray(new Actor[0]);
