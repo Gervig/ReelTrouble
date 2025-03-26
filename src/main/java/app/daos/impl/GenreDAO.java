@@ -2,6 +2,7 @@ package app.daos.impl;
 
 import app.daos.IDAO;
 import app.entities.Genre;
+import app.entities.Movie;
 import app.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

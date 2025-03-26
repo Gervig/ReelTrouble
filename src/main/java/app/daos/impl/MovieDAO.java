@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class MovieDAO implements IDAO<Movie, Long>
@@ -81,6 +82,38 @@ public class MovieDAO implements IDAO<Movie, Long>
         } catch (Exception e)
         {
             throw new ApiException(401, "Error finding list of movies", e);
+        }
+    }
+
+    public List<Movie> findMoviesByGenre(String genre) {
+        try (EntityManager em = emf.createEntityManager()) {
+            return em.createQuery(
+                            "SELECT m FROM Movie m " +
+                                    "JOIN m.genres g " +
+                                    "WHERE LOWER(g.name) = LOWER(:genre)", Movie.class)
+                    .setParameter("genre", genre)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new ApiException(401, "Error finding movies with genre: " + genre, e);
+        }
+    }
+
+    public List<Movie> findMovieExclUsersList(String genre, Long userId) {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Movie> movies = em.createQuery(
+                            "SELECT m FROM Movie m " +
+                                    "JOIN m.genres g " +
+                                    "WHERE LOWER(g.name) = LOWER(:genre) " +
+                                    "AND m NOT IN (SELECT mu FROM User u JOIN u.likeList mu WHERE u.id = :userId)",
+                            Movie.class)
+                    .setParameter("genre", genre)
+                    .setParameter("userId", userId)
+                    .getResultList();
+
+            if (movies.isEmpty()) {
+                throw new ApiException(404, "No available movies found for genre: " + genre);
+            }
+            return movies;
         }
     }
 
