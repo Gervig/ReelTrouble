@@ -74,7 +74,7 @@ class MovieDAOTest
     {
         Movie m1 = Movie.builder()
                 .directors(new HashSet<>(Set.of(directors[0])))
-                .actors(new HashSet<>(Set.of(actors[1])))
+                .actors(new HashSet<>(Set.of(actors[0])))
                 .genres(new HashSet<>(Set.of(genres[2])))
                 .build();
 

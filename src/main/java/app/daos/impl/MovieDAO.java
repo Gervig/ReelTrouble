@@ -36,6 +36,8 @@ public class MovieDAO implements IDAO<Movie, Long>
             {
                 em.getTransaction().begin();
 
+
+
                 // Sikrer unikke skuespillere ved at hente dem fra databasen, hvis de findes
                 Set<Actor> uniqueActors = new HashSet<>();
                 for (Actor actor : movie.getActors())

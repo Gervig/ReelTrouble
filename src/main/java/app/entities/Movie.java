@@ -51,11 +51,11 @@ public class Movie
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "movie_actor",
             joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "users_id")
+            inverseJoinColumns = @JoinColumn(name = "actor_id")
     )
     @ToString.Exclude
     @Setter
