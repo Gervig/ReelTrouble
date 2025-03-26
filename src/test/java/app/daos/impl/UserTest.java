@@ -53,29 +53,29 @@ public class LoginTest {
     @Test
     void testSuccessfulLogin() {
         // Mock UserService to return our testUser
-        when(userService.authenticate("testUser", "securePassword")).thenReturn(testUser);
+        when(userService.authenticate(1L, "securePassword")).thenReturn(testUser);
 
-        User loggedInUser = userService.authenticate("testUser", "securePassword");
+        User loggedInUser = userService.authenticate(1L, "securePassword");
 
         assertNotNull(loggedInUser, "User should be authenticated");
-        assertEquals("testUser", loggedInUser.getName(), "Usernames should match");
+        assertEquals(1L, loggedInUser.getName(), "Usernames should match");
         assertEquals("ADMIN", loggedInUser.getRoles(), "User should have ADMIN role");
     }
 
     @Test
     void testFailedLogin_WrongPassword() {
-        when(userService.authenticate("testUser", "wrongPassword")).thenReturn(null);
+        when(userService.authenticate(1L, "wrongPassword")).thenReturn(null);
 
-        User loggedInUser = userService.authenticate("testUser", "wrongPassword");
+        User loggedInUser = userService.authenticate(1L, "wrongPassword");
 
         assertNull(loggedInUser, "User authentication should fail with wrong password");
     }
 
     @Test
     void testFailedLogin_NonExistentUser() {
-        when(userService.authenticate("fakeUser", "anyPassword")).thenReturn(null);
+        when(userService.authenticate(2L, "anyPassword")).thenReturn(null);
 
-        User loggedInUser = userService.authenticate("fakeUser", "anyPassword");
+        User loggedInUser = userService.authenticate(2L, "anyPassword");
 
         assertNull(loggedInUser, "Authentication should fail for non-existent users");
     }

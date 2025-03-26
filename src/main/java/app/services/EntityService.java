@@ -4,14 +4,13 @@ import app.daos.impl.ActorDAO;
 import app.daos.impl.DirectorDAO;
 import app.daos.impl.GenreDAO;
 import app.daos.impl.MovieDAO;
+import app.daos.impl.UserDAO;
 import app.dtos.DirectorDTO;
 import app.dtos.MovieDTO;
-import app.entities.Actor;
-import app.entities.Director;
-import app.entities.Genre;
-import app.entities.Movie;
+import app.entities.*;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.transaction.Transactional;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -109,6 +108,23 @@ public class EntityService
         return movieDAO.create(movie);
     }
 
-    public UserService(UserDAO userDAO)
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    public User authenticate(Long id, String password){
+        User user = userDAO.findById(id);
+
+        if(user == null){
+            return null;
+        }
+
+        if(BCrypt.checkpw(password, user.getPassword())){
+            return user;
+        } else {
+            return null;
+        }
+
+    }
 
 }
