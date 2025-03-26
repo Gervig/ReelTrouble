@@ -50,8 +50,8 @@ public class ApplicationConfig
 
     public ApplicationConfig securityCheck()
     {
-        app.before(securityController.authenticate());
-        app.before(securityController.authorize());
+        app.beforeMatched(securityController.authenticate());
+        app.beforeMatched(securityController.authorize());
         return applicationConfig;
     }
 
