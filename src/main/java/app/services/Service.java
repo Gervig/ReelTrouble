@@ -101,7 +101,7 @@ public class Service
     // Build the URI for a specific page
     public static String buildDiscoverUri(String page)
     {
-        String lowerEndDate = String.valueOf(LocalDate.now().minusYears(25));
+        String lowerEndDate = String.valueOf(LocalDate.now().minusYears(1));
         String upperEndDate = String.valueOf(LocalDate.now());
         String voteAverage = "2";
         String minTotalVotes = "100";
