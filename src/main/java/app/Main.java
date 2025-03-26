@@ -37,10 +37,6 @@ public class Main
 
         System.out.println("Total amount of MovieDTOs created: " + movieDTOS.size());
 
-        MovieDTO test = MovieDTO.builder()
-                .directors(null)
-                .build();
-
         movieDTOS.forEach(System.out::println);
 
         movieDTOS.forEach(EntityService::persistMovie);
