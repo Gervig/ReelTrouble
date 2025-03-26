@@ -1,5 +1,5 @@
 # ReelTrouble
- A REST API that suggests movies based on user preferences.
+A REST API that suggests movies based on user preferences.
 
 
 # Endpoint Table
