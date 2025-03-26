@@ -28,12 +28,7 @@ public class Genre {
     @Column(name = "genre_name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "movie_genre",
-            joinColumns = @JoinColumn(name = "genre_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id")
-    )
+    @ManyToMany(mappedBy = "genres")
     @Setter
     @ToString.Exclude
     private Set<Movie> movies = new HashSet<>();
