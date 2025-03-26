@@ -1,5 +1,7 @@
 package app.rest;
 
+import app.controllers.securityController.ISecurityController;
+import app.controllers.securityController.SecurityController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;
@@ -11,6 +13,7 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 public class ApplicationConfig
 {
     private static ApplicationConfig applicationConfig;
+    private ISecurityController securityController = new SecurityController();
     private static Javalin app;
     private static JavalinConfig javalinConfig;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -42,6 +45,13 @@ public class ApplicationConfig
             config.bundledPlugins.enableRouteOverview("/routes");
             config.bundledPlugins.enableDevLogging();
         });
+        return applicationConfig;
+    }
+
+    public ApplicationConfig securityCheck()
+    {
+        app.before(securityController.authenticate());
+        app.before(securityController.authorize());
         return applicationConfig;
     }
 
