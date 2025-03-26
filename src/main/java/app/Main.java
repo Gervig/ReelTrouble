@@ -5,6 +5,7 @@ import app.config.HibernateConfig;
 import app.dtos.MovieDTO;
 import app.rest.ApplicationConfig;
 import app.rest.Routes;
+import app.services.EntityService;
 import app.services.Service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -24,7 +25,11 @@ public class Main
 
         List<MovieDTO> movieDTOS = DetailsServiceCallable.getMovieDTOs(movieApiIds);
 
-        movieDTOS.forEach(System.out::println);
+        System.out.println("Total amount of MovieDTOs created: " + movieDTOS.size());
+
+//        movieDTOS.forEach(System.out::println);
+
+        movieDTOS.forEach(EntityService::persistMovie);
 
 //        ApplicationConfig
 //                .getInstance()
