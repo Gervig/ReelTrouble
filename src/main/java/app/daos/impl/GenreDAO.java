@@ -10,6 +10,9 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class GenreDAO implements IDAO<Genre, Long>
 {
@@ -133,5 +136,15 @@ public class GenreDAO implements IDAO<Genre, Long>
             throw new ApiException(401, "Error removing genre", e);
         }
     }
+
+    public Map<Long, Genre> getGenreMap() {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Genre> genres = em.createQuery("SELECT g FROM Genre g", Genre.class).getResultList();
+            return genres.stream().collect(Collectors.toMap(Genre::getGenreApiId, Function.identity()));
+        } catch (Exception e) {
+            throw new ApiException(401, "Error finding list of genres", e);
+        }
+    }
+
 }
 

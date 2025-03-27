@@ -52,7 +52,6 @@ public class ActorDTO
         }
     }
 
-
     public ActorDTO(Long actorApiId, String name)
     {
         this.actorApiId = actorApiId;

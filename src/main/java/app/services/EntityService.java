@@ -12,7 +12,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.transaction.Transactional;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EntityService
@@ -20,6 +20,32 @@ public class EntityService
     private static EntityManagerFactory emf;
 
     //TODO rewrite methdod to work on a list of MovieDTO for DB optimization
+
+    public static List<Movie> persistMovies(List<MovieDTO> movieDTOS)
+    {
+        MovieDAO movieDAO = MovieDAO.getInstance(emf);
+        GenreDAO genreDAO = GenreDAO.getInstance(emf);
+        ActorDAO actorDAO = ActorDAO.getInstance(emf);
+        DirectorDAO directorDAO = DirectorDAO.getInstance(emf);
+
+        Map<Long, Actor> actorMap = actorDAO.getActorMap();
+        Map<Long, Director> directorMap = directorDAO.getDirectorMap();
+        Map<Long, Genre> genreMap = genreDAO.getGenreMap();
+        Map<Long, Movie> movieMap = movieDAO.getMovieMap();
+
+        List<Actor> actors = new ArrayList<>();
+        List<Director> directors = new ArrayList<>();
+        List<Genre> genres = new ArrayList<>();
+        List<Movie> movies = new ArrayList<>();
+
+        actors.forEach(actorDAO::create);
+        directors.forEach(directorDAO::create);
+        genres.forEach(genreDAO::create);
+        movies.forEach(movieDAO::create);
+
+        return null;
+    }
+
     @Transactional
     public static Movie persistMovie(MovieDTO movieDTO)
     {

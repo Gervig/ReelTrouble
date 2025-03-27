@@ -8,6 +8,9 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ActorDAO implements IDAO<Actor, Long>
 {
@@ -23,7 +26,6 @@ public class ActorDAO implements IDAO<Actor, Long>
         }
         return instance;
     }
-
 
     @Override
     public Actor create(Actor actor)
@@ -107,4 +109,15 @@ public class ActorDAO implements IDAO<Actor, Long>
             throw new ApiException(401, "Error removing actor", e);
         }
     }
+
+    public Map<Long, Actor> getActorMap() {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Actor> actors = em.createQuery("SELECT a FROM Actor a", Actor.class).getResultList();
+            return actors.stream().collect(Collectors.toMap(Actor::getActorApiId, Function.identity()));
+        } catch (Exception e) {
+            throw new ApiException(401, "Error finding list of actors", e);
+        }
+    }
+
+
 }

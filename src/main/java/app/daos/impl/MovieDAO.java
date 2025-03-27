@@ -2,6 +2,7 @@ package app.daos.impl;
 
 import app.daos.IDAO;
 import app.entities.Actor;
+import app.entities.Director;
 import app.entities.Movie;
 import app.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
@@ -9,7 +10,10 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class MovieDAO implements IDAO<Movie, Long>
 {
@@ -221,6 +225,15 @@ public class MovieDAO implements IDAO<Movie, Long>
         } catch (Exception e)
         {
             throw new ApiException(401, "Error removing movie", e);
+        }
+    }
+
+    public Map<Long, Movie> getMovieMap() {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Movie> movies = em.createQuery("SELECT m FROM Movie m", Movie.class).getResultList();
+            return movies.stream().collect(Collectors.toMap(Movie::getMovieApiId, Function.identity()));
+        } catch (Exception e) {
+            throw new ApiException(401, "Error finding list of movies", e);
         }
     }
 }

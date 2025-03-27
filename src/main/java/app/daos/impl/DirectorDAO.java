@@ -1,6 +1,7 @@
 package app.daos.impl;
 
 import app.daos.IDAO;
+import app.entities.Actor;
 import app.entities.Director;
 import app.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
@@ -8,6 +9,9 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class DirectorDAO implements IDAO<Director, Long>
 {
@@ -105,6 +109,15 @@ public class DirectorDAO implements IDAO<Director, Long>
         } catch (Exception e)
         {
             throw new ApiException(401, "Error removing director", e);
+        }
+    }
+
+    public Map<Long, Director> getDirectorMap() {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Director> directors = em.createQuery("SELECT d FROM Director d", Director.class).getResultList();
+            return directors.stream().collect(Collectors.toMap(Director::getDirectorApiId, Function.identity()));
+        } catch (Exception e) {
+            throw new ApiException(401, "Error finding list of directors", e);
         }
     }
 }
