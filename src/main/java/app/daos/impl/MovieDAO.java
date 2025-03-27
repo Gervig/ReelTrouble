@@ -9,7 +9,6 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 public class MovieDAO implements IDAO<Movie, Long>
@@ -28,6 +27,7 @@ public class MovieDAO implements IDAO<Movie, Long>
         }
         return instance;
     }
+
     @Override
     public Movie create(Movie movie)
     {
@@ -85,21 +85,27 @@ public class MovieDAO implements IDAO<Movie, Long>
         }
     }
 
-    public List<Movie> findMoviesByGenre(String genre) {
-        try (EntityManager em = emf.createEntityManager()) {
+    public List<Movie> findMoviesByGenre(String genre)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
             return em.createQuery(
                             "SELECT m FROM Movie m " +
                                     "JOIN m.genres g " +
-                                    "WHERE LOWER(g.name) = LOWER(:genre)", Movie.class)
+                                    "WHERE LOWER(REPLACE(g.name, '-', ' ')) = LOWER(REPLACE(:genre, '-', ' '))",
+                            Movie.class)
                     .setParameter("genre", genre)
                     .getResultList();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ApiException(401, "Error finding movies with genre: " + genre, e);
         }
     }
 
-    public List<Movie> findMovieExclUsersList(String genre, Long userId) {
-        try (EntityManager em = emf.createEntityManager()) {
+    public List<Movie> findMovieExclUsersListWithGenre(String genre, Long userId)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
             List<Movie> movies = em.createQuery(
                             "SELECT m FROM Movie m " +
                                     "JOIN m.genres g " +
@@ -110,15 +116,37 @@ public class MovieDAO implements IDAO<Movie, Long>
                     .setParameter("userId", userId)
                     .getResultList();
 
-            if (movies.isEmpty()) {
+            if (movies.isEmpty())
+            {
                 throw new ApiException(404, "No available movies found for genre: " + genre);
             }
             return movies;
         }
     }
 
-    public List<Movie> findMovieInclUsersList(Long userId) {
-        try (EntityManager em = emf.createEntityManager()) {
+    public List<Movie> findMoviesExclUsersList(Long userId)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            List<Movie> movies = em.createQuery(
+                            "SELECT m FROM Movie m WHERE m NOT IN " +
+                                    "(SELECT m2 FROM User u JOIN u.likeList m2 WHERE u.id = :userId)",
+                            Movie.class)
+                    .setParameter("userId", userId)
+                    .getResultList();
+            if (movies.isEmpty())
+            {
+                throw new ApiException(404, "No available movies found not already on list");
+            }
+            return movies;
+        }
+    }
+
+
+    public List<Movie> findMovieInclUsersList(Long userId)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
             List<Movie> movies = em.createQuery(
                             "SELECT m FROM Movie m " +
                                     "WHERE m IN (SELECT mu FROM User u JOIN u.likeList mu WHERE u.id = :userId)",
@@ -126,22 +154,25 @@ public class MovieDAO implements IDAO<Movie, Long>
                     .setParameter("userId", userId)
                     .getResultList();
 
-            if (movies.isEmpty()) {
+            if (movies.isEmpty())
+            {
                 throw new ApiException(404, "No available movies found for user with id: " + userId);
             }
             return movies;
         }
     }
 
-    public List<Movie> readWithDetailsByTitle(String title) {
-        try (EntityManager em = emf.createEntityManager()) {
+    public List<Movie> readWithDetailsByTitle(String title)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
             return em.createQuery(
                             "SELECT m FROM Movie m " +
                                     "LEFT JOIN FETCH m.actors " +
                                     "LEFT JOIN FETCH m.genres " +
                                     "LEFT JOIN FETCH m.directors " +
                                     "WHERE LOWER(m.title) LIKE LOWER(:title)", Movie.class)
-                    .setParameter("title", "%" + title + "%") // Wildcards før og efter
+                    .setParameter("title", "%" + title + "%")
                     .getResultList();
         }
     }

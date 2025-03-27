@@ -3,7 +3,6 @@ package app.controllers.impl;
 import app.controllers.IController;
 import app.daos.impl.MovieDAO;
 import app.dtos.MovieDTO;
-import app.entities.Genre;
 import app.entities.Movie;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -59,9 +58,9 @@ public class MovieController implements IController<MovieDTO, Long>
         return movieDTO;
     }
 
-    public MovieDTO getRandomMovieExclUsersList(String genre, Long userID)
+    public MovieDTO getRandomMovieExclUsersListWithGenre(String genre, Long userID)
     {
-        List<Movie> movies = movieDAO.findMovieExclUsersList(genre, userID);
+        List<Movie> movies = movieDAO.findMovieExclUsersListWithGenre(genre, userID);
         Movie movie = movies.get(new Random().nextInt(movies.size()));
 
         MovieDTO movieDTO = new MovieDTO(movie);
@@ -86,4 +85,24 @@ public class MovieController implements IController<MovieDTO, Long>
 
         return movieDTO;
     }
+
+    //Get all movies in a specific genre
+    public List<MovieDTO> getMoviesInGenre(String genre){
+        List<Movie> movies = movieDAO.findMoviesByGenre(genre);
+
+        List<MovieDTO> movieDTOS = movies.stream()
+                .map(movie -> new MovieDTO(movie))
+                .collect(Collectors.toList());
+        return movieDTOS;
+    }
+
+    //Get movies that are not on the users likedList
+    public MovieDTO getRandomMovieExclUsersList(Long userID)
+    {
+        List<Movie> movies = movieDAO.findMoviesExclUsersList(userID);
+        Movie movie = movies.get(new Random().nextInt(movies.size()));
+        MovieDTO movieDTO = new MovieDTO(movie);
+        return movieDTO;
+    }
+
 }

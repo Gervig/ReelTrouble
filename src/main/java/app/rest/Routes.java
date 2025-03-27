@@ -4,25 +4,13 @@ import app.controllers.impl.MovieController;
 import app.controllers.impl.UserController;
 import app.controllers.securityController.ISecurityController;
 import app.controllers.securityController.SecurityController;
-import app.dtos.ActorDTO;
-import app.dtos.DirectorDTO;
-import app.dtos.GenreDTO;
 import app.dtos.MovieDTO;
 import app.enums.Role;
-import com.fasterxml.jackson.core.io.BigDecimalParser;
 import io.javalin.apibuilder.EndpointGroup;
-import io.javalin.security.RouteRole;
-import jakarta.persistence.Column;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
-import java.sql.Time;
-import java.time.LocalDate;
 import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -51,7 +39,8 @@ public class Routes
             //Admins can add new movies to the DB
             path("/admin", () ->
             {
-                post("/movies/add", ctx -> {
+                post("/movies/add", ctx ->
+                {
                     MovieDTO movie = ctx.bodyAsClass(MovieDTO.class);
                     MovieDTO created = movieController.addNewMovieToDB(movie);
                     ctx.json(created);
@@ -60,12 +49,32 @@ public class Routes
 
             path("movies", () ->
             {
+                //Shows all movies
+                get("/", ctx ->
+                {
+                    List<MovieDTO> movies = movieController.getAll();
+                    ctx.json(movies);
+                }, Role.ANYONE);
+                //Show 1 movie with a given id
+                get("/{id}", ctx ->
+                {
+                    Long movieId = Long.parseLong(ctx.pathParam("id"));
+                    MovieDTO movieDTO = movieController.getById(movieId);
+                    ctx.json(movieDTO);
+                }, Role.ANYONE);
+                //All movies in a genre
+                get("/{genre}", ctx ->
+                {
+                    String genre = ctx.pathParam("genre");
+                    List<MovieDTO> movies = movieController.getMoviesInGenre("genre");
+                    ctx.json(movies);
+                }, Role.ANYONE);
                 //Movie in genre not on users list
                 get("/recommend", ctx ->
                 {
                     String genre = ctx.queryParam("genre");
                     Long userId = Long.parseLong(ctx.queryParam("userId"));
-                    MovieDTO movie = movieController.getRandomMovieExclUsersList(genre, userId);
+                    MovieDTO movie = movieController.getRandomMovieExclUsersListWithGenre(genre, userId);
                     ctx.json(movie);
                 }, Role.USER);
                 //Users list
@@ -76,7 +85,6 @@ public class Routes
                     ctx.json(movies);
                 }, Role.USER);
                 //Gets a random movie based on nothing
-                // TODO: not correct right now, as it is secured, i think
                 get("/random-movie", ctx ->
                 {
                     String genre = ctx.queryParam("genre");
@@ -92,6 +100,12 @@ public class Routes
                     MovieDTO movie = userController.postMovieToUsersList(movieId, userId);
                     ctx.json(movie).status(201);
                 }, Role.USER);
+                //Show 1 random movie not liked by the user
+                get("/random", ctx -> {
+                    Long userId = Long.parseLong(ctx.queryParam("userId"));
+                    MovieDTO movie = movieController.getRandomMovieExclUsersList(userId);
+                    ctx.json(movie);
+                }, Role.ANYONE);
             });
         };
     }
