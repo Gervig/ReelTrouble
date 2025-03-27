@@ -7,6 +7,7 @@ import app.populator.PopulatedData;
 import app.populator.UserPopulator;
 import app.rest.ApplicationConfig;
 import app.rest.Routes;
+import dk.bugelhartmann.UserDTO;
 import groovy.xml.StreamingDOMBuilder;
 import io.restassured.RestAssured;
 import jakarta.persistence.EntityManager;
@@ -18,8 +19,10 @@ import org.junit.jupiter.api.Test;
 import org.mindrot.jbcrypt.BCrypt;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
@@ -29,6 +32,7 @@ public class MovieResourceTest
 {
 
     private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
+    List<UserDTO> userDTOS = new ArrayList<>();
 
     @BeforeEach
     void setup()
@@ -45,6 +49,8 @@ public class MovieResourceTest
 
             List<User> userList = UserPopulator.populate();
             userList.forEach(em::persist);
+            userDTOS.add(new UserDTO(userList.get(0).getName(), userList.get(0).getPassword()));
+            userDTOS.add(new UserDTO(userList.get(1).getName(), userList.get(1).getPassword()));
 
             em.getTransaction().commit();
         } catch (Exception e)
