@@ -5,7 +5,9 @@ import app.daos.impl.ActorDAO;
 import app.daos.impl.DirectorDAO;
 import app.daos.impl.GenreDAO;
 import app.daos.impl.MovieDAO;
+import app.dtos.ActorDTO;
 import app.dtos.DirectorDTO;
+import app.dtos.GenreDTO;
 import app.dtos.MovieDTO;
 import app.entities.*;
 import jakarta.persistence.EntityManagerFactory;
@@ -28,23 +30,82 @@ public class EntityService
         ActorDAO actorDAO = ActorDAO.getInstance(emf);
         DirectorDAO directorDAO = DirectorDAO.getInstance(emf);
 
+        // Get maps of existing entities
         Map<Long, Actor> actorMap = actorDAO.getActorMap();
         Map<Long, Director> directorMap = directorDAO.getDirectorMap();
         Map<Long, Genre> genreMap = genreDAO.getGenreMap();
         Map<Long, Movie> movieMap = movieDAO.getMovieMap();
 
-        List<Actor> actors = new ArrayList<>();
-        List<Director> directors = new ArrayList<>();
-        List<Genre> genres = new ArrayList<>();
-        List<Movie> movies = new ArrayList<>();
+        List<Actor> newActors = new ArrayList<>();
+        List<Director> newDirectors = new ArrayList<>();
+        List<Genre> newGenres = new ArrayList<>();
+        List<Movie> newMovies = new ArrayList<>();
 
-        actors.forEach(actorDAO::create);
-        directors.forEach(directorDAO::create);
-        genres.forEach(genreDAO::create);
-        movies.forEach(movieDAO::create);
+        for (MovieDTO movieDTO : movieDTOS)
+        {
+            // Process Actors
+            Set<Actor> movieActors = new HashSet<>();
+            for (ActorDTO actorDTO : movieDTO.getActors())
+            {
+                Actor actor = actorMap.get(actorDTO.getActorApiId());
+                if (actor == null)
+                {
+                    actor = new Actor(actorDTO);
+                    actorMap.put(actorDTO.getActorApiId(), actor);
+                    newActors.add(actor);
+                }
+                movieActors.add(actor);
+            }
 
-        return null;
+            // Process Directors
+            Set<Director> movieDirectors = new HashSet<>();
+            for (DirectorDTO directorDTO : movieDTO.getDirectors())
+            {
+                Director director = directorMap.get(directorDTO.getDirectorApiId());
+                if (director == null)
+                {
+                    director = new Director(directorDTO);
+                    directorMap.put(directorDTO.getDirectorApiId(), director);
+                    newDirectors.add(director);
+                }
+                movieDirectors.add(director);
+            }
+
+            // Process Genres
+            Set<Genre> movieGenres = new HashSet<>();
+            for (GenreDTO genreDTO : movieDTO.getGenres())
+            {
+                Genre genre = genreMap.get(genreDTO.getGenreApiId());
+                if (genre == null)
+                {
+                    genre = new Genre(genreDTO);
+                    genreMap.put(genreDTO.getGenreApiId(), genre);
+                    newGenres.add(genre);
+                }
+                movieGenres.add(genre);
+            }
+
+            // Process Movies
+            if (!movieMap.containsKey(movieDTO.getMovieApiId()))
+            {
+                Movie movie = new Movie(movieDTO);
+                movie.setActors(movieActors);
+                movie.setDirectors(movieDirectors);
+                movie.setGenres(movieGenres);
+                newMovies.add(movie);
+                movieMap.put(movieDTO.getMovieApiId(), movie);
+            }
+        }
+
+        // Persist all new entities
+        newActors.forEach(actorDAO::create);
+        newDirectors.forEach(directorDAO::create);
+        newGenres.forEach(genreDAO::create);
+        newMovies.forEach(movieDAO::create);
+
+        return newMovies;
     }
+
 
     @Transactional
     public static Movie persistMovie(MovieDTO movieDTO)
@@ -66,7 +127,8 @@ public class EntityService
                     {
                         existingDirector = directorDAO.update(existingDirector);
                         return existingDirector;
-                    } else {
+                    } else
+                    {
                         Director director = Director.builder()
                                 .directorApiId(dto.getDirectorApiId())
                                 .name(dto.getName())
@@ -108,7 +170,8 @@ public class EntityService
                     {
                         existingActor = actorDAO.update(existingActor);
                         return existingActor;
-                    } else {
+                    } else
+                    {
                         Actor actor = Actor.builder()
                                 .actorApiId(dto.getActorApiId())
                                 .name(dto.getName())

@@ -14,20 +14,22 @@ public class UserPopulator
     public static List<User> populate()
     {
         List<User> userList = new ArrayList<>();
+        Role adminRole = new Role("ADMIN");
         User admin = User.builder()
                 .created(LocalDateTime.now())
-                .roles(new HashSet<>(Set.of(new Role("ADMIN"))))
                 .name(System.getenv("ADMIN_NAME"))
                 .password(System.getenv("ADMIN_PASSWORD"))
                 .build();
+        admin.addRole(adminRole);
         userList.add(admin);
 
+        Role userRole = new Role("USER");
         User user = User.builder()
                 .created(LocalDateTime.now())
-                .roles(new HashSet<>(Set.of(new Role("USER"))))
                 .name("User1")
                 .password("1234")
                 .build();
+        user.addRole(userRole);
         userList.add(user);
 
         return userList;

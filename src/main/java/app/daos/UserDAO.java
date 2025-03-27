@@ -36,7 +36,6 @@ public class UserDAO
     }
     // ** singleton
 
-
     public User create(User user)
     {
         try (EntityManager em = emf.createEntityManager())

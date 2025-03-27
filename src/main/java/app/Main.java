@@ -2,19 +2,19 @@ package app;
 
 import app.callable.DetailsServiceCallable;
 import app.config.HibernateConfig;
+import app.daos.RoleDAO;
 import app.daos.UserDAO;
-import app.daos.impl.ActorDAO;
-import app.daos.impl.DirectorDAO;
-import app.daos.impl.GenreDAO;
-import app.daos.impl.MovieDAO;
+import app.daos.impl.*;
 import app.dtos.MovieDTO;
 import app.entities.Director;
+import app.entities.Movie;
 import app.entities.Role;
 import app.entities.User;
 import app.rest.ApplicationConfig;
 import app.rest.Routes;
 import app.services.EntityService;
 import app.services.Service;
+import dk.bugelhartmann.UserDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -29,23 +29,29 @@ public class Main
     {
         // TODO clean up main!
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        EntityManager em = emf.createEntityManager();
 
         MovieDAO movieDAO = MovieDAO.getInstance(emf);
         ActorDAO actorDAO = ActorDAO.getInstance(emf);
         GenreDAO genreDAO = GenreDAO.getInstance(emf);
         DirectorDAO directorDAO = DirectorDAO.getInstance(emf);
-
-        User admin = User.builder()
-                .created(LocalDateTime.now())
-                .roles(new HashSet<>(Set.of(new Role("ADMIN"))))
-                .name(System.getenv("ADMIN_NAME"))
-                .password(System.getenv("ADMIN_PASSWORD"))
-                .build();
-
+        RoleDAO roleDAO = RoleDAO.getInstance(emf);
         UserDAO userDAO = UserDAO.getInstance(emf);
+        SecurityDAO securityDAO = new SecurityDAO(emf);
 
-        userDAO.create(admin);
+        User admin = new User(System.getenv("ADMIN_NAME"), System.getenv("ADMIN_PASSWORD"));
+        Role adminRole = new Role("ADMIN");
+        admin.addRole(adminRole);
+
+        try(EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            em.persist(adminRole);
+            em.persist(admin);
+            em.getTransaction().commit();
+        } catch (Exception e)
+        {
+            throw new RuntimeException();
+        }
 
         List<String> movieApiIds = Service.getMovieApiIds();
 
@@ -55,10 +61,12 @@ public class Main
 
         System.out.println("Total amount of MovieDTOs created: " + movieDTOS.size());
 
-        movieDTOS.forEach(System.out::println);
+        List<Movie> movies = EntityService.persistMovies(movieDTOS);
+
+        System.out.println("Total amount of Movies persisted: " + movies.size());
 
         //TODO rewrite persistMovie method to work on a list
-        movieDTOS.forEach(EntityService::persistMovie);
+//        movieDTOS.forEach(EntityService::persistMovie);
 
         ApplicationConfig
                 .getInstance()
