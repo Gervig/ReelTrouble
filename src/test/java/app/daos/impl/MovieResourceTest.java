@@ -18,6 +18,9 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
+import static java.util.function.Predicate.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -71,14 +74,17 @@ public class MovieResourceTest
     }
 
     @Test
+    @DisplayName("Testing for liked movies by id")
     void movieByLikedTest()
     {
         given()
                 .when()
-                .get("/movies/2")
+                .post("/like/1/1")
                 .then()
-                .statusCode(200)
-                .body("id", equalTo(2));
+                .statusCode(201)
+                .body("id", equalTo(1))
+                .body("title", notNullValue())
+                .body("genre", notNullValue());
     }
 
     @Test
@@ -93,6 +99,49 @@ public class MovieResourceTest
                 .body("id", equalTo(1))
                 .body("password", equalTo("hashed_password")) //vi skal indsætte et rigtig password her
                 .body("roles", hasItem("ADMIN"));
+    }
+
+    @Test
+    @DisplayName("Test fetching user's watch history")
+    void testUserHistory() {
+        given()
+                .when()
+                .get("/history/1")
+                .then()
+                .statusCode(200) // Expecting success
+                .body("$",hasSize(greaterThan(0)))
+                .body("[0].id", notNullValue())
+                .body("[0].title", notNullValue())
+                .body("[0].genre", notNullValue());
+    }
+
+
+    @Test
+    @DisplayName("Test for random movie on specific id")
+    void testRandomMovie (){
+        given()
+                .when()
+                .get("/random")
+                .then()
+                .statusCode(200)
+                .body("id", notNullValue())
+                .body("id", greaterThan(0))
+                .body("title", notNullValue())
+                .body("genre", notNullValue()); //Får en 404 error
+    }
+
+    @Test
+    @DisplayName("Test")
+    void testRandomMovieFromGenre (){
+        given()
+                .when()
+                .get("/random-movie")
+                .then()
+                .statusCode(200)
+                .body("id", notNullValue())
+                .body("title", notNullValue())
+                .body("genre", notNullValue()); //Får en 404 error
+
     }
 
 }
