@@ -30,8 +30,8 @@ public class MovieController implements IController<MovieDTO, Long>
     @Override
     public List<MovieDTO> getAll()
     {
-        List<Movie> movie = movieDAO.readAll();
-        List<MovieDTO> movieDTOS = movie.stream()
+        List<Movie> movies = movieDAO.readAll();
+        List<MovieDTO> movieDTOS = movies.stream()
                 .map(MovieDTO::new)
                 .toList();
         return movieDTOS;
