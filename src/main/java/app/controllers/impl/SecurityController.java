@@ -1,6 +1,8 @@
 package app.controllers.impl;
 
+import app.config.HibernateConfig;
 import app.controllers.ISecurityController;
+import app.daos.impl.SecurityDAO;
 import app.exceptions.ApiException;
 import app.exceptions.NotAuthorizedException;
 import app.exceptions.ValidationException;
@@ -29,7 +31,17 @@ public class SecurityController implements ISecurityController
     private ITokenSecurity tokenSecurity = new TokenSecurity();
     private ObjectMapper objectMapper = new ObjectMapper();
     private static EntityManagerFactory emf;
+    private static SecurityDAO securityDAO;
+    private static SecurityController instance;
     private UserDAO userDAO = UserDAO.getInstance(emf);
+
+    public static SecurityController getInstance() { // Singleton because we don't want multiple instances of the same class
+        if (instance == null) {
+            instance = new SecurityController();
+        }
+        securityDAO = new SecurityDAO(HibernateConfig.getEntityManagerFactory());
+        return instance;
+    }
 
     @Override
     public Handler register()

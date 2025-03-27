@@ -1,7 +1,10 @@
 package app.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;
