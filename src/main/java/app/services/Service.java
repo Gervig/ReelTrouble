@@ -249,6 +249,7 @@ public class Service
                     .description(rootNode.path("overview").asText())
                     .imdbRating(BigDecimal.valueOf(rootNode.path("vote_average").asDouble()))
                     .releaseDate(releaseDate) // Use the safely parsed release date
+                    .minutes(rootNode.path("runtime").asInt())
                     .movieApiId(rootNode.path("id").asLong())
                     .genres(genres)
                     .actors(actors)

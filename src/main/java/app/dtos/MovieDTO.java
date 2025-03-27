@@ -6,9 +6,7 @@ import dk.bugelhartmann.UserDTO;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,9 +24,7 @@ public class MovieDTO
     private MediaType mediaType;
     private BigDecimal imdbRating;
     private LocalDate releaseDate;
-    private Time duration;
-    private int episodes;
-    private int seasons;
+    private int minutes;
     private Set<UserDTO> users;
     private Set<ActorDTO> actors;
     private Set<DirectorDTO> directors;
@@ -41,7 +37,7 @@ public class MovieDTO
         this.description = movie.getDescription();
         this.imdbRating = movie.getImdbRating();
         this.releaseDate = movie.getReleaseDate();
-        this.duration = movie.getDuration();
+        this.minutes = movie.getMinutes();
 
         // Avoid infinite recursion by not creating full ActorDTO objects
         if (movie.getActors() != null) {
@@ -58,7 +54,7 @@ public class MovieDTO
         this.description = movie.getDescription();
         this.imdbRating = movie.getImdbRating();
         this.releaseDate = movie.getReleaseDate();
-        this.duration = movie.getDuration();
+        this.minutes = movie.getMinutes();
 
         // Only load actors if allowed
         if (includeDetails && movie.getActors() != null) {

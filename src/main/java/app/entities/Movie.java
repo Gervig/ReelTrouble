@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.*;
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +36,7 @@ public class Movie
     @Temporal(TemporalType.DATE) // sets the datatype to be DATE in the database
     @Column(name = "release_date")
     private LocalDate releaseDate;
-    private Time duration;
+    private int minutes;
 
     // relations
     @ManyToMany(fetch = FetchType.EAGER)
@@ -87,7 +86,7 @@ public class Movie
         this.description = movieDTO.getDescription();
         this.imdbRating = movieDTO.getImdbRating();
         this.releaseDate = movieDTO.getReleaseDate();
-        this.duration = movieDTO.getDuration();
+        this.minutes = movieDTO.getMinutes();
 
         if(movieDTO.getActors() != null)
         {
