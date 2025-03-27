@@ -1,10 +1,10 @@
 package app.services;
 
+import app.daos.UserDAO;
 import app.daos.impl.ActorDAO;
 import app.daos.impl.DirectorDAO;
 import app.daos.impl.GenreDAO;
 import app.daos.impl.MovieDAO;
-import app.daos.impl.UserDAO;
 import app.dtos.DirectorDTO;
 import app.dtos.MovieDTO;
 import app.entities.*;
@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 public class EntityService
 {
-    private final UserDAO userDAO;
     private static EntityManagerFactory emf;
 
     @Transactional
@@ -106,25 +105,6 @@ public class EntityService
                 .releaseDate(movieDTO.getReleaseDate())
                 .build();
         return movieDAO.create(movie);
-    }
-
-    public UserService(UserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
-
-    public User authenticate(Long id, String password){
-        User user = userDAO.findById(id);
-
-        if(user == null){
-            return null;
-        }
-
-        if(BCrypt.checkpw(password, user.getPassword())){
-            return user;
-        } else {
-            return null;
-        }
-
     }
 
 }

@@ -74,7 +74,7 @@ public class UserDAO
         return user;
     }
 
-    public User read(Integer id)
+    public User read(Long id)
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -100,7 +100,7 @@ public class UserDAO
             user.getRoles().size(); // force roles to be fetched from db
             if (!user.verifyPassword(password))
                 throw new ValidationException("Wrong password");
-            return new UserDTO(user.getUsername(), user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet()));
+            return new UserDTO(user.getName(), user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet()));
         }
     }
 

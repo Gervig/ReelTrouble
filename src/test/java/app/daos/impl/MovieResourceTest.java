@@ -16,15 +16,13 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class MovieResourceTest
 {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
     private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
-    private String contentType = "application/json";
-
     @BeforeEach
     void setup()
     {
@@ -49,10 +47,33 @@ public class MovieResourceTest
     {
         given()
                 .when()
-                .get()
+                .get("/movie/1")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(1));
+    }
+
+    @Test
+    void movieByLikedTest(){
+        given()
+                .when()
+                .get("/movie/2")
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(2));
+    }
+
+    @Test
+    @DisplayName("Testing user authentication on id and password")
+    void testUserIdAndRole () {
+        given()
+                .when()
+                .get("/users/1")
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(1))
+                .body("password",equalTo("hashed_password")) //vi skal indsætte et rigtig password her
+                .body("roles", hasItem("ADMIN"));
     }
 
 }
