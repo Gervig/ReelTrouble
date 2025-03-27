@@ -105,7 +105,7 @@ public class Routes
                     Long userId = Long.parseLong(ctx.pathParam("id"));
                     MovieDTO movie = movieController.getRandomMovieExclUsersList(userId);
                     ctx.json(movie);
-                }, Role.ANYONE);
+                }, Role.USER);
             });
         };
     }
