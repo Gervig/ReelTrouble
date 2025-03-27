@@ -63,13 +63,17 @@ public class ActorDAO implements IDAO<Actor, Long>
         }
     }
 
-    public Actor readByApiId(Long apiID) {
-        try (EntityManager em = emf.createEntityManager()) {
-            try {
+    public Actor readByApiId(Long apiID)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            try
+            {
                 return em.createQuery("SELECT a FROM Actor a WHERE a.actorApiId = :actorApiId", Actor.class)
                         .setParameter("actorApiId", apiID)
                         .getSingleResult();
-            } catch (NoResultException e) {
+            } catch (NoResultException e)
+            {
                 return null;
             }
         }
@@ -110,14 +114,32 @@ public class ActorDAO implements IDAO<Actor, Long>
         }
     }
 
-    public Map<Long, Actor> getActorMap() {
-        try (EntityManager em = emf.createEntityManager()) {
+    public Map<Long, Actor> getActorMap()
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
             List<Actor> actors = em.createQuery("SELECT a FROM Actor a", Actor.class).getResultList();
             return actors.stream().collect(Collectors.toMap(Actor::getActorApiId, Function.identity()));
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ApiException(401, "Error finding list of actors", e);
         }
     }
 
+    public Actor merge(Actor actor)
+    {
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            em.getTransaction().begin();
+            actor = em.merge(actor);
+            em.getTransaction().commit();
+            return actor;
+        } catch (Exception e)
+        {
+            em.getTransaction().rollback();
+            throw new ApiException(500, "Error saving Actor", e);
+        }
+    }
 
 }

@@ -120,4 +120,18 @@ public class DirectorDAO implements IDAO<Director, Long>
             throw new ApiException(401, "Error finding list of directors", e);
         }
     }
+
+    public Director merge(Director director) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            director = em.merge(director);
+            em.getTransaction().commit();
+            return director;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new ApiException(500, "Error saving Director", e);
+        }
+    }
+
 }

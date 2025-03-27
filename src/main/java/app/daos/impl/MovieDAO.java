@@ -3,6 +3,7 @@ package app.daos.impl;
 import app.daos.IDAO;
 import app.entities.Actor;
 import app.entities.Director;
+import app.entities.Genre;
 import app.entities.Movie;
 import app.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
@@ -89,8 +90,10 @@ public class MovieDAO implements IDAO<Movie, Long>
         }
     }
 
-    public List<Movie> findMoviesByGenre(Long genreID) {
-        try (EntityManager em = emf.createEntityManager()) {
+    public List<Movie> findMoviesByGenre(Long genreID)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
             return em.createQuery(
                             "SELECT m FROM Movie m " +
                                     "JOIN m.genres g " +
@@ -98,7 +101,8 @@ public class MovieDAO implements IDAO<Movie, Long>
                             Movie.class)
                     .setParameter("genreID", genreID)
                     .getResultList();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ApiException(401, "Error finding movies with genreID: " + genreID, e);
         }
     }
@@ -228,12 +232,67 @@ public class MovieDAO implements IDAO<Movie, Long>
         }
     }
 
-    public Map<Long, Movie> getMovieMap() {
-        try (EntityManager em = emf.createEntityManager()) {
+    public Map<Long, Movie> getMovieMap()
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
             List<Movie> movies = em.createQuery("SELECT m FROM Movie m", Movie.class).getResultList();
             return movies.stream().collect(Collectors.toMap(Movie::getMovieApiId, Function.identity()));
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ApiException(401, "Error finding list of movies", e);
         }
     }
+
+    public Movie merge(Movie movie) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            // Save all actors first to avoid transient exception
+            Set<Actor> managedActors = new HashSet<>();
+            for (Actor actor : movie.getActors()) {
+                if (actor.getId() == null) {
+                    em.persist(actor); // New actors are saved first
+                } else {
+                    actor = em.merge(actor); // Merge existing ones
+                }
+                managedActors.add(actor);
+            }
+            movie.setActors(managedActors); // Ensure movie has managed actors
+
+            Set<Director> managedDirectors = new HashSet<>();
+            for (Director director : movie.getDirectors()) {
+                if (director.getId() == null) {
+                    em.persist(director);
+                } else {
+                    director = em.merge(director);
+                }
+                managedDirectors.add(director);
+            }
+            movie.setDirectors(managedDirectors);
+
+            Set<Genre> managedGenres = new HashSet<>();
+            for (Genre genre : movie.getGenres()) {
+                if (genre.getId() == null) {
+                    em.persist(genre);
+                } else {
+                    genre = em.merge(genre);
+                }
+                managedGenres.add(genre);
+            }
+            movie.setGenres(managedGenres);
+
+            // Merge the movie after actors are saved
+            movie = em.merge(movie);
+
+            em.getTransaction().commit();
+            return movie;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new ApiException(500, "Error saving Movie", e);
+        }
+    }
+
+
 }

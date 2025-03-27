@@ -6,14 +6,12 @@ import app.daos.RoleDAO;
 import app.daos.UserDAO;
 import app.daos.impl.*;
 import app.dtos.MovieDTO;
-import app.entities.Director;
-import app.entities.Movie;
-import app.entities.Role;
-import app.entities.User;
+import app.entities.*;
 import app.rest.ApplicationConfig;
 import app.rest.Routes;
 import app.services.EntityService;
 import app.services.Service;
+import app.utils.Utils;
 import dk.bugelhartmann.UserDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -38,7 +36,10 @@ public class Main
         UserDAO userDAO = UserDAO.getInstance(emf);
         SecurityDAO securityDAO = new SecurityDAO(emf);
 
-        User admin = new User(System.getenv("ADMIN_NAME"), System.getenv("ADMIN_PASSWORD"));
+        String adminName = Utils.getPropertyValue("ADMIN_NAME", "config.properties");
+        String adminPassword = Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
+
+        User admin = new User(adminName, adminPassword);
         Role adminRole = new Role("ADMIN");
         admin.addRole(adminRole);
 
@@ -63,15 +64,12 @@ public class Main
 
         List<Movie> movies = EntityService.persistMovies(movieDTOS);
 
-        System.out.println("Total amount of Movies persisted: " + movies.size());
-
-        //TODO rewrite persistMovie method to work on a list
 //        movieDTOS.forEach(EntityService::persistMovie);
 
         ApplicationConfig
                 .getInstance()
                 .initiateServer()
-                .securityCheck() //TODO add authenticate and authorize calls
+                .securityCheck()
                 .setRoute(Routes.getRoutes(emf))
                 .handleException()
                 .startServer(7074); //TODO change this to an available port for deployment

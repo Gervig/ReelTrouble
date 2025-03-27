@@ -38,7 +38,7 @@ public class Genre
     // constructor
     public Genre(GenreDTO genreDTO)
     {
-        this.id = genreDTO.getGenreApiId();
+        this.genreApiId = genreDTO.getGenreApiId();
         this.name = genreDTO.getName();
         if(genreDTO.getMovieDTOS()!=null){
             Set<MovieDTO> movieDTOS = genreDTO.getMovieDTOS();

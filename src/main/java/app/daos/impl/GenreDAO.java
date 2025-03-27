@@ -95,9 +95,9 @@ public class GenreDAO implements IDAO<Genre, Long>
         try (EntityManager em = emf.createEntityManager())
         {
             return em.createQuery("SELECT g FROM Genre g " +
-                    "WHERE LOWER(g.name) LIKE LOWER(:name)", Genre.class)
-                .setParameter("name", "%" + name + "%")
-                .getSingleResult();
+                            "WHERE LOWER(g.name) LIKE LOWER(:name)", Genre.class)
+                    .setParameter("name", "%" + name + "%")
+                    .getSingleResult();
         }
     }
 
@@ -137,14 +137,34 @@ public class GenreDAO implements IDAO<Genre, Long>
         }
     }
 
-    public Map<Long, Genre> getGenreMap() {
-        try (EntityManager em = emf.createEntityManager()) {
+    public Map<Long, Genre> getGenreMap()
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
             List<Genre> genres = em.createQuery("SELECT g FROM Genre g", Genre.class).getResultList();
             return genres.stream().collect(Collectors.toMap(Genre::getGenreApiId, Function.identity()));
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ApiException(401, "Error finding list of genres", e);
         }
     }
+
+    public Genre merge(Genre genre) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            genre = em.merge(genre);
+            em.getTransaction().commit();
+            return genre;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new ApiException(500, "Error saving Genre", e);
+        } finally {
+            em.close();
+        }
+    }
+
+
 
 }
 

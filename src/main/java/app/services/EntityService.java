@@ -21,8 +21,6 @@ public class EntityService
 {
     private static EntityManagerFactory emf;
 
-    //TODO rewrite methdod to work on a list of MovieDTO for DB optimization
-
     public static List<Movie> persistMovies(List<MovieDTO> movieDTOS)
     {
         MovieDAO movieDAO = MovieDAO.getInstance(emf);
@@ -98,10 +96,15 @@ public class EntityService
         }
 
         // Persist all new entities
-        newActors.forEach(actorDAO::create);
-        newDirectors.forEach(directorDAO::create);
-        newGenres.forEach(genreDAO::create);
-        newMovies.forEach(movieDAO::create);
+        newActors.forEach(actorDAO::merge);
+        newDirectors.forEach(directorDAO::merge);
+        newGenres.forEach(genreDAO::merge);
+        newMovies.forEach(movieDAO::merge);
+
+        System.out.println("Total amount of new Actors persisted: " + newActors.size());
+        System.out.println("Total amount of new Directors persisted: " + newDirectors.size());
+        System.out.println("Total amount of new Genres persisted: " + newGenres.size());
+        System.out.println("Total amount of new Movies persisted: " + newMovies.size());
 
         return newMovies;
     }
