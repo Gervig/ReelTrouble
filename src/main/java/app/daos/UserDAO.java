@@ -165,8 +165,7 @@ public class UserDAO
                     }
 
                     user.getLikeList().add(movie);
-                    em.merge(user); // Gem ændringen
-
+                    em.merge(user); 
                     em.getTransaction().commit();
                 } catch (Exception e) {
                     em.getTransaction().rollback();
