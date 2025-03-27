@@ -70,39 +70,39 @@ public class Routes
                     ctx.json(movies);
                 }, Role.ANYONE);
                 //Movie in genre not on users list
-                get("/recommend", ctx ->
+                get("/recommend/{genre}/{id}", ctx ->
                 {
-                    String genre = ctx.queryParam("genre");
-                    Long userId = Long.parseLong(ctx.queryParam("userId"));
+                    String genre = ctx.pathParam("genre");
+                    Long userId = Long.parseLong(ctx.pathParam("id"));
                     MovieDTO movie = movieController.getRandomMovieExclUsersListWithGenre(genre, userId);
                     ctx.json(movie);
                 }, Role.USER);
                 //Users list
-                get("/history", ctx ->
+                get("/history/{id}", ctx ->
                 {
-                    Long userId = Long.parseLong(ctx.queryParam("userId"));
+                    Long userId = Long.parseLong(ctx.pathParam("id"));
                     List<MovieDTO> movies = movieController.getAllMoviesOnUsersList(userId);
                     ctx.json(movies);
                 }, Role.USER);
                 //Gets a random movie based on nothing
-                get("/random-movie", ctx ->
+                get("/random-movie/{genre}", ctx ->
                 {
-                    String genre = ctx.queryParam("genre");
+                    String genre = ctx.pathParam("genre");
                     MovieDTO movie = movieController.getRandomMovieInGenre(genre);
                     ctx.json(movie);
                 }, Role.ANYONE);
                 //SHOULD add a movie to a user's liked list, but it needs some more stuff in the controller
-                post("like/{id}", ctx ->
+                post("like/{id}/{movieId}", ctx ->
                 {
-                    Long userId = Long.parseLong(ctx.queryParam("userId"));
-                    Long movieId = Long.parseLong(ctx.pathParam("id"));
+                    Long userId = Long.parseLong(ctx.pathParam("id"));
+                    Long movieId = Long.parseLong(ctx.pathParam("movieId"));
                     userController.postMovieToUsersList(movieId, userId);
                     MovieDTO movie = userController.postMovieToUsersList(movieId, userId);
                     ctx.json(movie).status(201);
                 }, Role.USER);
                 //Show 1 random movie not liked by the user
-                get("/random", ctx -> {
-                    Long userId = Long.parseLong(ctx.queryParam("userId"));
+                get("/random/{id}", ctx -> {
+                    Long userId = Long.parseLong(ctx.pathParam("id"));
                     MovieDTO movie = movieController.getRandomMovieExclUsersList(userId);
                     ctx.json(movie);
                 }, Role.ANYONE);
