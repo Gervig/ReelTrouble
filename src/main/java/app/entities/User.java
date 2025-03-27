@@ -18,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 @ToString
 @Entity
 @Table(name = "users") // the name user is reserved in postgres

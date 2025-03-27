@@ -20,6 +20,7 @@ public class EntityService
 {
     private static EntityManagerFactory emf;
 
+    //TODO rewrite methdod to work on a list of MovieDTO for DB optimization
     @Transactional
     public static Movie persistMovie(MovieDTO movieDTO)
     {
