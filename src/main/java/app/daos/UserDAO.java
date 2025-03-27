@@ -74,7 +74,7 @@ public class UserDAO
         return user;
     }
 
-    public User read(Integer id)
+    public User read(Long id)
     {
         try (EntityManager em = emf.createEntityManager())
         {

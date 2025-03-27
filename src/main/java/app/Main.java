@@ -63,7 +63,7 @@ public class Main
 //        ApplicationConfig
 //                .getInstance()
 //                .initiateServer()
-////                .securityCheck() //TODO add authenticate and authorize calls
+//                .securityCheck() //TODO add authenticate and authorize calls
 //                .setRoute(Routes.getRoutes(emf))
 //                .handleException()
 //                .startServer(7074); //TODO change this to an available port for deployment
