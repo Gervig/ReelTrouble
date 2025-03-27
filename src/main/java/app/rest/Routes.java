@@ -1,6 +1,7 @@
 package app.rest;
 
 import app.controllers.impl.MovieController;
+import app.controllers.impl.UserController;
 import app.controllers.securityController.ISecurityController;
 import app.controllers.securityController.SecurityController;
 import app.dtos.ActorDTO;
@@ -31,11 +32,13 @@ public class Routes
 {
     private static ISecurityController securityController = new SecurityController();
     private static MovieController movieController;
+    private static UserController userController;
     private static Logger logger = LoggerFactory.getLogger(Routes.class);
 
     public static EndpointGroup getRoutes(EntityManagerFactory emf)
     {
         movieController = new MovieController(emf);
+
         return () ->
         {
             path("auth", () ->
@@ -48,23 +51,10 @@ public class Routes
             //Admins can add new movies to the DB
             path("/admin", () ->
             {
-                post("/movies/add", ctx ->
-                {
-                    String movieTitle = ctx.queryParam("title");
-                    LocalDate releaseDate = LocalDate.parse(ctx.queryParam("releasedate"));
-                    String description = ctx.queryParam("description");
-                    BigDecimal imdbRating = ctx.pathParam(imdbRating);
-                    Time duration = ctx.queryParams(duration);
-
-                    //TODO: Skal laves om til objekter til liste
-                    List<GenreDTO> genre = ctx.queryParam("genre");
-                    //Skal laves om til objekter til liste
-                    List<ActorDTO> actor = ctx.queryParam("actor");
-                    //Skal laves om til objekter til liste
-                    List<DirectorDTO> director = ctx.queryParam("director");
-
-                    MovieDTO movie = movieController.addNewMovieToDB(movie);
-                    ctx.json(movie);
+                post("/movies/add", ctx -> {
+                    MovieDTO movie = ctx.bodyAsClass(MovieDTO.class);
+                    MovieDTO created = movieController.addNewMovieToDB(movie);
+                    ctx.json(created);
                 }, Role.ADMIN);
             });
 
@@ -98,7 +88,9 @@ public class Routes
                 {
                     Long userId = Long.parseLong(ctx.queryParam("userId"));
                     Long movieId = Long.parseLong(ctx.pathParam("id"));
-                    MovieDTO movie = movieController.postMovieToUsersList(movieId, userId);
+                    userController.postMovieToUsersList(movieId, userId);
+                    MovieDTO movie = userController.postMovieToUsersList(movieId, userId);
+                    ctx.json(movie).status(201);
                 }, Role.USER);
             });
         };

@@ -78,15 +78,6 @@ public class MovieController implements IController<MovieDTO, Long>
         return movieDTOS;
     }
 
-    //TODO: Skal denne være i en userController? og har vi en metode til at tilføje filmen til brugerens liste i DAO?
-    public MovieDTO postMovieToUsersList(Long movieID, Long userID)
-    {
-        Movie movie = movieDAO.read(movieID);
-        //userDAO.addToList(movie);
-        MovieDTO movieDTO = new MovieDTO(movie);
-        return movieDTO;
-    }
-
     //Add movie
     public MovieDTO addNewMovieToDB(MovieDTO movieDTO){
 
