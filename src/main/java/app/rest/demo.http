@@ -3,8 +3,8 @@ POST http://localhost:7074/api/auth/register
 Content-Type: application/json
 
 {
-"username":"user6",
-"password":"p1234"
+  "username": "user6",
+  "password": "p1234"
 }
 
 ### Login user
@@ -12,8 +12,8 @@ POST http://localhost:7074/api/auth/login
 Content-Type: application/json
 
 {
-"username":"user6",
-"password":"p1234"
+  "username": "user6",
+  "password": "p1234"
 }
 > {%
     client.global.set("token", response.body.token);
@@ -21,14 +21,20 @@ Content-Type: application/json
 
 ### Login admin
 POST http://localhost:7074/api/auth/login
+Content-Type: application/json
 
 {
-"username":System.getenv("ADMIN_NAME"),
-"password":System.getenv("ADMIN_PASSWORD")
+    "username": "{{ADMIN_NAME}}",
+    "password": "{{ADMIN_PASSWORD}}"
 }
 > {%
     client.global.set("admin-token", response.body.token);
 %}
+
+### Admin add new movie, given token belongs to admin
+POST http://localhost:7074/movies/add
+Accept: application/json
+Authorization: {{admin-token}}
 
 ### Get all movies request
 GET http://localhost:7074/api/movies
