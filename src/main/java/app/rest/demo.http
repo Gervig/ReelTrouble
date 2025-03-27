@@ -37,16 +37,23 @@ Content-Type: application/json
 
 {{movie}}
 
-### Get list of liked movies from user with given token
+### Get a list of recommended movies from user with given token
 GET http://localhost:7074/api/movies/recommend
 Accept: application/json
 Authorization: Bearer {{token}}
 
-### Get list of movies with a given genre (Science Fiction)
+### Get a list of movies with a given genre (Science Fiction)
 GET http://localhost:7074/api/movies/science-fiction
+Accept: application/json
 
-### Get list of movies with a given genre (Comedy)
+### Get a list of movies with a given genre (Comedy)
 GET http://localhost:7074/api/movies/comedy
+Accept: application/json
+
+### Get a list of liked movies from a user with a given token
+GET http://localhost:7074/api/movies/history
+Accept: application/json
+Authorization: {{token}}
 
 ### Test if given token is valid
 GET http://localhost:7074/api/secured/demo
