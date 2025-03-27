@@ -1,7 +1,7 @@
 package app.rest;
 
-import app.controllers.securityController.ISecurityController;
-import app.controllers.securityController.SecurityController;
+import app.controllers.ISecurityController;
+import app.controllers.impl.SecurityController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;

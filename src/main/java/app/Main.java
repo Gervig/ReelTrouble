@@ -60,13 +60,13 @@ public class Main
         //TODO rewrite persistMovie method to work on a list
         movieDTOS.forEach(EntityService::persistMovie);
 
-//        ApplicationConfig
-//                .getInstance()
-//                .initiateServer()
-//                .securityCheck() //TODO add authenticate and authorize calls
-//                .setRoute(Routes.getRoutes(emf))
-//                .handleException()
-//                .startServer(7074); //TODO change this to an available port for deployment
+        ApplicationConfig
+                .getInstance()
+                .initiateServer()
+                .securityCheck() //TODO add authenticate and authorize calls
+                .setRoute(Routes.getRoutes(emf))
+                .handleException()
+                .startServer(7074); //TODO change this to an available port for deployment
 
     }
 

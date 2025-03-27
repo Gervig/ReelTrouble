@@ -1,8 +1,10 @@
 package app.controllers.impl;
 
 import app.controllers.IController;
+import app.daos.impl.GenreDAO;
 import app.daos.impl.MovieDAO;
 import app.dtos.MovieDTO;
+import app.entities.Genre;
 import app.entities.Movie;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.transaction.Transactional;
@@ -16,6 +18,7 @@ public class MovieController implements IController<MovieDTO, Long>
     // attributes
     private static EntityManagerFactory emf;
     private MovieDAO movieDAO;
+    private GenreDAO genreDAO;
 
     // constructor
     public MovieController(EntityManagerFactory _emf)
@@ -25,6 +28,7 @@ public class MovieController implements IController<MovieDTO, Long>
             emf = _emf;
         }
         this.movieDAO = MovieDAO.getInstance(emf);
+        this.genreDAO = GenreDAO.getInstance(emf);
     }
 
     @Override
@@ -52,11 +56,12 @@ public class MovieController implements IController<MovieDTO, Long>
 
     public MovieDTO getRandomMovieInGenre(String genre)
     {
-        List<Movie> movies = movieDAO.findMoviesByGenre(genre);
+        Long genreID = genreDAO.findByName(genre).getId();
+        List<Movie> movies = movieDAO.findMoviesByGenre(genreID);
 
         Movie movie = movies.get(new Random().nextInt(movies.size()));
 
-        MovieDTO movieDTO = new MovieDTO(movie);
+        MovieDTO movieDTO = new MovieDTO(movie,true);
         return movieDTO;
     }
 
@@ -65,7 +70,7 @@ public class MovieController implements IController<MovieDTO, Long>
         List<Movie> movies = movieDAO.findMovieExclUsersListWithGenre(genre, userID);
         Movie movie = movies.get(new Random().nextInt(movies.size()));
 
-        MovieDTO movieDTO = new MovieDTO(movie);
+        MovieDTO movieDTO = new MovieDTO(movie,true);
         return movieDTO;
     }
 
@@ -74,14 +79,14 @@ public class MovieController implements IController<MovieDTO, Long>
         List<Movie> movies = movieDAO.findMovieInclUsersList(userID);
 
         List<MovieDTO> movieDTOS = movies.stream()
-                .map(movie -> new MovieDTO(movie))
+                .map(movie -> new MovieDTO(movie,true))
                 .collect(Collectors.toList());
         return movieDTOS;
     }
 
     //Add movie
-    public MovieDTO addNewMovieToDB(MovieDTO movieDTO){
-
+    public MovieDTO addNewMovieToDB(MovieDTO movieDTO)
+    {
         Movie movie = new Movie(movieDTO);
         movieDAO.create(movie);
 
@@ -89,11 +94,13 @@ public class MovieController implements IController<MovieDTO, Long>
     }
 
     //Get all movies in a specific genre
-    public List<MovieDTO> getMoviesInGenre(String genre){
-        List<Movie> movies = movieDAO.findMoviesByGenre(genre);
+    public List<MovieDTO> getMoviesInGenre(String genre) {
+        Genre foundGenre = genreDAO.findByName(genre);
+        Long genreID = foundGenre.getId();
+        List<Movie> movies = movieDAO.findMoviesByGenre(genreID);
 
         List<MovieDTO> movieDTOS = movies.stream()
-                .map(movie -> new MovieDTO(movie))
+                .map(movie -> new MovieDTO(movie, true))
                 .collect(Collectors.toList());
         return movieDTOS;
     }
@@ -103,7 +110,7 @@ public class MovieController implements IController<MovieDTO, Long>
     {
         List<Movie> movies = movieDAO.findMoviesExclUsersList(userID);
         Movie movie = movies.get(new Random().nextInt(movies.size()));
-        MovieDTO movieDTO = new MovieDTO(movie);
+        MovieDTO movieDTO = new MovieDTO(movie, true);
         return movieDTO;
     }
 

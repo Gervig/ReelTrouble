@@ -85,20 +85,17 @@ public class MovieDAO implements IDAO<Movie, Long>
         }
     }
 
-    public List<Movie> findMoviesByGenre(String genre)
-    {
-        try (EntityManager em = emf.createEntityManager())
-        {
+    public List<Movie> findMoviesByGenre(Long genreID) {
+        try (EntityManager em = emf.createEntityManager()) {
             return em.createQuery(
                             "SELECT m FROM Movie m " +
                                     "JOIN m.genres g " +
-                                    "WHERE LOWER(REPLACE(g.name, '-', ' ')) = LOWER(REPLACE(:genre, '-', ' '))",
+                                    "WHERE g.id = :genreID",
                             Movie.class)
-                    .setParameter("genre", genre)
+                    .setParameter("genreID", genreID)
                     .getResultList();
-        } catch (Exception e)
-        {
-            throw new ApiException(401, "Error finding movies with genre: " + genre, e);
+        } catch (Exception e) {
+            throw new ApiException(401, "Error finding movies with genreID: " + genreID, e);
         }
     }
 

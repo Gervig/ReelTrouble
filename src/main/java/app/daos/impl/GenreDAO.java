@@ -34,11 +34,11 @@ public class GenreDAO implements IDAO<Genre, Long>
             em.getTransaction().begin();
 
             TypedQuery<Genre> query = em.createQuery("SELECT g FROM Genre g WHERE g.name =: name", Genre.class);
-            query.setParameter("name",genre.getName());
+            query.setParameter("name", genre.getName());
 
-            List<Genre>existingGenres = query.getResultList();
+            List<Genre> existingGenres = query.getResultList();
 
-            if(!existingGenres.isEmpty())
+            if (!existingGenres.isEmpty())
                 return existingGenres.get(0);
 
             em.persist(genre);
@@ -71,15 +71,30 @@ public class GenreDAO implements IDAO<Genre, Long>
         }
     }
 
-    public Genre readByApiId(Long apiID) {
-        try (EntityManager em = emf.createEntityManager()) {
-            try {
+    public Genre readByApiId(Long apiID)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            try
+            {
                 return em.createQuery("SELECT g FROM Genre g WHERE g.genreApiId = :genreApiId", Genre.class)
                         .setParameter("genreApiId", apiID)
                         .getSingleResult();
-            } catch (NoResultException e) {
+            } catch (NoResultException e)
+            {
                 return null; // Returnér null hvis ingen genre findes
             }
+        }
+    }
+
+    public Genre findByName(String name)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            return em.createQuery("SELECT g FROM Genre g " +
+                    "WHERE LOWER(g.name) LIKE LOWER(:name)", Genre.class)
+                .setParameter("name", "%" + name + "%")
+                .getSingleResult();
         }
     }
 
