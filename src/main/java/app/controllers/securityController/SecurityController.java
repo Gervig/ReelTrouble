@@ -3,7 +3,7 @@ package app.controllers.securityController;
 import app.exceptions.ApiException;
 import app.exceptions.NotAuthorizedException;
 import app.exceptions.ValidationException;
-import app.daos.impl.UserDAO;
+import app.daos.UserDAO;
 import app.entities.User;
 import app.utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,7 +38,7 @@ public class SecurityController implements ISecurityController
             UserDTO newUser = ctx.bodyAsClass(UserDTO.class);
             User createdUser = userDAO.create(new User(newUser.getUsername(), newUser.getPassword()));
             Set<String> roles = createdUser.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
-            UserDTO returnUserDTO = new UserDTO(createdUser.getUsername(), roles);
+            UserDTO returnUserDTO = new UserDTO(createdUser.getName(), roles);
             ctx.json(returnUserDTO);
         };
     }
