@@ -76,6 +76,7 @@ public class Movie
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
+    @ToString.Exclude
     private Set<Genre> genres;
 
     // constructor

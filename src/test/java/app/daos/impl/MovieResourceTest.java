@@ -15,6 +15,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Arrays;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -23,10 +25,25 @@ public class MovieResourceTest
 {
 
     private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
+
     @BeforeEach
     void setup()
     {
-        GlobalPopulator.populate();
+        try (EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            PopulatedData data = GlobalPopulator.populate();
+
+            Arrays.stream(data.directors).forEach(em::persist);
+            Arrays.stream(data.genres).forEach(em::persist);
+            Arrays.stream(data.actors).forEach(em::persist);
+            Arrays.stream(data.movies).forEach(em::persist);
+            em.getTransaction().commit();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
         ApplicationConfig
                 .getInstance()
                 .initiateServer()
@@ -47,17 +64,18 @@ public class MovieResourceTest
     {
         given()
                 .when()
-                .get("/movie/1")
+                .get("/movies/1")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(1));
     }
 
     @Test
-    void movieByLikedTest(){
+    void movieByLikedTest()
+    {
         given()
                 .when()
-                .get("/movie/2")
+                .get("/movies/2")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(2));
@@ -65,14 +83,15 @@ public class MovieResourceTest
 
     @Test
     @DisplayName("Testing user authentication on id and password")
-    void testUserIdAndRole () {
+    void testUserIdAndRole()
+    {
         given()
                 .when()
                 .get("/users/1")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(1))
-                .body("password",equalTo("hashed_password")) //vi skal indsætte et rigtig password her
+                .body("password", equalTo("hashed_password")) //vi skal indsætte et rigtig password her
                 .body("roles", hasItem("ADMIN"));
     }
 

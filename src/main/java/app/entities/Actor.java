@@ -29,7 +29,8 @@ public class Actor
 
         // relations
     @Setter
-    @ManyToMany(mappedBy = "actors")
+    @ManyToMany(mappedBy = "actors", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Set<Movie> movies;
 
     // constructor
@@ -38,9 +39,9 @@ public class Actor
         this.actorApiId = actorDTO.getActorApiId();
         this.name = actorDTO.getName();
 
-        if(actorDTO.getMovies() != null)
+        if(actorDTO.getMovieDTOS() != null)
         {
-            Set<MovieDTO> movieDTOS = actorDTO.getMovies();
+            Set<MovieDTO> movieDTOS = actorDTO.getMovieDTOS();
             this.movies = new HashSet<>();
             movieDTOS.forEach(movieDTO -> this.movies.add(new Movie(movieDTO)));
         }

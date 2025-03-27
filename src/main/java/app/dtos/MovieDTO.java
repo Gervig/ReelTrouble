@@ -10,6 +10,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -34,45 +35,56 @@ public class MovieDTO
     private Set<GenreDTO> genres;
 
     // constructor
-    public MovieDTO(Movie movie)
-    {
+    public MovieDTO(Movie movie) {
         this.id = movie.getId();
-        this.movieApiId = movie.getMovieApiId();
         this.title = movie.getTitle();
-        this.description = movie.getTitle();
+        this.description = movie.getDescription();
         this.imdbRating = movie.getImdbRating();
         this.releaseDate = movie.getReleaseDate();
         this.duration = movie.getDuration();
-        if(movie.getUsers() != null)
-        {
-            Set<User> userEntities = movie.getUsers();
-            this.users = new HashSet<>();
 
-            userEntities.forEach(user -> this.users.add(
-                            UserDTO.builder()
-                                    .username(user.getName())
-                                    .password(user.getPassword())
-                                    .roles(user.getRolesAsStrings())
-                                    .build()
-            ));
-        }
-        if(movie.getActors() != null)
-        {
-            Set<Actor> actorEntities = movie.getActors();
-            this.actors = new HashSet<>();
-            actorEntities.forEach(actor -> this.actors.add(new ActorDTO(actor)));
-        }
-
-        if(movie.getDirectors() != null){
-            Set<Director> directorEntities = movie.getDirectors();
-            this.directors = new HashSet<>();
-            directorEntities.forEach(director -> this.directors.add(new DirectorDTO(director)));
-        }
-
-        if(movie.getGenres() != null){
-            Set<Genre> genreEntities = movie.getGenres();
-            this.genres = new HashSet<>();
-            genreEntities.forEach(genre -> this.genres.add(new GenreDTO(genre)));
+        // Avoid infinite recursion by not creating full ActorDTO objects
+        if (movie.getActors() != null) {
+            this.actors = movie.getActors()
+                    .stream()
+                    .map(actor -> new ActorDTO(actor, false)) // Prevent full movie mapping
+                    .collect(Collectors.toSet());
         }
     }
+
+    public MovieDTO(Movie movie, boolean includeDetails) {
+        this.id = movie.getId();
+        this.title = movie.getTitle();
+        this.description = movie.getDescription();
+        this.imdbRating = movie.getImdbRating();
+        this.releaseDate = movie.getReleaseDate();
+        this.duration = movie.getDuration();
+
+        // Only load actors if allowed
+        if (includeDetails && movie.getActors() != null) {
+            this.actors = movie.getActors()
+                    .stream()
+                    .map(actor -> new ActorDTO(actor, false))
+                    .collect(Collectors.toSet());
+        }
+
+        // Only load directors if allowed
+        if (includeDetails && movie.getDirectors() != null) {
+            this.directors = movie.getDirectors()
+                    .stream()
+                    .map(director -> new DirectorDTO(director, false))
+                    .collect(Collectors.toSet());
+        }
+
+        // Only load genres if allowed
+        if (includeDetails && movie.getGenres() != null) {
+            this.genres = movie.getGenres()
+                    .stream()
+                    .map(genre -> new GenreDTO(genre, false))
+                    .collect(Collectors.toSet());
+        }
+    }
+
+
+
 }

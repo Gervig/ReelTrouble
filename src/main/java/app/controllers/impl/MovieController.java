@@ -5,6 +5,7 @@ import app.daos.impl.MovieDAO;
 import app.dtos.MovieDTO;
 import app.entities.Movie;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Random;
@@ -44,7 +45,7 @@ public class MovieController implements IController<MovieDTO, Long>
         {
             return null;
         }
-        MovieDTO movieDTO = new MovieDTO(movie);
+        MovieDTO movieDTO = new MovieDTO(movie, true);
         return movieDTO;
     }
 

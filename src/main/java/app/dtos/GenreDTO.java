@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -31,6 +32,20 @@ public class GenreDTO
             movieEntities.forEach(movie -> this.movieDTOS.add(new MovieDTO(movie)));
         }
     }
+
+    public GenreDTO(Genre genre, boolean includeMovies) {
+        this.genreApiId = genre.getGenreApiId();
+        this.name = genre.getName();
+
+        // Only include movies if explicitly allowed
+        if (includeMovies && genre.getMovies() != null) {
+            this.movieDTOS = genre.getMovies()
+                    .stream()
+                    .map(movie -> new MovieDTO(movie, false)) // Prevent full genre mapping
+                    .collect(Collectors.toSet());
+        }
+    }
+
 
     public GenreDTO(Long genreApiId, String name)
     {

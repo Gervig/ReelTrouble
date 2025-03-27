@@ -30,7 +30,7 @@ public class Genre
     @Column(name = "genre_name")
     private String name;
 
-    @ManyToMany(mappedBy = "genres")
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     @Setter
     @ToString.Exclude
     private Set<Movie> movies = new HashSet<>();

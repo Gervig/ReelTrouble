@@ -11,6 +11,7 @@ import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @ToString
@@ -23,7 +24,7 @@ public class ActorDTO
     @JsonProperty("id")
     private Long actorApiId;
     private String name;
-    private Set<MovieDTO> movies;
+    private Set<MovieDTO> movieDTOS;
 
     // constructors
     public ActorDTO(Actor actor)
@@ -33,10 +34,24 @@ public class ActorDTO
         if (actor.getMovies() != null)
         {
             Set<Movie> movieEntities = actor.getMovies();
-            this.movies = new HashSet<>();
-            movieEntities.forEach(movie -> this.movies.add(new MovieDTO(movie)));
+            this.movieDTOS = new HashSet<>();
+            movieEntities.forEach(movie -> this.movieDTOS.add(new MovieDTO(movie)));
         }
     }
+
+    public ActorDTO(Actor actor, boolean includeMovies) {
+        this.actorApiId = actor.getActorApiId();
+        this.name = actor.getName();
+
+        // Only load movies when explicitly requested
+        if (includeMovies && actor.getMovies() != null) {
+            this.movieDTOS = actor.getMovies()
+                    .stream()
+                    .map(movie -> new MovieDTO(movie, false)) // Prevent full actor mapping
+                    .collect(Collectors.toSet());
+        }
+    }
+
 
     public ActorDTO(Long actorApiId, String name)
     {

@@ -1,10 +1,7 @@
 package app.entities;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Builder
+@AllArgsConstructor
 @Getter
 @Table(name = "roles")
 @NamedQueries(@NamedQuery(name = "Role.deleteAllRows", query = "DELETE from Role"))

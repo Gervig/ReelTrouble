@@ -31,7 +31,8 @@ public class Director
     private String name;
 
     @Setter
-    @ManyToMany(mappedBy = "directors")
+    @ManyToMany(mappedBy = "directors", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Set<Movie> movies;
 
     // constructor
