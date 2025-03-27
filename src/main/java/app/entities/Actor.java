@@ -24,6 +24,7 @@ public class Actor
     private Long id;
     @Column(name = "actor_api_id")
     private Long actorApiId;
+    @Setter
     private String name;
 
         // relations
