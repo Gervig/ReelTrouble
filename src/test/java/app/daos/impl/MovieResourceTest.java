@@ -1,7 +1,9 @@
 package app.daos.impl;
 
 import app.config.HibernateConfig;
+import app.controllers.impl.SecurityController;
 import app.entities.User;
+import app.exceptions.ValidationException;
 import app.populator.GlobalPopulator;
 import app.populator.PopulatedData;
 import app.populator.UserPopulator;
@@ -32,7 +34,11 @@ public class MovieResourceTest
 {
 
     private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
-    List<UserDTO> userDTOS = new ArrayList<>();
+    private List<UserDTO> userDTOS = new ArrayList<>();
+    private UserDTO userDTO, adminDTO;
+    private String userToken, adminToken;
+    private final static SecurityDAO securityDAO = new SecurityDAO(emf);
+    private final static SecurityController securityController = SecurityController.getInstance();
 
     @BeforeEach
     void setup()
@@ -49,13 +55,24 @@ public class MovieResourceTest
 
             List<User> userList = UserPopulator.populate();
             userList.forEach(em::persist);
-            userDTOS.add(new UserDTO(userList.get(0).getName(), userList.get(0).getPassword()));
-            userDTOS.add(new UserDTO(userList.get(1).getName(), userList.get(1).getPassword()));
+            adminDTO = new UserDTO(userList.get(0).getName(), userList.get(0).getPassword());
+            userDTO = new UserDTO(userList.get(1).getName(), userList.get(1).getPassword());
 
             em.getTransaction().commit();
         } catch (Exception e)
         {
             e.printStackTrace();
+        }
+
+        try
+        {
+            UserDTO verifiedUser = securityDAO.getVerifiedUser(userDTO.getUsername(), userDTO.getPassword());
+            UserDTO verifiedAdmin = securityDAO.getVerifiedUser(adminDTO.getUsername(), adminDTO.getPassword());
+            userToken = "Bearer " + securityController.createToken(verifiedUser);
+            adminToken = "Bearer " + securityController.createToken(verifiedAdmin);
+        } catch (ValidationException ve)
+        {
+            throw new RuntimeException(ve);
         }
 
         ApplicationConfig
@@ -105,7 +122,7 @@ public class MovieResourceTest
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(1))
-                .body("password", equalTo(BCrypt.hashpw(System.getenv("ADMIN_PASSWORD"),  BCrypt.gensalt()))) //vi skal indsætte et rigtig password her
+                .body("password", equalTo(BCrypt.hashpw(System.getenv("ADMIN_PASSWORD"), BCrypt.gensalt()))) //vi skal indsætte et rigtig password her
                 .body("roles", hasItem("ADMIN"));
     }
 }
