@@ -41,6 +41,7 @@ public class User
             inverseJoinColumns = {@JoinColumn(name = "role_name",
                     referencedColumnName = "name")})
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Setter
     private Set<Role> roles = new HashSet<>();
 
     // relations

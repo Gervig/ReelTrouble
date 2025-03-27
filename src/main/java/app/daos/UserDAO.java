@@ -1,5 +1,6 @@
 package app.daos;
 
+import app.entities.Movie;
 import app.exceptions.ApiException;
 import app.exceptions.ValidationException;
 import app.entities.Role;
@@ -74,7 +75,7 @@ public class UserDAO
         return user;
     }
 
-    public User read(Integer id)
+    public User read(Long id)
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -100,7 +101,7 @@ public class UserDAO
             user.getRoles().size(); // force roles to be fetched from db
             if (!user.verifyPassword(password))
                 throw new ValidationException("Wrong password");
-            return new UserDTO(user.getUsername(), user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet()));
+            return new UserDTO(user.getName(), user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet()));
         }
     }
 
@@ -129,7 +130,7 @@ public class UserDAO
         }
     }
 
-    public void delete(Integer id)
+    public void delete(Long id)
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -149,6 +150,31 @@ public class UserDAO
                 throw new ApiException(401, "Error deleting User", e);
             }
         }
+    }
+
+    public void addMovieToList(Long userId, Long movieId){
+            try (EntityManager em = emf.createEntityManager()) {
+                try {
+                    em.getTransaction().begin();
+
+                    User user = em.find(User.class, userId);
+                    Movie movie = em.find(Movie.class, movieId);
+
+                    if (user == null || movie == null) {
+                        throw new IllegalArgumentException("User or movie not found");
+                    }
+
+                    user.getLikeList().add(movie);
+                    em.merge(user); // Gem ændringen
+
+                    em.getTransaction().commit();
+                } catch (Exception e) {
+                    em.getTransaction().rollback();
+                    throw e;
+                } finally {
+                    em.close();
+                }
+            }
     }
 
 }
