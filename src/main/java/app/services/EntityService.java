@@ -96,9 +96,6 @@ public class EntityService
         }
 
         // Persist all new entities
-        newActors.forEach(actorDAO::merge);
-        newDirectors.forEach(directorDAO::merge);
-        newGenres.forEach(genreDAO::merge);
         newMovies.forEach(movieDAO::merge);
 
         System.out.println("Total amount of new Actors persisted: " + newActors.size());
