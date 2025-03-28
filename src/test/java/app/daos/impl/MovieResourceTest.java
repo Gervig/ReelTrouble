@@ -33,6 +33,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class MovieResourceTest
 {
@@ -135,7 +136,8 @@ public class MovieResourceTest
 
     @Test
     @DisplayName("Test fetching user's watch history")
-    void testUserHistory() {
+    void testUserHistory()
+    {
         given()
                 .when()
                 .get("/movies/history/2")
@@ -146,7 +148,8 @@ public class MovieResourceTest
 
     @Test
     @DisplayName("Test for random movie on specific id")
-    void testRandomMovie (){
+    void testRandomMovie()
+    {
         given()
                 .when()
                 .get("/movies/random/2")
@@ -156,7 +159,8 @@ public class MovieResourceTest
 
     @Test
     @DisplayName("Test")
-    void testRandomMovieFromGenre (){
+    void testRandomMovieFromGenre()
+    {
         given()
                 .when()
                 .get("/movies/random-movie/action")
@@ -165,6 +169,31 @@ public class MovieResourceTest
                 .body("id", notNullValue())
                 .body("title", notNullValue());
 
+    }
+
+    @Test
+    @DisplayName("Test recomended movie not in users history")
+    void testRecommendedMovieExclusion()
+    {
+        List<Integer> userMovieIds =
+                given()
+                        .when()
+                        .get("movies/history/2")
+                        .then()
+                        .statusCode(200)
+                        .extract().jsonPath().getList("id");
+
+        int recommendedMovieId =
+                given()
+                        .when()
+                        .get("/movies/recommend/action/2")
+                        .then()
+                        .statusCode(200)
+                        .body("genre", equalToIgnoringCase("action")) //TODO test users don't have a liked list, also the genre is an array
+                        .extract().jsonPath().getInt("id");
+
+        assertFalse(userMovieIds.contains(recommendedMovieId),
+                "Recommended movie should not be in the user's watched list");
     }
 
 }
