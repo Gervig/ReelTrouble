@@ -31,7 +31,7 @@ public class SecurityDAO implements ISecurityDAO
     {
         try (EntityManager em = getEntityManager())
         {
-            User user = em.find(User.class, username);
+            User user = readByName(username);
             if (user == null)
             {
                 throw new EntityNotFoundException("No user found with username: " + username); //RuntimeException
