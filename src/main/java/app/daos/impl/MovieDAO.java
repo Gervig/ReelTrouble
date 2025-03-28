@@ -139,10 +139,6 @@ public class MovieDAO implements IDAO<Movie, Long>
                             Movie.class)
                     .setParameter("userId", userId)
                     .getResultList();
-            if (movies.isEmpty())
-            {
-                throw new ApiException(404, "No available movies found not already on list");
-            }
             return movies;
         }
     }
@@ -158,11 +154,6 @@ public class MovieDAO implements IDAO<Movie, Long>
                             Movie.class)
                     .setParameter("userId", userId)
                     .getResultList();
-
-            if (movies.isEmpty())
-            {
-                throw new ApiException(404, "No available movies found for user with id: " + userId);
-            }
             return movies;
         }
     }

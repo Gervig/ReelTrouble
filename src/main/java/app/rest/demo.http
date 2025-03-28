@@ -43,6 +43,7 @@ Accept: application/json
 ### Save movie data from GET response
 GET http://localhost:7074/api/movies/movie/1
 Accept: application/json
+Authorization: {{token}}
 
 > {%
     client.global.set("movie", JSON.stringify(response.body));
