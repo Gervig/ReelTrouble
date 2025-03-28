@@ -32,6 +32,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class MovieResourceTest
 {
@@ -144,6 +145,32 @@ public class MovieResourceTest
                 .body("[0].id", notNullValue())
                 .body("[0].title", notNullValue())
                 .body("[0].genre", notNullValue());
+    }
+
+    @Test
+    @DisplayName("Test recomended movie not in users history")
+    void testRecommendedMovieExclusion () {
+        List<Integer> userMovieIds =
+                given()
+                        .when()
+                        .get("/history/1")
+                        .then()
+                        .statusCode(200)
+                        .extract().jsonPath().getList("id");
+
+        int recommendedMovieId =
+                given()
+                        .when()
+                        .get("/recommend/action/1")
+                        .then()
+                        .statusCode(200)
+                        .body("genre", equalToIgnoringCase("action"))
+                        .extract().jsonPath().getInt("id");
+
+        assertFalse(userMovieIds.contains(recommendedMovieId),
+                "Recommended movie should not be in the user's watched list");
+
+
     }
 
 
