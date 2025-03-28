@@ -104,16 +104,6 @@ public class MovieResourceTest
     @AfterEach
     void tearDown()
     {
-//        try (EntityManager em = emf.createEntityManager()) {
-//            em.getTransaction().begin();
-//            // Clear the relevant tables or reset data here
-//            em.createQuery("DELETE FROM User u").executeUpdate();
-//            em.createNativeQuery("ALTER SEQUENCE users_id_seq RESTART WITH 1").executeUpdate();
-//            em.getTransaction().commit();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         ApplicationConfig.stopServer();
     }
 
@@ -141,21 +131,6 @@ public class MovieResourceTest
                 .body("id", equalTo(1))
                 .body("title", notNullValue());
     }
-
-    //TODO we don't have these endpoints (yet?)
-//    @Test
-//    @DisplayName("Testing user authentication on id and password")
-//    void testUserIdAndRole()
-//    {
-//        given()
-//                .when()
-//                .get("/users/1")
-//                .then()
-//                .statusCode(200)
-//                .body("id", equalTo(1))
-//                .body("password", equalTo(BCrypt.hashpw(System.getenv("ADMIN_PASSWORD"), BCrypt.gensalt()))) //vi skal indsætte et rigtig password her
-//                .body("roles", hasItem("ADMIN"));
-//    }
 
     @Test
     @DisplayName("Test fetching user's watch history")
@@ -193,31 +168,5 @@ public class MovieResourceTest
                 .body("title", notNullValue());
 
     }
-
-    //TODO fix this test
-//    @Test
-//    @DisplayName("Test recomended movie not in users history")
-//    void testRecommendedMovieExclusion()
-//    {
-//        List<Integer> userMovieIds =
-//                given()
-//                        .when()
-//                        .get("movies/history/2")
-//                        .then()
-//                        .statusCode(200)
-//                        .extract().jsonPath().getList("id");
-//
-//        int recommendedMovieId =
-//                given()
-//                        .when()
-//                        .get("/movies/recommend/action/2")
-//                        .then()
-//                        .statusCode(200)
-//                        .body("genre", equalToIgnoringCase("action")) //TODO test users don't have a liked list, also the genre is an array
-//                        .extract().jsonPath().getInt("id");
-//
-//        assertFalse(userMovieIds.contains(recommendedMovieId),
-//                "Recommended movie should not be in the user's watched list");
-//    }
 
 }
