@@ -6,10 +6,8 @@ import app.entities.User;
 import app.exceptions.ApiException;
 import app.exceptions.ValidationException;
 import dk.bugelhartmann.UserDTO;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.*;
+
 import java.util.stream.Collectors;
 
 public class SecurityDAO implements ISecurityDAO
@@ -43,6 +41,18 @@ public class SecurityDAO implements ISecurityDAO
                 throw new ValidationException("Wrong password");
             }
             return new UserDTO(user.getName(), user.getRoles().stream().map(r -> r.getRoleName()).collect(Collectors.toSet()));
+        }
+    }
+
+    public User readByName(String username) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.name = :username", User.class);
+            query.setParameter("username", username);
+            User user = query.getSingleResult();
+            return user;
+        } catch (Exception e) {
+            throw new ApiException(404, "Error could not find user with name " + username, e);
         }
     }
 
