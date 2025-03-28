@@ -50,6 +50,19 @@ public class MovieResourceTest
         try (EntityManager em = emf.createEntityManager())
         {
             em.getTransaction().begin();
+
+            em.createQuery("DELETE FROM User u").executeUpdate();
+            em.createQuery("DELETE FROM Role r").executeUpdate();
+            em.createQuery("DELETE FROM Movie m").executeUpdate();
+            em.createQuery("DELETE FROM Genre g").executeUpdate();
+            em.createQuery("DELETE FROM Actor a").executeUpdate();
+            em.createQuery("DELETE FROM Director d").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE users_id_seq RESTART WITH 1").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE movie_id_seq RESTART WITH 1").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE genre_id_seq RESTART WITH 1").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE actor_id_seq RESTART WITH 1").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE director_id_seq RESTART WITH 1").executeUpdate();
+
             PopulatedData data = GlobalPopulator.populate();
 
             Arrays.stream(data.directors).forEach(em::persist);
@@ -90,6 +103,16 @@ public class MovieResourceTest
     @AfterEach
     void tearDown()
     {
+//        try (EntityManager em = emf.createEntityManager()) {
+//            em.getTransaction().begin();
+//            // Clear the relevant tables or reset data here
+//            em.createQuery("DELETE FROM User u").executeUpdate();
+//            em.createNativeQuery("ALTER SEQUENCE users_id_seq RESTART WITH 1").executeUpdate();
+//            em.getTransaction().commit();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         ApplicationConfig.stopServer();
     }
 
