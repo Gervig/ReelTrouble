@@ -26,6 +26,7 @@ public class Routes
     public static EndpointGroup getRoutes(EntityManagerFactory emf)
     {
         movieController = new MovieController(emf);
+        userController = new UserController(emf);
 
         return () ->
         {
@@ -92,7 +93,7 @@ public class Routes
                     ctx.json(movie);
                 }, Role.ANYONE);
                 //Add a movie to a user's liked list - NOT CHECKED
-                post("like/{id}/{movieId}", ctx ->
+                post("/like/{id}/{movieId}", ctx ->
                 {
                     Long userId = Long.parseLong(ctx.pathParam("id"));
                     Long movieId = Long.parseLong(ctx.pathParam("movieId"));

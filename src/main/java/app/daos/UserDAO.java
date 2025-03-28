@@ -9,6 +9,7 @@ import dk.bugelhartmann.UserDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.TypedQuery;
 
 import java.util.HashSet;
 import java.util.List;
@@ -90,11 +91,26 @@ public class UserDAO
         }
     }
 
+    public User readByName(String username)
+    {
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.name = :username", User.class);
+            query.setParameter("username", username);
+            User user = query.getSingleResult();
+            return user;
+        } catch (Exception e)
+        {
+            throw new ApiException(404, "Error user not found", e);
+        }
+    }
+
     public UserDTO getVerifiedUser(String username, String password) throws ValidationException
     {
         try (EntityManager em = emf.createEntityManager())
         {
-            User user = em.find(User.class, username);
+            User user = readByName(username);
             if (user == null)
                 throw new EntityNotFoundException("No user found with username: " + username); //RuntimeException
             user.getRoles().size(); // force roles to be fetched from db
@@ -151,28 +167,31 @@ public class UserDAO
         }
     }
 
-    public void addMovieToList(Long userId, Long movieId){
-            try (EntityManager em = emf.createEntityManager()) {
-                try {
-                    em.getTransaction().begin();
+    public void addMovieToList(Long userId, Long movieId)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            try
+            {
+                em.getTransaction().begin();
 
-                    User user = em.find(User.class, userId);
-                    Movie movie = em.find(Movie.class, movieId);
+                User user = em.find(User.class, userId);
+                Movie movie = em.find(Movie.class, movieId);
 
-                    if (user == null || movie == null) {
-                        throw new IllegalArgumentException("User or movie not found");
-                    }
-
-                    user.getLikeList().add(movie);
-                    em.merge(user); 
-                    em.getTransaction().commit();
-                } catch (Exception e) {
-                    em.getTransaction().rollback();
-                    throw e;
-                } finally {
-                    em.close();
+                if (user == null || movie == null)
+                {
+                    throw new IllegalArgumentException("User or movie not found");
                 }
+
+                user.getLikeList().add(movie);
+                em.merge(user);
+                em.getTransaction().commit();
+            } catch (Exception e)
+            {
+                em.getTransaction().rollback();
+                throw e;
             }
+        }
     }
 
 }

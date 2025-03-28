@@ -39,13 +39,7 @@ public class Movie
     private int minutes;
 
     // relations
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "movie_users",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "users_id")
-    )
-    @ToString.Exclude
+    @ManyToMany(mappedBy = "likeList")
     private Set<User> users = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)

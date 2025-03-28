@@ -40,7 +40,7 @@ public class Main
         String adminPassword = Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
 
         User admin = new User(adminName, adminPassword);
-        Role adminRole = new Role("ADMIN");
+        Role adminRole = new Role("admin");
         admin.addRole(adminRole);
 
         try(EntityManager em = emf.createEntityManager())

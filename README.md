@@ -9,8 +9,8 @@ A REST API that suggests movies based on user preferences.
 | api/auth/register                 | POST     | ❌          | Create a new user                           |
 | api/auth/login                    | POST     | ❌          | Auth a user, return JWT token               |
 | api/movies                        | GET      | ❌          | Shows all movies                            |
-| api/movies/{id}                   | GET      | ❌          | Shows a movie with a given ID               |
-| api/movies/{genre}                | GET      | ❌          | Shows movies with a given genre name        |
+| api/movies/movie/{id}             | GET      | ❌          | Shows a movie with a given ID               |
+| api/movies/genre/{genre}          | GET      | ❌          | Shows movies with a given genre name        |
 | api/movies/recommend/{genre}/{id} | GET      | ✅          | Shows recommendations based on user likes   |
 | api/movies/like/{id}/{movieId}    | POST     | ✅          | User likes a movie and preference is stored |
 | api/movies/history/{id}           | GET      | ✅          | Shows a user’s liked movies                 |

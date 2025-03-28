@@ -29,7 +29,7 @@ public class User
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Basic(optional = false)
-    @Column(length = 25)
+    @Column(length = 25, unique = true)
     @Setter
     private String name;
     @Setter
@@ -48,7 +48,13 @@ public class User
     private Set<Role> roles = new HashSet<>();
 
     // relations
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany
+    @JoinTable(
+            name = "movie_users", // Join table name
+            joinColumns = @JoinColumn(name = "user_id"), // Column for User
+            inverseJoinColumns = @JoinColumn(name = "movie_id") // Column for Movie
+    )
+    @Setter
     private Set<Movie> likeList = new HashSet<>();
 
     // constructor

@@ -24,15 +24,15 @@ POST http://localhost:7074/api/auth/login
 Content-Type: application/json
 
 {
-    "username": "{{ADMIN_NAME}}",
-    "password": "{{ADMIN_PASSWORD}}"
+    "username": "admin",
+    "password": "admin123"
 }
 > {%
     client.global.set("admin-token", response.body.token);
 %}
 
 ### Admin add new movie, given token belongs to admin
-POST http://localhost:7074/movies/add
+POST http://localhost:7074/admin/movies/add
 Accept: application/json
 Authorization: {{admin-token}}
 
@@ -41,7 +41,7 @@ GET http://localhost:7074/api/movies
 Accept: application/json
 
 ### Save movie data from GET response
-GET http://localhost:7074/api/movies/1
+GET http://localhost:7074/api/movies/movie/1
 Accept: application/json
 
 > {%
@@ -49,8 +49,9 @@ Accept: application/json
 %}
 
 ### Use saved movie data in POST request
-POST http://localhost:7074/movies/like/1
+POST http://localhost:7074/api/movies/like/2/1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {{movie}}
 
@@ -67,8 +68,8 @@ Accept: application/json
 GET http://localhost:7074/api/movies/comedy
 Accept: application/json
 
-### Get a list of liked movies from a user with a given token
-GET http://localhost:7074/api/movies/history
+### Get a list of liked movies from a user with a given token, harded to ID 2
+GET http://localhost:7074/api/movies/history/2
 Accept: application/json
 Authorization: {{token}}
 
