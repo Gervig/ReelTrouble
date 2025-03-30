@@ -155,7 +155,7 @@ public class MovieResourceTest
     }
 
     @Test
-    @DisplayName("Test")
+    @DisplayName("Test for random movie with specific genre")
     void testRandomMovieFromGenre()
     {
         given()
