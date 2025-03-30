@@ -81,20 +81,10 @@ public class MovieResourceTest
 
         String adminPassword = deployed ? System.getenv("ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
 
-        System.out.println("DEPLOYED: " + deployed);
-        System.out.println("ADMIN_PASSWORD (from env): " + System.getenv("ADMIN_PASSWORD"));
-        System.out.println("ADMIN_PASSWORD (used): " + adminPassword);
-
         try
         {
-            System.out.println("Checking user: " + userDTO.getUsername());
             UserDTO verifiedUser = securityDAO.getVerifiedUser(userDTO.getUsername(), "1234");
-            System.out.println("Verified user found? " + (verifiedUser != null));
-
-            System.out.println("Checking admin: " + adminDTO.getUsername());
             UserDTO verifiedAdmin = securityDAO.getVerifiedUser(adminDTO.getUsername(), adminPassword);
-            System.out.println("Verified admin found? " + (verifiedAdmin != null));
-
             userToken = "Bearer " + securityController.createToken(verifiedUser);
             adminToken = "Bearer " + securityController.createToken(verifiedAdmin);
         } catch (ValidationException ve)

@@ -203,22 +203,22 @@ public class SecurityController implements ISecurityController
     {
         try
         {
-            String ISSUER_DATADUCK;
+            String ISSUER;
             String TOKEN_EXPIRE_TIME;
             String SECRET_KEY;
 
             if (System.getenv("DEPLOYED") != null)
             {
-                ISSUER_DATADUCK = System.getenv("ISSUER_DATADUCK");
+                ISSUER = System.getenv("ISSUER");
                 TOKEN_EXPIRE_TIME = System.getenv("TOKEN_EXPIRE_TIME");
                 SECRET_KEY = System.getenv("SECRET_KEY");
             } else
             {
-                ISSUER_DATADUCK = Utils.getPropertyValue("ISSUER", "config.properties");
+                ISSUER = Utils.getPropertyValue("ISSUER", "config.properties");
                 TOKEN_EXPIRE_TIME = Utils.getPropertyValue("TOKEN_EXPIRE_TIME", "config.properties");
                 SECRET_KEY = Utils.getPropertyValue("SECRET_KEY", "config.properties");
             }
-            return tokenSecurity.createToken(user, ISSUER_DATADUCK, TOKEN_EXPIRE_TIME, SECRET_KEY);
+            return tokenSecurity.createToken(user, ISSUER, TOKEN_EXPIRE_TIME, SECRET_KEY);
         } catch (Exception e)
         {
             e.printStackTrace();
