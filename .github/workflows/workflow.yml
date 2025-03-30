@@ -22,7 +22,7 @@ jobs:
         env:
           DEPLOYED: ${{ secrets.DEPLOYED }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          ISSUER: ${{ secrets.ISSUER_DATADUCK }}
+          ISSUER_DATADUCK: ${{ secrets.ISSUER_DATADUCK }}
           TOKEN_EXPIRE_TIME: ${{ secrets.TOKEN_EXPIRE_TIME }}
           ADMIN_NAME: ${{ secrets.ADMIN_NAME }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
