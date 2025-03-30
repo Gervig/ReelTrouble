@@ -21,7 +21,6 @@ public class MovieDTO
     private Long movieApiId;
     private String title;
     private String description;
-    private MediaType mediaType;
     private BigDecimal imdbRating;
     private LocalDate releaseDate;
     private int minutes;
@@ -33,6 +32,7 @@ public class MovieDTO
     // constructor
     public MovieDTO(Movie movie) {
         this.id = movie.getId();
+        this.movieApiId = getMovieApiId();
         this.title = movie.getTitle();
         this.description = movie.getDescription();
         this.imdbRating = movie.getImdbRating();
