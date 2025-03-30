@@ -38,6 +38,7 @@ public class Main
         SecurityDAO securityDAO = new SecurityDAO(emf);
 
         // creates an admin in the database
+        //TODO fix admin
 //        UserPopulator.createAdmin(emf);
 
         // fetches all the TMDB IDs for a select range of movies

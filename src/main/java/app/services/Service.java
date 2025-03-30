@@ -25,7 +25,7 @@ public class Service
 {
     //API_reader
     private final MovieDAO movieDAO;
-    static String api_key = System.getenv("api_key");
+    static String TMDB_API_KEY = System.getenv("TMDB_API_KEY");
     private static final ObjectMapper objectMapper = new ObjectMapper();
     //MovieService
     private static final HttpClient client = HttpClient.newHttpClient();
@@ -105,7 +105,7 @@ public class Service
         String upperEndDate = String.valueOf(LocalDate.now());
         String voteAverage = "2";
         String minTotalVotes = "100";
-        String uri = "https://api.themoviedb.org/3/discover/movie?include_adult=false&with_original_language=en&include_video=false&sort_by=popularity.desc&vote_average.gte=%%va&vote_count.gte=%%mv&language=en-US&page=1&primary_release_date.gte=%%ld&primary_release_date.lte=%%ud&sort_by=popularity.desc&api_key=" + api_key + "&page=" + page;
+        String uri = "https://api.themoviedb.org/3/discover/movie?include_adult=false&with_original_language=en&include_video=false&sort_by=popularity.desc&vote_average.gte=%%va&vote_count.gte=%%mv&language=en-US&page=1&primary_release_date.gte=%%ld&primary_release_date.lte=%%ud&sort_by=popularity.desc&api_key=" + TMDB_API_KEY + "&page=" + page;
         uri = uri.replace("%%ld", lowerEndDate);
         uri = uri.replace("%%ud", upperEndDate);
         uri = uri.replace("%%va", voteAverage);
@@ -115,7 +115,7 @@ public class Service
 
     public static MovieDTO getDataFromApiId(String movieApiId)
     {
-        String url = "https://api.themoviedb.org/3/movie/%%?append_to_response=credits%2C%20overview&language=en&api_key=" + api_key;
+        String url = "https://api.themoviedb.org/3/movie/%%?append_to_response=credits%2C%20overview&language=en&api_key=" + TMDB_API_KEY;
         String movieURL = url.replace("%%", movieApiId);
 
         try
