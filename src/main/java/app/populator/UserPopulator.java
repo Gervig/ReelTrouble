@@ -38,8 +38,12 @@ public class UserPopulator
     {
         List<User> userList = new ArrayList<>();
 
-        String adminName = Utils.getPropertyValue("ADMIN_NAME", "config.properties");
-        String adminPassword = Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
+
+        boolean deployed = System.getenv("DEPLOYED") != null;
+
+        String adminName = deployed ? System.getenv("ADMIN_NAME") : Utils.getPropertyValue("ADMIN_NAME", "config.properties");
+        String adminPassword = deployed ? System.getenv("ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
+
         User admin = new User(adminName, adminPassword);
         Role adminRole = new Role("admin");
         admin.addRole(adminRole);

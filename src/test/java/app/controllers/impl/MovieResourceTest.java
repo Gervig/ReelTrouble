@@ -1,7 +1,8 @@
-package app.daos.impl;
+package app.controllers.impl;
 
 import app.config.HibernateConfig;
 import app.controllers.impl.SecurityController;
+import app.daos.impl.SecurityDAO;
 import app.entities.User;
 import app.exceptions.ValidationException;
 import app.populator.GlobalPopulator;
@@ -76,10 +77,14 @@ public class MovieResourceTest
             e.printStackTrace();
         }
 
+        boolean deployed = System.getenv("DEPLOYED") != null;
+
+        String adminPassword = deployed ? System.getenv("ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
+
         try
         {
             UserDTO verifiedUser = securityDAO.getVerifiedUser(userDTO.getUsername(), "1234");
-            UserDTO verifiedAdmin = securityDAO.getVerifiedUser(adminDTO.getUsername(), Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties"));
+            UserDTO verifiedAdmin = securityDAO.getVerifiedUser(adminDTO.getUsername(), adminPassword);
             userToken = "Bearer " + securityController.createToken(verifiedUser);
             adminToken = "Bearer " + securityController.createToken(verifiedAdmin);
         } catch (ValidationException ve)

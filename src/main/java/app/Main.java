@@ -41,14 +41,17 @@ public class Main
         // creates an admin in the database
         UserPopulator.createAdmin(emf);
 
+        // fetches all the TMDB IDs for a select range of movies
         List<String> movieApiIds = Service.getMovieApiIds();
 
         System.out.println("Total amount of movie IDs fetched: " + movieApiIds.size());
 
+        // fetches details for each movie and creates DTOs
         List<MovieDTO> movieDTOS = DetailsServiceCallable.getMovieDTOs(movieApiIds);
 
         System.out.println("Total amount of MovieDTOs created: " + movieDTOS.size());
 
+        // converts DTOs to Entities and persists them in the database
         EntityService.persistMovies(movieDTOS);
 
         ApplicationConfig
