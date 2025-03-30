@@ -94,6 +94,10 @@ public class HibernateConfig {
         props.setProperty("hibernate.connection.url", System.getenv("CONNECTION_STR") + DBName);
         props.setProperty("hibernate.connection.username", System.getenv("DB_USERNAME"));
         props.setProperty("hibernate.connection.password", System.getenv("DB_PASSWORD"));
+
+        // Add Admin Credentials
+        props.setProperty("admin.name", System.getenv("ADMIN_NAME"));
+        props.setProperty("admin.password", System.getenv("ADMIN_PASSWORD"));
         return props;
     }
 

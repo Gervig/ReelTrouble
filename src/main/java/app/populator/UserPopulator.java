@@ -34,15 +34,21 @@ public class UserPopulator
         }
     }
 
-    public static List<User> populateTest()
-    {
+    public static List<User> populateTest() {
         List<User> userList = new ArrayList<>();
-
 
         boolean deployed = System.getenv("DEPLOYED") != null;
 
         String adminName = deployed ? System.getenv("ADMIN_NAME") : Utils.getPropertyValue("ADMIN_NAME", "config.properties");
         String adminPassword = deployed ? System.getenv("ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
+
+        // Debugging: Print values to GitHub Actions logs
+        System.out.println("ADMIN_NAME: " + adminName);
+        System.out.println("ADMIN_PASSWORD: " + adminPassword);
+
+        if (adminName == null || adminPassword == null) {
+            throw new RuntimeException("Admin credentials are missing!");
+        }
 
         User admin = new User(adminName, adminPassword);
         Role adminRole = new Role("admin");
