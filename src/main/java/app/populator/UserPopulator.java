@@ -18,11 +18,17 @@ public class UserPopulator
         String adminName = deployed ? System.getenv("RT_ADMIN_NAME") : Utils.getPropertyValue("ADMIN_NAME", "config.properties");
         String adminPassword = deployed ? System.getenv("RT_ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
 
+        if (adminName == null || adminPassword == null)
+        {
+            System.out.println("WARNING: Admin details could not be read");
+            throw new RuntimeException("Admin credentials are missing.");
+        }
+
         User admin = new User(adminName, adminPassword);
         Role adminRole = new Role("admin");
         admin.addRole(adminRole);
 
-        try(EntityManager em = emf.createEntityManager())
+        try (EntityManager em = emf.createEntityManager())
         {
             em.getTransaction().begin();
             em.persist(adminRole);
@@ -30,11 +36,13 @@ public class UserPopulator
             em.getTransaction().commit();
         } catch (Exception e)
         {
-            throw new RuntimeException();
+            e.printStackTrace();
+            throw new RuntimeException("Error creating admin user", e);
         }
     }
 
-    public static List<User> populateTest() {
+    public static List<User> populateTest()
+    {
         List<User> userList = new ArrayList<>();
 
         boolean deployed = System.getenv("DEPLOYED") != null;
@@ -42,7 +50,8 @@ public class UserPopulator
         String adminName = deployed ? System.getenv("RT_ADMIN_NAME") : Utils.getPropertyValue("ADMIN_NAME", "config.properties");
         String adminPassword = deployed ? System.getenv("RT_ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
 
-        if (adminName == null || adminPassword == null) {
+        if (adminName == null || adminPassword == null)
+        {
             throw new RuntimeException("Admin credentials are missing!");
         }
 
