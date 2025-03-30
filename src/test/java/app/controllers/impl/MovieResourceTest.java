@@ -139,7 +139,7 @@ public class MovieResourceTest
                 .when()
                 .get("/movies/history/2")
                 .then()
-                .statusCode(200); // Expecting success
+                .statusCode(200);
     }
 
 
@@ -151,7 +151,7 @@ public class MovieResourceTest
                 .when()
                 .get("/movies/random/2")
                 .then()
-                .statusCode(200); //Får en 404 error
+                .statusCode(200);
     }
 
     @Test
@@ -165,7 +165,8 @@ public class MovieResourceTest
                 .statusCode(200)
                 .body("id", notNullValue())
                 .body("title", notNullValue());
-
     }
+
+    //TODO test recommended movie
 
 }
