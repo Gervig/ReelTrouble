@@ -79,7 +79,7 @@ public class MovieResourceTest
 
         boolean deployed = System.getenv("DEPLOYED") != null;
 
-        String adminPassword = deployed ? System.getenv("ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
+        String adminPassword = deployed ? System.getenv("RT_ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
 
         try
         {

@@ -25,8 +25,8 @@ jobs:
           ISSUER: ${{ secrets.ISSUER }}
           ISSUER_DATADUCK: ${{ secrets.ISSUER_DATADUCK }}
           TOKEN_EXPIRE_TIME: ${{ secrets.TOKEN_EXPIRE_TIME }}
-          ADMIN_NAME: ${{ secrets.ADMIN_NAME }}
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          RT_ADMIN_NAME: ${{ secrets.ADMIN_NAME }}
+          RT_ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
         run: mvn --batch-mode clean package
 
       - name: Login to Docker Hub

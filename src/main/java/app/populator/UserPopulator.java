@@ -15,8 +15,8 @@ public class UserPopulator
     {
         boolean deployed = System.getenv("DEPLOYED") != null;
 
-        String adminName = deployed ? System.getenv("ADMIN_NAME") : Utils.getPropertyValue("ADMIN_NAME", "config.properties");
-        String adminPassword = deployed ? System.getenv("ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
+        String adminName = deployed ? System.getenv("RT_ADMIN_NAME") : Utils.getPropertyValue("ADMIN_NAME", "config.properties");
+        String adminPassword = deployed ? System.getenv("RT_ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
 
         User admin = new User(adminName, adminPassword);
         Role adminRole = new Role("admin");
@@ -39,12 +39,8 @@ public class UserPopulator
 
         boolean deployed = System.getenv("DEPLOYED") != null;
 
-        String adminName = deployed ? System.getenv("ADMIN_NAME") : Utils.getPropertyValue("ADMIN_NAME", "config.properties");
-        String adminPassword = deployed ? System.getenv("ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
-
-        // Debugging: Print values to GitHub Actions logs
-        System.out.println("ADMIN_NAME: " + adminName);
-        System.out.println("ADMIN_PASSWORD: " + adminPassword);
+        String adminName = deployed ? System.getenv("RT_ADMIN_NAME") : Utils.getPropertyValue("ADMIN_NAME", "config.properties");
+        String adminPassword = deployed ? System.getenv("RT_ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
 
         if (adminName == null || adminPassword == null) {
             throw new RuntimeException("Admin credentials are missing!");
