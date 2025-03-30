@@ -26,7 +26,6 @@ public class Main
 {
     public static void main(String[] args)
     {
-        // TODO clean up main!
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
         // instantiates all the emfs inside all the DAO classes
