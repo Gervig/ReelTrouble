@@ -1,7 +1,8 @@
-package app.daos.impl;
+package app.controllers.impl;
 
 import app.config.HibernateConfig;
 import app.controllers.impl.SecurityController;
+import app.daos.impl.SecurityDAO;
 import app.entities.User;
 import app.exceptions.ValidationException;
 import app.populator.GlobalPopulator;
@@ -11,7 +12,6 @@ import app.rest.ApplicationConfig;
 import app.rest.Routes;
 import app.utils.Utils;
 import dk.bugelhartmann.UserDTO;
-import groovy.xml.StreamingDOMBuilder;
 import io.restassured.RestAssured;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -19,18 +19,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mindrot.jbcrypt.BCrypt;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
-import static java.util.function.Predicate.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -71,7 +66,7 @@ public class MovieResourceTest
             Arrays.stream(data.actors).forEach(em::persist);
             Arrays.stream(data.movies).forEach(em::persist);
 
-            List<User> userList = UserPopulator.populate();
+            List<User> userList = UserPopulator.populateTest();
             userList.forEach(em::persist);
             adminDTO = new UserDTO(userList.get(0).getName(), userList.get(0).getPassword());
             userDTO = new UserDTO(userList.get(1).getName(), userList.get(1).getPassword());
@@ -82,10 +77,14 @@ public class MovieResourceTest
             e.printStackTrace();
         }
 
+        boolean deployed = System.getenv("DEPLOYED") != null;
+
+        String adminPassword = deployed ? System.getenv("ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
+
         try
         {
             UserDTO verifiedUser = securityDAO.getVerifiedUser(userDTO.getUsername(), "1234");
-            UserDTO verifiedAdmin = securityDAO.getVerifiedUser(adminDTO.getUsername(), Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties"));
+            UserDTO verifiedAdmin = securityDAO.getVerifiedUser(adminDTO.getUsername(), adminPassword);
             userToken = "Bearer " + securityController.createToken(verifiedUser);
             adminToken = "Bearer " + securityController.createToken(verifiedAdmin);
         } catch (ValidationException ve)

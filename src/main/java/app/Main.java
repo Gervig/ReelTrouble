@@ -7,6 +7,7 @@ import app.daos.UserDAO;
 import app.daos.impl.*;
 import app.dtos.MovieDTO;
 import app.entities.*;
+import app.populator.UserPopulator;
 import app.rest.ApplicationConfig;
 import app.rest.Routes;
 import app.services.EntityService;
@@ -28,6 +29,7 @@ public class Main
         // TODO clean up main!
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
+        // instantiates all the emfs inside all the DAO classes
         MovieDAO movieDAO = MovieDAO.getInstance(emf);
         ActorDAO actorDAO = ActorDAO.getInstance(emf);
         GenreDAO genreDAO = GenreDAO.getInstance(emf);
@@ -36,35 +38,21 @@ public class Main
         UserDAO userDAO = UserDAO.getInstance(emf);
         SecurityDAO securityDAO = new SecurityDAO(emf);
 
-        String adminName = Utils.getPropertyValue("ADMIN_NAME", "config.properties");
-        String adminPassword = Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
+        // creates an admin in the database
+        UserPopulator.createAdmin(emf);
 
-        User admin = new User(adminName, adminPassword);
-        Role adminRole = new Role("admin");
-        admin.addRole(adminRole);
-
-        try(EntityManager em = emf.createEntityManager())
-        {
-            em.getTransaction().begin();
-            em.persist(adminRole);
-            em.persist(admin);
-            em.getTransaction().commit();
-        } catch (Exception e)
-        {
-            throw new RuntimeException();
-        }
-
+        // fetches all the TMDB IDs for a select range of movies
         List<String> movieApiIds = Service.getMovieApiIds();
 
         System.out.println("Total amount of movie IDs fetched: " + movieApiIds.size());
 
+        // fetches details for each movie and creates DTOs
         List<MovieDTO> movieDTOS = DetailsServiceCallable.getMovieDTOs(movieApiIds);
 
         System.out.println("Total amount of MovieDTOs created: " + movieDTOS.size());
 
-        List<Movie> movies = EntityService.persistMovies(movieDTOS);
-
-//        movieDTOS.forEach(EntityService::persistMovie);
+        // converts DTOs to Entities and persists them in the database
+        EntityService.persistMovies(movieDTOS);
 
         ApplicationConfig
                 .getInstance()
