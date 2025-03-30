@@ -40,3 +40,4 @@ src/main/resources/config.properties
 logs/javalin-app.log
 .idea/dataSources.xml
 src/main/resources/http-client.env.json
+.idea/uiDesigner.xml
