@@ -105,6 +105,10 @@ public class HibernateConfig
     private static Properties setDeployedProperties(Properties props)
     {
         String DBName = System.getenv("DB_NAME_REEL_TROUBLE");
+        if (DBName == null) {
+            System.out.println("WARNING: DB_NAME_REEL_TROUBLE is not set! Using default value.");
+            DBName = "reel_trouble";
+        }
         props.setProperty("hibernate.connection.url", System.getenv("CONNECTION_STR") + DBName);
         props.setProperty("hibernate.connection.username", System.getenv("DB_USERNAME"));
         props.setProperty("hibernate.connection.password", System.getenv("DB_PASSWORD"));
