@@ -110,7 +110,13 @@ public class HibernateConfig
             System.out.println("WARNING: DB_NAME_REEL_TROUBLE is not set! Using default value.");
             DBName = "reel_trouble";
         }
-        props.setProperty("hibernate.connection.url", System.getenv("CONNECTION_STR") + DBName);
+        String connectionStr = System.getenv("CONNECTION_STR");
+        if(connectionStr == null)
+        {
+            System.out.println("WARNING: CONNECTION_STR is not set! Using default value.");
+            connectionStr = "jdbc:postgresql://db:5432/";
+        }
+        props.setProperty("hibernate.connection.url", connectionStr + DBName);
         props.setProperty("hibernate.connection.username", System.getenv("DB_USERNAME"));
         props.setProperty("hibernate.connection.password", System.getenv("DB_PASSWORD"));
         return props;
