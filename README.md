@@ -12,6 +12,7 @@ A REST API that suggests movies based on user preferences.
 | api/movies/movie/{id}             | GET      | ❌          | Shows a movie with a given ID               |
 | api/movies/genre/{genre}          | GET      | ❌          | Shows movies with a given genre name        |
 | api/movies/recommend/{genre}/{id} | GET      | ✅          | Shows recommendations based on user likes   |
+| api/movies/random-movie/{genre}   | GET      | ❌          | Shows random movie based on genre           |
 | api/movies/like/{id}/{movieId}    | POST     | ✅          | User likes a movie and preference is stored |
 | api/movies/history/{id}           | GET      | ✅          | Shows a user’s liked movies                 |
 | api/admin/movies/add              | POST     | 🔒          | Admins can add new movies to the DB         |
