@@ -15,11 +15,6 @@ public class UserPopulator
     {
         boolean deployed = System.getenv("DEPLOYED") != null;
 
-        if(deployed==false)
-        {
-            System.out.println("WARNING: Deployed variable not found");
-        }
-
         String adminName = deployed ? System.getenv("RT_ADMIN_NAME") : Utils.getPropertyValue("ADMIN_NAME", "config.properties");
         String adminPassword = deployed ? System.getenv("RT_ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
 
