@@ -104,21 +104,14 @@ public class HibernateConfig
 
     private static Properties setDeployedProperties(Properties props)
     {
-        String DBName = System.getenv("DB_NAME_REEL_TROUBLE");
-        if (DBName == null)
-        {
-            System.out.println("WARNING: DB_NAME_REEL_TROUBLE is not set! Using default value.");
-            DBName = "reel_trouble";
-        }
-        String connectionStr = System.getenv("CONNECTION_STR");
-        if(connectionStr == null)
-        {
-            System.out.println("WARNING: CONNECTION_STR is not set! Using default value.");
-            connectionStr = "jdbc:postgresql://db:5432/";
-        }
-        props.setProperty("hibernate.connection.url", connectionStr + DBName);
+        String DBName = System.getenv("RT_DB_NAME");
+        props.setProperty("hibernate.connection.url", System.getenv("CONNECTION_STR") + DBName);
         props.setProperty("hibernate.connection.username", System.getenv("DB_USERNAME"));
         props.setProperty("hibernate.connection.password", System.getenv("DB_PASSWORD"));
+
+        // Add Admin Credentials
+        props.setProperty("admin.name", System.getenv("RT_ADMIN_NAME"));
+        props.setProperty("admin.password", System.getenv("RT_ADMIN_PASSWORD"));
         return props;
     }
 
