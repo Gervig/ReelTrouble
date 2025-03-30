@@ -32,7 +32,6 @@ public class Routes
         {
             path("auth", () ->
             {
-                //todo: ENDPOINT GET NOT FOUND - jeg ved ikke hvordan jeg skal debugge dette?
                 post("register", securityController.register(), Role.ANYONE);
                 post("login", securityController.login(), Role.ANYONE);
             });
@@ -48,6 +47,7 @@ public class Routes
                 }, Role.ADMIN);
             });
 
+            //TODO sikre at userID url er secured i backend (SE MAIL FRA JON AF 30-03-2025)
             path("movies", () ->
             {
                 //Shows all movies - CHECKED
@@ -70,7 +70,7 @@ public class Routes
                     List<MovieDTO> movies = movieController.getMoviesInGenre(genre);
                     ctx.json(movies);
                 }, Role.ANYONE);
-                //Movie in genre not on users list - NOT CHECKED
+                //Movie in genre not on users list - CHECKED
                 get("/recommend/{genre}/{id}", ctx ->
                 {
                     String genre = ctx.pathParam("genre");
@@ -78,7 +78,7 @@ public class Routes
                     MovieDTO movie = movieController.getRandomMovieExclUsersListWithGenre(genre, userId);
                     ctx.json(movie);
                 }, Role.USER);
-                //Users list - NOT CHECKED
+                //Users list - CHECKED
                 get("/history/{id}", ctx ->
                 {
                     Long userId = Long.parseLong(ctx.pathParam("id"));
@@ -92,15 +92,15 @@ public class Routes
                     MovieDTO movie = movieController.getRandomMovieInGenre(genre);
                     ctx.json(movie);
                 }, Role.ANYONE);
-                //Add a movie to a user's liked list - NOT CHECKED
+                //Add a movie to a user's liked list - CHECKED
                 post("/like/{id}/{movieId}", ctx ->
                 {
                     Long userId = Long.parseLong(ctx.pathParam("id"));
                     Long movieId = Long.parseLong(ctx.pathParam("movieId"));
-                    userController.postMovieToUsersList(movieId, userId);
                     MovieDTO movie = userController.postMovieToUsersList(movieId, userId);
                     ctx.json(movie).status(201);
                 }, Role.USER);
+                //TODO check this in demo.http
                 //Show 1 random movie not liked by the user - NOT CHECKED
                 get("/random/{id}", ctx -> {
                     Long userId = Long.parseLong(ctx.pathParam("id"));

@@ -143,7 +143,6 @@ public class MovieDAO implements IDAO<Movie, Long>
         }
     }
 
-
     public List<Movie> findMovieInclUsersList(Long userId)
     {
         try (EntityManager em = emf.createEntityManager())
