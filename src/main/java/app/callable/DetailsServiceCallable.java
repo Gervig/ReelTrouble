@@ -29,7 +29,7 @@ public class DetailsServiceCallable implements Callable<MovieDTO>
     public static List<MovieDTO> getMovieDTOs(List<String> movieApiIds)
     {
         List<Future<MovieDTO>> futureList = new ArrayList<>();
-        ExecutorService executorService = Executors.newCachedThreadPool(); // increase for faster performance, beware of overload
+        ExecutorService executorService = Executors.newFixedThreadPool(20); // increase for faster performance, beware of overload
 
         for (String movieApiId : movieApiIds)
         {
