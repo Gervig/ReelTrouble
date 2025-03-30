@@ -7,6 +7,7 @@ import app.daos.UserDAO;
 import app.daos.impl.*;
 import app.dtos.MovieDTO;
 import app.entities.*;
+import app.populator.UserPopulator;
 import app.rest.ApplicationConfig;
 import app.rest.Routes;
 import app.services.EntityService;
@@ -28,6 +29,7 @@ public class Main
         // TODO clean up main!
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
+        // instantiates all the emfs inside all the DAO classes
         MovieDAO movieDAO = MovieDAO.getInstance(emf);
         ActorDAO actorDAO = ActorDAO.getInstance(emf);
         GenreDAO genreDAO = GenreDAO.getInstance(emf);
@@ -36,23 +38,8 @@ public class Main
         UserDAO userDAO = UserDAO.getInstance(emf);
         SecurityDAO securityDAO = new SecurityDAO(emf);
 
-        String adminName = Utils.getPropertyValue("ADMIN_NAME", "config.properties");
-        String adminPassword = Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
-
-        User admin = new User(adminName, adminPassword);
-        Role adminRole = new Role("admin");
-        admin.addRole(adminRole);
-
-        try(EntityManager em = emf.createEntityManager())
-        {
-            em.getTransaction().begin();
-            em.persist(adminRole);
-            em.persist(admin);
-            em.getTransaction().commit();
-        } catch (Exception e)
-        {
-            throw new RuntimeException();
-        }
+        // creates an admin in the database
+        UserPopulator.createAdmin(emf);
 
         List<String> movieApiIds = Service.getMovieApiIds();
 
@@ -62,9 +49,7 @@ public class Main
 
         System.out.println("Total amount of MovieDTOs created: " + movieDTOS.size());
 
-        List<Movie> movies = EntityService.persistMovies(movieDTOS);
-
-//        movieDTOS.forEach(EntityService::persistMovie);
+        EntityService.persistMovies(movieDTOS);
 
         ApplicationConfig
                 .getInstance()

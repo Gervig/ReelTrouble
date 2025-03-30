@@ -3,16 +3,38 @@ package app.populator;
 import app.entities.Role;
 import app.entities.User;
 import app.utils.Utils;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class UserPopulator
 {
-    public static List<User> populate()
+    public static void createAdmin(EntityManagerFactory emf)
+    {
+        boolean deployed = System.getenv("DEPLOYED") != null;
+
+        String adminName = deployed ? System.getenv("ADMIN_NAME") : Utils.getPropertyValue("ADMIN_NAME", "config.properties");
+        String adminPassword = deployed ? System.getenv("ADMIN_PASSWORD") : Utils.getPropertyValue("ADMIN_PASSWORD", "config.properties");
+
+        User admin = new User(adminName, adminPassword);
+        Role adminRole = new Role("admin");
+        admin.addRole(adminRole);
+
+        try(EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            em.persist(adminRole);
+            em.persist(admin);
+            em.getTransaction().commit();
+        } catch (Exception e)
+        {
+            throw new RuntimeException();
+        }
+    }
+
+    public static List<User> populateTest()
     {
         List<User> userList = new ArrayList<>();
 
