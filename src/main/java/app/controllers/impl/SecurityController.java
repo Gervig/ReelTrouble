@@ -209,7 +209,7 @@ public class SecurityController implements ISecurityController
 
             if (System.getenv("DEPLOYED") != null)
             {
-                ISSUER = System.getenv("ISSUER");
+                ISSUER = System.getenv("ISSUER_DATADUCK");
                 TOKEN_EXPIRE_TIME = System.getenv("TOKEN_EXPIRE_TIME");
                 SECRET_KEY = System.getenv("SECRET_KEY");
             } else
