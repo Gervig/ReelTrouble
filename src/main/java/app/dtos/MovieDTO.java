@@ -24,7 +24,6 @@ public class MovieDTO
     private BigDecimal imdbRating;
     private LocalDate releaseDate;
     private int minutes;
-    private Set<UserDTO> users;
     private Set<ActorDTO> actors;
     private Set<DirectorDTO> directors;
     private Set<GenreDTO> genres;
@@ -32,7 +31,7 @@ public class MovieDTO
     // constructor
     public MovieDTO(Movie movie) {
         this.id = movie.getId();
-        this.movieApiId = getMovieApiId();
+        this.movieApiId = movie.getMovieApiId();
         this.title = movie.getTitle();
         this.description = movie.getDescription();
         this.imdbRating = movie.getImdbRating();
@@ -50,6 +49,7 @@ public class MovieDTO
 
     public MovieDTO(Movie movie, boolean includeDetails) {
         this.id = movie.getId();
+        this.movieApiId = movie.getMovieApiId();
         this.title = movie.getTitle();
         this.description = movie.getDescription();
         this.imdbRating = movie.getImdbRating();
