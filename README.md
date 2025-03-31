@@ -1,5 +1,12 @@
+<div align="center">
+  <img src="docs/reel_trouble.png" alt="Alt text" width="200">
+</div>
+
 # ReelTrouble
-A REST API that suggests movies based on user preferences.
+An API that suggests movies based on user preferences.
+A user can like movies, and therefore make sure the movies that are suggested, aren't movies they have watched before.
+A user can choose to get a movie suggestion within a specific genre or randomly.
+Anyone can choose to get a movie suggestion within a specific genre, but here their like list is not included.
 
 
 # Endpoint Table
