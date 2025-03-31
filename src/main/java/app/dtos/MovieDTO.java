@@ -32,7 +32,7 @@ public class MovieDTO
     // constructor
     public MovieDTO(Movie movie) {
         this.id = movie.getId();
-        this.movieApiId = getMovieApiId();
+        this.movieApiId = movie.getMovieApiId();
         this.title = movie.getTitle();
         this.description = movie.getDescription();
         this.imdbRating = movie.getImdbRating();
