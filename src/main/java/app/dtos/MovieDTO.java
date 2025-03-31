@@ -24,7 +24,6 @@ public class MovieDTO
     private BigDecimal imdbRating;
     private LocalDate releaseDate;
     private int minutes;
-    private Set<UserDTO> users;
     private Set<ActorDTO> actors;
     private Set<DirectorDTO> directors;
     private Set<GenreDTO> genres;
