@@ -50,6 +50,7 @@ public class MovieDTO
 
     public MovieDTO(Movie movie, boolean includeDetails) {
         this.id = movie.getId();
+        this.movieApiId = movie.getMovieApiId();
         this.title = movie.getTitle();
         this.description = movie.getDescription();
         this.imdbRating = movie.getImdbRating();
