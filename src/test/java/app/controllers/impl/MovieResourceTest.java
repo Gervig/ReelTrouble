@@ -39,6 +39,7 @@ public class MovieResourceTest
     private String userToken, adminToken;
     private final static SecurityDAO securityDAO = new SecurityDAO(emf);
     private final static SecurityController securityController = SecurityController.getInstance();
+    //TODO gem persisterede movies i et array her, så man kan slå op i dem i en bestemt rækkefølge
 
     @BeforeEach
     void setup()
