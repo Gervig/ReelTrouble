@@ -42,6 +42,7 @@ public class Movie
     @ManyToMany(mappedBy = "likeList")
     private Set<User> users = new HashSet<>();
 
+    //TODO test om vi kan bruge lazy fetch her
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "movie_actor",
