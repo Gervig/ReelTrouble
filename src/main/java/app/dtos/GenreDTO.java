@@ -2,6 +2,7 @@ package app.dtos;
 
 import app.entities.Genre;
 import app.entities.Movie;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class GenreDTO
     @JsonProperty("id")
     private Long genreApiId;
     private String name;
+    @JsonIgnore
     private Set<MovieDTO> movieDTOS;
 
     public GenreDTO(Genre genre)

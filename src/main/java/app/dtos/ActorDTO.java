@@ -2,6 +2,7 @@ package app.dtos;
 
 import app.entities.Actor;
 import app.entities.Movie;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class ActorDTO
     @JsonProperty("id")
     private Long actorApiId;
     private String name;
+    @JsonIgnore
     private Set<MovieDTO> movieDTOS;
 
     // constructors
