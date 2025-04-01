@@ -1,7 +1,9 @@
 package app.controllers;
 
 import dk.bugelhartmann.UserDTO;
+import io.javalin.http.Context;
 import io.javalin.http.Handler;
+import org.jetbrains.annotations.NotNull;
 
 public interface ISecurityController
 {
@@ -11,4 +13,5 @@ public interface ISecurityController
     Handler authorize(); // to verify user roles
     String createToken(UserDTO user) throws Exception;
     UserDTO verifyToken(String token) throws Exception;
+    void healthCheck(@NotNull Context context);
 }

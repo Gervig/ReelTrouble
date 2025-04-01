@@ -15,13 +15,10 @@ import dk.bugelhartmann.ITokenSecurity;
 import dk.bugelhartmann.TokenSecurity;
 import dk.bugelhartmann.TokenVerificationException;
 import dk.bugelhartmann.UserDTO;
-import io.javalin.http.ForbiddenResponse;
-import io.javalin.http.Handler;
-import io.javalin.http.HttpStatus;
-import io.javalin.http.UnauthorizedResponse;
+import io.javalin.http.*;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityNotFoundException;
-
+import org.jetbrains.annotations.NotNull;
 import java.text.ParseException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -224,5 +221,11 @@ public class SecurityController implements ISecurityController
             e.printStackTrace();
             throw new ApiException(500, "Could not create token");
         }
+    }
+
+    // Health check for the API. Used in deployment
+    @Override
+    public void healthCheck(@NotNull Context ctx) {
+        ctx.status(200).json("{\"msg\": \"API is up and running\"}");
     }
 }

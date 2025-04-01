@@ -7,7 +7,9 @@ import app.controllers.impl.UserController;
 import app.dtos.MovieDTO;
 import app.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
+import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,7 @@ public class Routes
         {
             path("auth", () ->
             {
+                get("healthcheck", securityController::healthCheck, Role.ANYONE);
                 post("register", securityController.register(), Role.ANYONE);
                 post("login", securityController.login(), Role.ANYONE);
             });
