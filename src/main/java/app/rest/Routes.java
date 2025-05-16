@@ -10,9 +10,7 @@ import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.List;
-
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 
@@ -32,14 +30,15 @@ public class Routes
         {
             path("auth", () ->
             {
+                get("healthcheck", securityController::healthCheck, Role.ANYONE);
                 post("register", securityController.register(), Role.ANYONE);
                 post("login", securityController.login(), Role.ANYONE);
             });
 
             //Admins can add new movies to the DB - NOT CHECKED
-            path("/admin", () ->
+            path("admin", () ->
             {
-                post("/movies/add", ctx ->
+                post("movies/add", ctx ->
                 {
                     MovieDTO movie = ctx.bodyAsClass(MovieDTO.class);
                     MovieDTO created = movieController.addNewMovieToDB(movie);
@@ -51,27 +50,27 @@ public class Routes
             path("movies", () ->
             {
                 //Shows all movies - CHECKED
-                get("/", ctx ->
+                get("", ctx ->
                 {
                     List<MovieDTO> movies = movieController.getAll();
                     ctx.json(movies);
                 }, Role.ANYONE);
                 //Show 1 movie with a given id - CHECKED
-                get("/movie/{id}", ctx ->
+                get("movie/{id}", ctx ->
                 {
                     Long movieId = Long.parseLong(ctx.pathParam("id"));
                     MovieDTO movieDTO = movieController.getById(movieId);
                     ctx.json(movieDTO);
                 }, Role.ANYONE);
                 //All movies in a genre - CHECKED
-                get("/genre/{genre}", ctx ->
+                get("genre/{genre}", ctx ->
                 {
                     String genre = ctx.pathParam("genre").replace('-', ' ');
                     List<MovieDTO> movies = movieController.getMoviesInGenre(genre);
                     ctx.json(movies);
                 }, Role.ANYONE);
                 //Movie in genre not on users list - CHECKED
-                get("/recommend/{genre}/{id}", ctx ->
+                get("recommend/{genre}/{id}", ctx ->
                 {
                     String genre = ctx.pathParam("genre");
                     Long userId = Long.parseLong(ctx.pathParam("id"));
@@ -79,21 +78,21 @@ public class Routes
                     ctx.json(movie);
                 }, Role.USER);
                 //Users list - CHECKED
-                get("/history/{id}", ctx ->
+                get("history/{id}", ctx ->
                 {
                     Long userId = Long.parseLong(ctx.pathParam("id"));
                     List<MovieDTO> movies = movieController.getAllMoviesOnUsersList(userId);
                     ctx.json(movies);
                 }, Role.USER);
                 //Gets a random movie based on nothing but genre - CHECKED
-                get("/random-movie/{genre}", ctx ->
+                get("random-movie/{genre}", ctx ->
                 {
                     String genre = ctx.pathParam("genre");
                     MovieDTO movie = movieController.getRandomMovieInGenre(genre);
                     ctx.json(movie);
                 }, Role.ANYONE);
                 //Add a movie to a user's liked list - CHECKED
-                post("/like/{id}/{movieId}", ctx ->
+                post("like/{id}/{movieId}", ctx ->
                 {
                     Long userId = Long.parseLong(ctx.pathParam("id"));
                     Long movieId = Long.parseLong(ctx.pathParam("movieId"));
@@ -102,7 +101,7 @@ public class Routes
                 }, Role.USER);
                 //TODO check this in demo.http
                 //Show 1 random movie not liked by the user - NOT CHECKED
-                get("/random/{id}", ctx -> {
+                get("random/{id}", ctx -> {
                     Long userId = Long.parseLong(ctx.pathParam("id"));
                     MovieDTO movie = movieController.getRandomMovieExclUsersList(userId);
                     ctx.json(movie);

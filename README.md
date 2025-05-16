@@ -30,3 +30,5 @@ Anyone can choose to get a movie suggestion within a specific genre, but here th
 ✅ = User secured
 
 🔒 = Admin secured
+
+Deployed version: https://reeltrouble.dataduck.dk/api/routes
