@@ -1,6 +1,7 @@
 package app.controllers.impl;
 
 import app.controllers.IController;
+import app.daos.UserDAO;
 import app.daos.impl.GenreDAO;
 import app.daos.impl.MovieDAO;
 import app.dtos.MovieDTO;
@@ -19,6 +20,7 @@ public class MovieController implements IController<MovieDTO, Long>
     private static EntityManagerFactory emf;
     private MovieDAO movieDAO;
     private GenreDAO genreDAO;
+    private UserDAO userDAO;
 
     // constructor
     public MovieController(EntityManagerFactory _emf)
@@ -29,6 +31,7 @@ public class MovieController implements IController<MovieDTO, Long>
         }
         this.movieDAO = MovieDAO.getInstance(emf);
         this.genreDAO = GenreDAO.getInstance(emf);
+        this.userDAO = UserDAO.getInstance(emf);
     }
 
     @Override
@@ -74,10 +77,22 @@ public class MovieController implements IController<MovieDTO, Long>
         return movieDTO;
     }
 
+    // get movies on user by userId
     public List<MovieDTO> getAllMoviesOnUsersList(Long userID)
     {
         List<Movie> movies = movieDAO.findMovieInclUsersList(userID);
 
+        List<MovieDTO> movieDTOS = movies.stream()
+                .map(movie -> new MovieDTO(movie,true))
+                .collect(Collectors.toList());
+        return movieDTOS;
+    }
+
+    // get movies on user by username
+    public List<MovieDTO> getAllMoviesOnUsersList(String username)
+    {
+        Long userId = userDAO.readByName(username).getId();
+        List<Movie> movies = movieDAO.findMovieInclUsersList(userId);
         List<MovieDTO> movieDTOS = movies.stream()
                 .map(movie -> new MovieDTO(movie,true))
                 .collect(Collectors.toList());
