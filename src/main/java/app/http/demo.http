@@ -94,3 +94,6 @@ Authorization: Bearer {{token}}
 GET http://localhost:7074/api/movies/recommend/Action/user6
 Authorization: Bearer {{token}}
 
+###Random movie not liked by user6
+GET http://localhost:7074/api/movies/random/user6
+Authorization: Bearer {{token}}

@@ -132,9 +132,19 @@ public class MovieController implements IController<MovieDTO, Long>
         return movieDTOS;
     }
 
-    //Get movies that are not on the users likedList
+    //Get movies that are not on the users likedList ** by userId **
     public MovieDTO getRandomMovieExclUsersList(Long userID)
     {
+        List<Movie> movies = movieDAO.findMoviesExclUsersList(userID);
+        Movie movie = movies.get(new Random().nextInt(movies.size()));
+        MovieDTO movieDTO = new MovieDTO(movie, true);
+        return movieDTO;
+    }
+
+    //Get movies that are not on the users likedList ** by username **
+    public MovieDTO getRandomMovieExclUsersList(String username)
+    {
+        Long userID = userDAO.readByName(username).getId();
         List<Movie> movies = movieDAO.findMoviesExclUsersList(userID);
         Movie movie = movies.get(new Random().nextInt(movies.size()));
         MovieDTO movieDTO = new MovieDTO(movie, true);

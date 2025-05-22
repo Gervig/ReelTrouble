@@ -23,7 +23,7 @@ Anyone can choose to get a movie suggestion within a specific genre, but here th
 | api/movies/like/{username}/{movieId}     | POST   |    ✅    | User likes a movie and preference is stored |
 | api/movies/history/{username}            | GET    |    ✅    | Shows a user’s liked movies                 |
 | api/admin/movies/add                     | POST   |   🔒    | Admins can add new movies to the DB         |
-| api/movies/random/{id}                   | GET    |    ✅    | Shows a random movie not liked by user      |
+| api/movies/random/{username}             | GET    |    ✅    | Shows a random movie not liked by user      |
 
 | ❌ Not secured | ✅ User secured | 🔒 Admin secured |
 |---------------|----------------|------------------|

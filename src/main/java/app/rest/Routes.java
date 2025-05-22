@@ -101,9 +101,9 @@ public class Routes
                 }, Role.USER);
                 //TODO check this in demo.http
                 //Show 1 random movie not liked by the user - NOT CHECKED
-                get("random/{id}", ctx -> {
-                    Long userId = Long.parseLong(ctx.pathParam("id"));
-                    MovieDTO movie = movieController.getRandomMovieExclUsersList(userId);
+                get("random/{username}", ctx -> {
+                    String username = ctx.pathParam("username");
+                    MovieDTO movie = movieController.getRandomMovieExclUsersList(username);
                     ctx.json(movie);
                 }, Role.USER);
             });
