@@ -25,9 +25,20 @@ public class UserController
         this.movieDAO = MovieDAO.getInstance(emf);
     }
 
+    // add to like-list by userId
     public MovieDTO postMovieToUsersList(Long movieID, Long userID)
     {
         Movie movie = movieDAO.read(movieID);
+        userDAO.addMovieToList(userID, movieID);
+        MovieDTO movieDTO = new MovieDTO(movie);
+        return movieDTO;
+    }
+
+    // add to like-list by username
+    public MovieDTO postMovieToUsersList(Long movieID, String username)
+    {
+        Movie movie = movieDAO.read(movieID);
+        Long userID = userDAO.readByName(username).getId();
         userDAO.addMovieToList(userID, movieID);
         MovieDTO movieDTO = new MovieDTO(movie);
         return movieDTO;
