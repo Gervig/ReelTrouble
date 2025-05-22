@@ -49,8 +49,15 @@ Authorization: {{token}}
     client.global.set("movie", JSON.stringify(response.body));
 %}
 
-### Use saved movie data in POST request
-POST http://localhost:7074/api/movies/like/2/1
+### Use saved movie data in POST request ** with userId**
+#POST http://localhost:7074/api/movies/like/2/1
+#Content-Type: application/json
+#Authorization: Bearer {{token}}
+#
+#{{movie}}
+
+### Use saved movie data in POST request ** with username**
+POST http://localhost:7074/api/movies/like/user6/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -70,9 +77,14 @@ GET http://localhost:7074/api/movies/comedy
 Accept: application/json
 
 ### Get a list of liked movies from a user with a given token, harded to ID 2
-GET http://localhost:7074/api/movies/history/2
+#GET http://localhost:7074/api/movies/history/2
+#Accept: application/json
+#Authorization: {{token}}
+
+### Get a list of liked movies from a user6 with a given token
+GET http://localhost:7074/api/movies/history/user6
 Accept: application/json
-Authorization: {{token}}
+Authorization: Bearer {{token}}
 
 ### Test if given token is valid
 GET http://localhost:7074/api/secured/demo

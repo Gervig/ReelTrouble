@@ -77,14 +77,7 @@ public class Routes
                     MovieDTO movie = movieController.getRandomMovieExclUsersListWithGenre(genre, userId);
                     ctx.json(movie);
                 }, Role.USER);
-                //Users list - CHECKED
-                get("history/{id}", ctx ->
-                {
-                    Long userId = Long.parseLong(ctx.pathParam("id"));
-                    List<MovieDTO> movies = movieController.getAllMoviesOnUsersList(userId);
-                    ctx.json(movies);
-                }, Role.USER);
-                //Users list by username
+                //Users list ** BY USERNAME **
                 get("history/{username}", ctx ->
                 {
                     String username = ctx.pathParam("username");
@@ -98,18 +91,10 @@ public class Routes
                     MovieDTO movie = movieController.getRandomMovieInGenre(genre);
                     ctx.json(movie);
                 }, Role.ANYONE);
-                //Add a movie to a user's liked list - CHECKED
-                post("like/{id}/{movieId}", ctx ->
-                {
-                    Long userId = Long.parseLong(ctx.pathParam("id"));
-                    Long movieId = Long.parseLong(ctx.pathParam("movieId"));
-                    MovieDTO movie = userController.postMovieToUsersList(movieId, userId);
-                    ctx.json(movie).status(201);
-                }, Role.USER);
                 //Add a movie to a user's liked list ** BY USERNAME **
                 post("like/{username}/{movieId}", ctx ->
                 {
-                    Long username = Long.parseLong(ctx.pathParam("username"));
+                    String username = ctx.pathParam("username");
                     Long movieId = Long.parseLong(ctx.pathParam("movieId"));
                     MovieDTO movie = userController.postMovieToUsersList(movieId, username);
                     ctx.json(movie).status(201);
