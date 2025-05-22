@@ -91,6 +91,6 @@ GET http://localhost:7074/api/secured/demo
 Authorization: Bearer {{token}}
 
 ### Random movie by genre (Action) for user6
-GET http://localhost:7074/api/recommend/Action/user6
+GET http://localhost:7074/api/movies/recommend/Action/user6
 Authorization: Bearer {{token}}
 
