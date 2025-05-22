@@ -70,11 +70,11 @@ public class Routes
                     ctx.json(movies);
                 }, Role.ANYONE);
                 //Movie in genre not on users list - CHECKED
-                get("recommend/{genre}/{id}", ctx ->
+                get("recommend/{genre}/{username}", ctx ->
                 {
                     String genre = ctx.pathParam("genre");
-                    Long userId = Long.parseLong(ctx.pathParam("id"));
-                    MovieDTO movie = movieController.getRandomMovieExclUsersListWithGenre(genre, userId);
+                    String username = ctx.pathParam("username");
+                    MovieDTO movie = movieController.getRandomMovieExclUsersListWithGenre(genre, username);
                     ctx.json(movie);
                 }, Role.USER);
                 //Users list ** BY USERNAME **

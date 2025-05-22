@@ -68,8 +68,20 @@ public class MovieController implements IController<MovieDTO, Long>
         return movieDTO;
     }
 
+    // Random movie by userId
     public MovieDTO getRandomMovieExclUsersListWithGenre(String genre, Long userID)
     {
+        List<Movie> movies = movieDAO.findMovieExclUsersListWithGenre(genre, userID);
+        Movie movie = movies.get(new Random().nextInt(movies.size()));
+
+        MovieDTO movieDTO = new MovieDTO(movie,true);
+        return movieDTO;
+    }
+
+    // Random movie by username
+    public MovieDTO getRandomMovieExclUsersListWithGenre(String genre, String username)
+    {
+        Long userID = userDAO.readByName(username).getId();
         List<Movie> movies = movieDAO.findMovieExclUsersListWithGenre(genre, userID);
         Movie movie = movies.get(new Random().nextInt(movies.size()));
 
