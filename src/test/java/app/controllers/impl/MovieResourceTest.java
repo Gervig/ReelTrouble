@@ -123,9 +123,10 @@ public class MovieResourceTest
     @DisplayName("Testing for liked movies by id")
     void movieByLikedTest()
     {
+        String username = userDTO.getUsername();
         given()
                 .when()
-                .post("/movies/like/2/1") // POST a movie to user with ID 2, where movie ID is 1
+                .post("/movies/like/" + username + "/1") // POST a movie to user with ID 2, where movie ID is 1
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1))
@@ -136,9 +137,11 @@ public class MovieResourceTest
     @DisplayName("Test fetching user's watch history")
     void testUserHistory()
     {
+        String username = userDTO.getUsername();
+
         given()
                 .when()
-                .get("/movies/history/2")
+                .get("/movies/history/" + username)
                 .then()
                 .statusCode(200);
     }
