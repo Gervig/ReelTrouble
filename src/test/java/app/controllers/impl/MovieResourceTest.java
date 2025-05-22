@@ -151,9 +151,10 @@ public class MovieResourceTest
     @DisplayName("Test for random movie on specific id")
     void testRandomMovie()
     {
+        String username = userDTO.getUsername();
         given()
                 .when()
-                .get("/movies/random/2")
+                .get("/movies/random/" + username)
                 .then()
                 .statusCode(200);
     }
