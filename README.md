@@ -25,10 +25,7 @@ Anyone can choose to get a movie suggestion within a specific genre, but here th
 | api/admin/movies/add                     | POST   |   🔒    | Admins can add new movies to the DB         |
 | api/movies/random/{id}                   | GET    |    ✅    | Shows a random movie not liked by user      |
 
-❌ = Not secured
-
-✅ = User secured
-
-🔒 = Admin secured
+| ❌ Not secured | ✅ User secured | 🔒 Admin secured |
+|---------------|----------------|------------------|
 
 Deployed version: https://reeltrouble.dataduck.dk/api/routes
