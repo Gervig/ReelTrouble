@@ -38,8 +38,9 @@ public class MovieController implements IController<MovieDTO, Long>
     public List<MovieDTO> getAll()
     {
         List<Movie> movies = movieDAO.readAll();
+
         List<MovieDTO> movieDTOS = movies.stream()
-                .map(MovieDTO::new)
+                .map(movie -> new MovieDTO(movie, true))
                 .toList();
         return movieDTOS;
     }
