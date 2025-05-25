@@ -49,13 +49,6 @@ Authorization: {{token}}
     client.global.set("movie", JSON.stringify(response.body));
 %}
 
-### Use saved movie data in POST request ** with userId**
-#POST http://localhost:7074/api/movies/like/2/1
-#Content-Type: application/json
-#Authorization: Bearer {{token}}
-#
-#{{movie}}
-
 ### Use saved movie data in POST request ** with username**
 POST http://localhost:7074/api/movies/like/user6/1
 Content-Type: application/json
@@ -64,8 +57,14 @@ Authorization: Bearer {{token}}
 {{movie}}
 
 ### Removes liked movie from user6
-POST http://localhost:7074/api/movies/unlike/user6/1
+DELETE http://localhost:7074/api/movies/unlike/user6/1
 Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### Get a list of liked movies from a user6 with a given token
+GET http://localhost:7074/api/movies/history/user6
+Accept: application/json
 Authorization: Bearer {{token}}
 
 ### Get a list of recommended movies from user with given token
@@ -80,11 +79,6 @@ Accept: application/json
 ### Get a list of movies with a given genre (Comedy)
 GET http://localhost:7074/api/movies/comedy
 Accept: application/json
-
-### Get a list of liked movies from a user6 with a given token
-GET http://localhost:7074/api/movies/history/user6
-Accept: application/json
-Authorization: Bearer {{token}}
 
 ### Test if given token is valid
 GET http://localhost:7074/api/secured/demo

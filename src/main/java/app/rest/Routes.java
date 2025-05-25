@@ -100,7 +100,7 @@ public class Routes
                     ctx.json(movie).status(201);
                 }, Role.USER);
                 //Add a movie to a user's liked list ** BY USERNAME **
-                post("unlike/{username}/{movieId}", ctx ->
+                delete("unlike/{username}/{movieId}", ctx ->
                 {
                     String username = ctx.pathParam("username");
                     Long movieId = Long.parseLong(ctx.pathParam("movieId"));

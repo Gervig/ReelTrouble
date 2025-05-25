@@ -183,7 +183,7 @@ public class MovieResourceTest
 
         given()
                 .when()
-                .post("/movies/unlike/" + username + "/1") // POST a movie to user with ID 2, where movie ID is 1
+                .delete("/movies/unlike/" + username + "/1") // POST a movie to user with ID 2, where movie ID is 1
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1))
