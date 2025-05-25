@@ -172,6 +172,25 @@ public class MovieResourceTest
                 .body("title", notNullValue());
     }
 
+    @Test
+    @DisplayName("Test for unliking a movie")
+    void testUnlikeMovie()
+    {
+        // likes a movie with ID 1
+        movieByLikedTest();
+
+        String username = userDTO.getUsername();
+
+        given()
+                .when()
+                .post("/movies/unlike/" + username + "/1") // POST a movie to user with ID 2, where movie ID is 1
+                .then()
+                .statusCode(201)
+                .body("id", equalTo(1))
+                .body("title", notNullValue());
+
+    }
+
     //TODO test recommended movie
 
 }
