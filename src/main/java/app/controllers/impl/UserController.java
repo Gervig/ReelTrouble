@@ -43,4 +43,14 @@ public class UserController
         MovieDTO movieDTO = new MovieDTO(movie);
         return movieDTO;
     }
+
+    // remove from like-list by username
+    public MovieDTO deleteMovieFromUsersList(Long movieID, String username)
+    {
+        Movie movie = movieDAO.read(movieID);
+        Long userID = userDAO.readByName(username).getId();
+        userDAO.deleteMovieFromList(userID, movieID);
+        MovieDTO movieDTO = new MovieDTO(movie);
+        return movieDTO;
+    }
 }

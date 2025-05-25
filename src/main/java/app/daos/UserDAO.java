@@ -194,4 +194,31 @@ public class UserDAO
         }
     }
 
+    public void deleteMovieFromList(Long userId, Long movieId)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            try
+            {
+                em.getTransaction().begin();
+
+                User user = em.find(User.class, userId);
+                Movie movie = em.find(Movie.class, movieId);
+
+                if (user == null || movie == null)
+                {
+                    throw new IllegalArgumentException("User or movie not found");
+                }
+
+                user.getLikeList().remove(movie);
+                em.merge(user);
+                em.getTransaction().commit();
+            } catch (Exception e)
+            {
+                em.getTransaction().rollback();
+                throw e;
+            }
+        }
+    }
+
 }

@@ -99,6 +99,14 @@ public class Routes
                     MovieDTO movie = userController.postMovieToUsersList(movieId, username);
                     ctx.json(movie).status(201);
                 }, Role.USER);
+                //Add a movie to a user's liked list ** BY USERNAME **
+                post("unlike/{username}/{movieId}", ctx ->
+                {
+                    String username = ctx.pathParam("username");
+                    Long movieId = Long.parseLong(ctx.pathParam("movieId"));
+                    MovieDTO movie = userController.deleteMovieFromUsersList(movieId, username);
+                    ctx.json(movie).status(201);
+                }, Role.USER);
                 //TODO check this in demo.http
                 //Show 1 random movie not liked by the user - NOT CHECKED
                 get("random/{username}", ctx -> {
