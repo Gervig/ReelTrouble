@@ -63,6 +63,11 @@ Authorization: Bearer {{token}}
 
 {{movie}}
 
+### Removes liked movie from user6
+POST http://localhost:7074/api/movies/unlike/user6/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 ### Get a list of recommended movies from user with given token
 GET http://localhost:7074/api/movies/recommend
 Accept: application/json
@@ -75,11 +80,6 @@ Accept: application/json
 ### Get a list of movies with a given genre (Comedy)
 GET http://localhost:7074/api/movies/comedy
 Accept: application/json
-
-### Get a list of liked movies from a user with a given token, harded to ID 2
-#GET http://localhost:7074/api/movies/history/2
-#Accept: application/json
-#Authorization: {{token}}
 
 ### Get a list of liked movies from a user6 with a given token
 GET http://localhost:7074/api/movies/history/user6

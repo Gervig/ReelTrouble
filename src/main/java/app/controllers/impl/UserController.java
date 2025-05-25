@@ -40,7 +40,7 @@ public class UserController
         Movie movie = movieDAO.read(movieID);
         Long userID = userDAO.readByName(username).getId();
         userDAO.addMovieToList(userID, movieID);
-        MovieDTO movieDTO = new MovieDTO(movie);
+        MovieDTO movieDTO = new MovieDTO(movie, true);
         return movieDTO;
     }
 
@@ -50,7 +50,7 @@ public class UserController
         Movie movie = movieDAO.read(movieID);
         Long userID = userDAO.readByName(username).getId();
         userDAO.deleteMovieFromList(userID, movieID);
-        MovieDTO movieDTO = new MovieDTO(movie);
+        MovieDTO movieDTO = new MovieDTO(movie, true);
         return movieDTO;
     }
 }
